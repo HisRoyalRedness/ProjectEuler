@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 /*
-    A collection of Attributes applied to Euler types
+    Euler Problem 3
 
     Keith Fletcher
     Mar 2017
@@ -16,14 +16,21 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    public class SolutionAttribute : Attribute
+    [Solution("sdsdsd")]
+    public class Problem3 : ProblemBase
     {
-        public SolutionAttribute(string solution)
-        {
-            Solution = solution;
-        }
+        /// <summary>
+        /// http://projecteuler.net/index.php?section=problems&id=3
+        /// 
+        /// ...Problem description here...
+        /// 
+        /// Answer: Solution here...
+        /// </summary>
 
-        public string Solution { get; private set; }
+        protected override string InternalSolve()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

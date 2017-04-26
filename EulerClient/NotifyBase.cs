@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 #if REACTIVE
 using System.Reactive.Subjects;
@@ -181,46 +182,46 @@ namespace HisRoyalRedness.com
             }
         }
 
+        public bool IsInDesigner => DesignerProperties.GetIsInDesignMode(new DependencyObject());
 
         protected readonly TLock _propertyLock = null;
 
-        //public class RelayCommand : ICommand
-        //{
-        //    #region Fields
+        public class RelayCommand : ICommand
+        {
+            #region Fields
 
-        //    readonly Action<object> ExecuteAction;
-        //    readonly Predicate<object> CanExecutePredicate;
+            readonly Action<object> ExecuteAction;
+            readonly Predicate<object> CanExecutePredicate;
 
-        //    #endregion // Fields
+            #endregion // Fields
 
-        //    #region Constructors
+            #region Constructors
 
-        //    public RelayCommand(Action<object> execute)
-        //        : this(execute, null)
-        //    { }
+            public RelayCommand(Action<object> execute)
+                : this(execute, null)
+            { }
 
-        //    public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-        //    {
-        //        Verify.ArgNotNull(execute, nameof(execute));
-        //        ExecuteAction = execute;
-        //        CanExecutePredicate = canExecute;
-        //    }
-        //    #endregion // Constructors
+            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+            {
+                ExecuteAction = execute;
+                CanExecutePredicate = canExecute;
+            }
+            #endregion // Constructors
 
-        //    #region ICommand Members
+            #region ICommand Members
 
-        //    [DebuggerStepThrough]
-        //    public bool CanExecute(object parameter) => (CanExecutePredicate == null ? true : CanExecutePredicate(parameter));
+            [DebuggerStepThrough]
+            public bool CanExecute(object parameter) => (CanExecutePredicate == null ? true : CanExecutePredicate(parameter));
 
-        //    public event EventHandler CanExecuteChanged
-        //    {
-        //        add { CommandManager.RequerySuggested += value; }
-        //        remove { CommandManager.RequerySuggested -= value; }
-        //    }
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
 
-        //    public void Execute(object parameter) => ExecuteAction(parameter);
+            public void Execute(object parameter) => ExecuteAction(parameter);
 
-        //    #endregion // ICommand Members
-        //}
+            #endregion // ICommand Members
+        }
     }
 }

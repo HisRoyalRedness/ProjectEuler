@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EulerRunner", "EulerRunner\EulerRunner.csproj", "{C12D94AB-43C6-4972-A877-99A139350498}"
 EndProject
@@ -26,8 +26,10 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		EulerShared\EulerShared.projitems*{525440c2-de49-4d68-a3fa-d683be33a32a}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{5362f10c-1cb3-4414-b104-0d484a4e070e}*SharedItemsImports = 4
+		EulerShared\EulerShared.projitems*{7e1ea19b-b180-4679-b835-4f7d32a60fc4}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{92d5f1cf-f71e-4e83-8c4d-7254e7325bc6}*SharedItemsImports = 13
 		EulerShared\EulerShared.projitems*{c12d94ab-43c6-4972-a877-99a139350498}*SharedItemsImports = 4
+		EulerShared\EulerShared.projitems*{cb0eb0cd-a516-4282-8fd4-f26a0797c8f1}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

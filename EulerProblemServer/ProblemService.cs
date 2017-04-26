@@ -6,6 +6,7 @@ using System.ServiceModel.Description;
 using System.Threading;
 using System.Windows.Threading;
 using NLog;
+using System.Threading.Tasks;
 
 /*
     Server for problem descriptions (i.e. anything implementing IProblem)
@@ -44,11 +45,17 @@ namespace HisRoyalRedness.com
             return summaries;
         }
 
+        public Task<List<ProblemSummary>> GetProblemsAsync()
+            => Task.Factory.StartNew(() => GetProblems());
+
         public void ShutDown()
         {
             _logger.Debug(nameof(ShutDown));
             CloseAction?.Invoke();
         }
+
+        public Task ShutDownAsync()
+            => Task.Run(() => CloseAction?.Invoke());
 
         public void Dispose()
         {

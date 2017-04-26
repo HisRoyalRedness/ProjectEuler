@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
-        public static TAttribute[] GetAttributes<TAttribute>(this object obj)
+        internal static TAttribute[] GetAttributes<TAttribute>(this object obj)
             where TAttribute : Attribute
             => obj.GetType()
                 .GetCustomAttributes(typeof(TAttribute), true)
@@ -26,9 +26,9 @@ namespace HisRoyalRedness.com
                 .ToArray();
     }
 
-    public static class MiscExtensions
+    internal static class MiscExtensions
     {
-        public static T Tap<T>(this T item, Action<T> action)
+        internal static T Tap<T>(this T item, Action<T> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));

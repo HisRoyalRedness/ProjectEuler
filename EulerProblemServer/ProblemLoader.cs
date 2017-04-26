@@ -25,7 +25,7 @@ namespace HisRoyalRedness.com
             Compose();
             if (_problemsList != null)
                 foreach (var problem in _problemsList)
-                    _problems.Add(problem.ProblemNumber, problem);
+                    _problems.Add(problem.ProblemNumber, (IProblem)problem);
         }
 
         public Dictionary<int, IProblem> Problems => _problems;
@@ -55,8 +55,8 @@ namespace HisRoyalRedness.com
             }
         }
 
-        [ImportMany(typeof(IProblem))]
-        List<IProblem> _problemsList = null;
+        [ImportMany(typeof(IExportedProblem))]
+        List<IExportedProblem> _problemsList = null;
 
         readonly Dictionary<int, IProblem> _problems = new Dictionary<int, IProblem>();
     }
