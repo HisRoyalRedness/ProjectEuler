@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace HisRoyalRedness.com
 {
     [DataContract]
-    public class ProblemSummary
+    public class ProblemSummary : IProblem
     {
         public ProblemSummary(int problemNumber, string solution)
         {

@@ -20,9 +20,8 @@ using System.Threading.Tasks;
 namespace HisRoyalRedness.com
 {
     /// <summary>
-    /// Used to identify problem descriptions for MEF
+    /// A base problem description
     /// </summary>
-    [InheritedExport(typeof(IProblem))]
     public interface IProblem
     {
         int ProblemNumber { get; }
@@ -31,12 +30,27 @@ namespace HisRoyalRedness.com
 
 
     /// <summary>
-    /// Identifies classes that implement a solution to a problem
+    /// Used to identify problem descriptions for MEF
     /// </summary>
-    [InheritedExport(typeof(IProblemSolver))]
+    [InheritedExport(typeof(IExportedProblem))]
+    public interface IExportedProblem : IProblem
+    {
+    }
+
+    /// <summary>
+    /// Identifies classes that implement a solution to a problem
+    /// </summary>    
     public interface IProblemSolver
     {
         string Solve();
+    }
+
+    /// <summary>
+    /// Problem solvers that are to be exported
+    /// </summary>
+    [InheritedExport(typeof(IExportedProblemSolver))]
+    public interface IExportedProblemSolver : IProblemSolver
+    {
     }
 
     /// <summary>
@@ -46,10 +60,26 @@ namespace HisRoyalRedness.com
     public interface IProblemService : IDisposable
     {
         [OperationContract]
-        List<ProblemSummary> GetProblems();
+        Task<List<ProblemSummary>> GetProblemsAsync();
+
+        //[OperationContract]
+        //List<ProblemSummary> GetProblems();
 
         [OperationContract]
-        void ShutDown();
+        Task ShutDownAsync();
+
+        //[OperationContract]
+        //void ShutDown();
+    }
+
+
+    public class ProblemComparer : IEqualityComparer<IProblem>
+    {
+        public bool Equals(IProblem x, IProblem y)
+            => x.ProblemNumber == y.ProblemNumber && string.Compare(x.Solution, y.Solution, true) == 0;
+
+        public int GetHashCode(IProblem obj)
+            => obj.GetHashCode();
     }
 }
 

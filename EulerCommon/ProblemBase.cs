@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 /*
-    A collection of Attributes applied to Euler types
-
+    Base class for problem descriptions
+    
     Keith Fletcher
     Mar 2017
 
@@ -16,14 +18,27 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    public class SolutionAttribute : Attribute
+    public abstract class ProblemBase : IExportedProblem, IExportedProblemSolver
     {
-        public SolutionAttribute(string solution)
+        protected ProblemBase()
         {
-            Solution = solution;
+            var name = this.GetType().Name;
+            var match = _problemNumberRegex.Match(name);
+            if (!match.Success)
+                throw new ArgumentException($"Could not determine the problem number for '{name}'.");
+            _problemNumber = int.Parse(match.Value);
+            _solution = this.GetAttributes<SolutionAttribute>()?.FirstOrDefault()?.Solution;
         }
 
-        public string Solution { get; private set; }
+        public int ProblemNumber => _problemNumber;
+        public string Solution => _solution;
+        public string Solve() => InternalSolve();
+
+        protected abstract string InternalSolve();
+
+        readonly int _problemNumber = 0;
+        readonly string _solution = string.Empty;
+        readonly Regex _problemNumberRegex = new Regex(@"(?<=^problem)\d+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     }
 }
 
