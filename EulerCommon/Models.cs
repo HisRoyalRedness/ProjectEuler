@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,24 @@ namespace HisRoyalRedness.com
         public int ProblemNumber { get; private set; }
         [DataMember]
         public string Solution { get; private set; }
+
+        public int CompareTo(IProblem other)
+            => ProblemComparer.Default.Compare(this, other);
+    }
+
+    [DataContract]
+    public class SolutionResult : ISolutionResult
+    {
+        public SolutionResult(string solution, TimeSpan solveTime)
+        {
+            Solution = solution;
+            SolveTime = solveTime;
+        }
+
+        [DataMember]
+        public string Solution { get; private set; }
+        [DataMember]
+        public TimeSpan SolveTime { get; private set; }
     }
 }
 

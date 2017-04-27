@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 /*
@@ -28,7 +29,9 @@ namespace HisRoyalRedness.com
 
         protected override string InternalSolve()
         {
-            throw new NotImplementedException();
+            //Thread.Sleep(2000);
+            return $"Solve {ProblemNumber}";
+            //throw new NotImplementedException();
         }
     }
 }

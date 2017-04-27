@@ -28,7 +28,8 @@ namespace HisRoyalRedness.com
 
         protected override string InternalSolve()
         {
-            throw new NotImplementedException();
+            return $"Solve {ProblemNumber}";
+            //throw new NotImplementedException();
         }
     }
 }

@@ -68,7 +68,5 @@ namespace HisRoyalRedness.com
         }
 
         static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    }
-
-    // test
+    }    
 }

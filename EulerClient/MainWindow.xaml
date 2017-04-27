@@ -6,10 +6,18 @@
         xmlns:local="clr-namespace:HisRoyalRedness.com"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="850">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:NullConverter x:Key="NullConverter" />
+            <local:TimespanConverter x:Key="TimeSpanConverter" />
+            <local:FormatConverter x:Key="FormatConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Window.DataContext>
-        <local:EulerDataContext />
+        <local:EulerDataContext />        
     </Window.DataContext>
     
     <DockPanel>
@@ -17,8 +25,13 @@
         <DockPanel.Resources>
             <ResourceDictionary>
                 <Style TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Width" Value="80" />
                     <Setter Property="Height" Value="30" />
+                    <Setter Property="Margin" Value="5,5,0,5" />
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Margin" Value="5,5,0,5" />
                 </Style>
             </ResourceDictionary>
@@ -30,21 +43,30 @@
                 DockPanel.Dock="Left" 
                 Content="Refresh"
                 Command="{Binding RefreshCommand}"/>
+            <Button 
+                DockPanel.Dock="Left" 
+                Content="Solve"
+                Command="{Binding SolveCommand}"/>
+            <CheckBox 
+                DockPanel.Dock="Left"
+                Content="Keep Service"
+                IsChecked="{Binding KeepService}"
+                />
             <Grid />
         </DockPanel>
 
-        <ListView ItemsSource="{Binding}">
-            <ListView.DataContext>
-                <CollectionViewSource Source="{Binding Problems}">
-                    <CollectionViewSource.SortDescriptions>
-                        <scm:SortDescription PropertyName="ProblemNumber"/>
-                    </CollectionViewSource.SortDescriptions>
-                </CollectionViewSource>
-            </ListView.DataContext>
+        <ListView 
+            GridViewColumnHeader.Click="SortClick"
+            IsSynchronizedWithCurrentItem="True" 
+            ItemsSource="{Binding SortedProblems}"
+            SelectedItem="{Binding CurrentProblem}" >            
             <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="No." Width="50" DisplayMemberBinding="{Binding ProblemNumber}" />
-                    <GridViewColumn Header="Solution" Width="300" DisplayMemberBinding="{Binding Solution}" />
+                <GridView >
+                    <GridViewColumn Header="{x:Static local:Constants.ProblemNumberHeader}" Width="50" DisplayMemberBinding="{Binding ProblemNumber}" />
+                    <GridViewColumn Header="{x:Static local:Constants.EmbeddedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding Solution}" />
+                    <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
+                    <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
+                    <GridViewColumn Header="{x:Static local:Constants.LastSolvedHeader}" Width="150" DisplayMemberBinding="{Binding LastSolved, Converter={StaticResource FormatConverter}, ConverterParameter='yyyy-MM-dd HH:mm:ss'}" />
                 </GridView>
             </ListView.View>
         </ListView>

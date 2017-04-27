@@ -18,7 +18,7 @@ using System.Text.RegularExpressions;
 
 namespace HisRoyalRedness.com
 {
-    public abstract class ProblemBase : IExportedProblem, IExportedProblemSolver
+    public abstract class ProblemBase : IExportedProblem
     {
         protected ProblemBase()
         {
@@ -33,6 +33,7 @@ namespace HisRoyalRedness.com
         public int ProblemNumber => _problemNumber;
         public string Solution => _solution;
         public string Solve() => InternalSolve();
+        public int CompareTo(IProblem other) => ProblemComparer.Default.Compare(this, other);
 
         protected abstract string InternalSolve();
 

@@ -68,7 +68,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converters.cs" />
     <Compile Include="EulerDataContext.cs" />
+    <Compile Include="Interfaces.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -77,6 +79,7 @@
   <ItemGroup>
     <Compile Include="NotifyBase.cs" />
     <Compile Include="ProblemModel.cs" />
+    <Compile Include="ProblemSummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

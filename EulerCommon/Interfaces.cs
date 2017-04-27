@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -22,19 +23,10 @@ namespace HisRoyalRedness.com
     /// <summary>
     /// A base problem description
     /// </summary>
-    public interface IProblem
+    public interface IProblem : IComparable<IProblem>
     {
         int ProblemNumber { get; }
         string Solution { get; }
-    }
-
-
-    /// <summary>
-    /// Used to identify problem descriptions for MEF
-    /// </summary>
-    [InheritedExport(typeof(IExportedProblem))]
-    public interface IExportedProblem : IProblem
-    {
     }
 
     /// <summary>
@@ -46,11 +38,24 @@ namespace HisRoyalRedness.com
     }
 
     /// <summary>
-    /// Problem solvers that are to be exported
+    /// A problem description and solution
     /// </summary>
-    [InheritedExport(typeof(IExportedProblemSolver))]
-    public interface IExportedProblemSolver : IProblemSolver
+    public interface ISolvableProblem : IProblem, IProblemSolver
     {
+    }
+
+    /// <summary>
+    /// Used to identify problem descriptions for MEF
+    /// </summary>
+    [InheritedExport(typeof(IExportedProblem))]
+    public interface IExportedProblem : ISolvableProblem
+    {
+    }
+
+    public interface ISolutionResult
+    {
+        string Solution { get; }
+        TimeSpan SolveTime { get; }
     }
 
     /// <summary>
@@ -60,10 +65,13 @@ namespace HisRoyalRedness.com
     public interface IProblemService : IDisposable
     {
         [OperationContract]
+        void Ping();
+
+        [OperationContract]
         Task<List<ProblemSummary>> GetProblemsAsync();
 
-        //[OperationContract]
-        //List<ProblemSummary> GetProblems();
+        [OperationContract]
+        Task<SolutionResult> SolveProblem(int problemNumber);
 
         [OperationContract]
         Task ShutDownAsync();
@@ -73,14 +81,24 @@ namespace HisRoyalRedness.com
     }
 
 
-    public class ProblemComparer : IEqualityComparer<IProblem>
+    public class ProblemComparer : IEqualityComparer<IProblem>, IComparer<IProblem>, IComparer
     {
+        public int Compare(IProblem x, IProblem y)
+            => (x?.ProblemNumber ?? -1).CompareTo(y?.ProblemNumber ?? -1);
+
+        public int Compare(object x, object y)
+            => Compare(x as IProblem, y as IProblem);
+
         public bool Equals(IProblem x, IProblem y)
             => x.ProblemNumber == y.ProblemNumber && string.Compare(x.Solution, y.Solution, true) == 0;
 
         public int GetHashCode(IProblem obj)
             => obj.GetHashCode();
+
+
+        public static ProblemComparer Default { get; } = new ProblemComparer(); 
     }
+
 }
 
 /*

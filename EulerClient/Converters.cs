@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 /*
-    Euler Problem 3
+    Common WPF value converters
 
     Keith Fletcher
-    Mar 2017
+    Apr 2017
 
     This file is Unlicensed.
     See the foot of the file, or refer to <http://unlicense.org>
@@ -16,22 +18,44 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("sdsdsd")]
-    public class Problem3 : ProblemBase
+    public class NullConverter : IValueConverter
     {
-        /// <summary>
-        /// http://projecteuler.net/index.php?section=problems&id=3
-        /// 
-        /// ...Problem description here...
-        /// 
-        /// Answer: Solution here...
-        /// </summary>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => value;
 
-        protected override string InternalSolve()
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => value;
+    }
+
+    public class TimespanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return $"Solve {ProblemNumber}";
-            //throw new NotImplementedException();
+            var ts = value as TimeSpan?;
+            if (!ts.HasValue)
+                return "";
+
+            return $"{ts.Value.TotalMilliseconds} ms";
         }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        { throw new NotSupportedException(); }
+    }
+
+    public class FormatConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var format = parameter as string;
+            if (value == null)
+                return string.Empty;
+            return string.IsNullOrEmpty(format)
+                ? value.ToString()
+                : string.Format($"{{0:{format}}}", value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        { throw new NotSupportedException(); }
     }
 }
 

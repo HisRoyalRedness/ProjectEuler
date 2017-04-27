@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Threading;
 using NLog;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 /*
     Server for problem descriptions (i.e. anything implementing IProblem)
@@ -25,6 +26,7 @@ namespace HisRoyalRedness.com
     {
         public ProblemService()
         {
+            _factory = Task.Factory;
             Touch();
         }
 
@@ -46,7 +48,7 @@ namespace HisRoyalRedness.com
         }
 
         public Task<List<ProblemSummary>> GetProblemsAsync()
-            => Task.Factory.StartNew(() => GetProblems());
+            => _factory.StartNew(() => GetProblems());
 
         public void ShutDown()
         {
@@ -55,7 +57,7 @@ namespace HisRoyalRedness.com
         }
 
         public Task ShutDownAsync()
-            => Task.Run(() => CloseAction?.Invoke());
+            => _factory.StartNew(() => CloseAction?.Invoke());
 
         public void Dispose()
         {
@@ -70,8 +72,38 @@ namespace HisRoyalRedness.com
             UpdateLastTouch?.Invoke();
         }
 
+        public Task<SolutionResult> SolveProblem(int problemNumber)
+        {
+            return _factory.StartNew(() =>
+            {
+                _logger.Debug(nameof(GetProblems));
+                Touch();
+                var loader = new ProblemLoader();
+                var problem = loader.Problems.ContainsKey(problemNumber)
+                    ? loader.Problems[problemNumber]
+                    : null;
+
+                if (problem == null)
+                    return new SolutionResult(null, TimeSpan.Zero);
+
+                var sw = new Stopwatch();
+                sw.Start();
+                var solution = problem.Solve();
+                sw.Stop();
+                return new SolutionResult(solution, sw.Elapsed);
+            });
+        }
+
+        public void Ping()
+        {
+            _logger.Trace("Ping");
+            Touch();
+        }
+
         internal Action CloseAction { get; set; }
         internal Action UpdateLastTouch { get; set; }
+
+        readonly TaskFactory _factory;
 
         static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     }    

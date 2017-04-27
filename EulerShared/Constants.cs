@@ -20,6 +20,15 @@ namespace HisRoyalRedness.com
         internal const string NamedPipeEndpoint = "net.pipe://localhost/Euler";
         internal const string NamedPipeEndpointAddress = "Problems";
         internal const string ProblemServerProcess = "EulerProblemServer.exe";
+
+        // Grid headers
+        public const string ProblemNumberHeader = "No.";
+        public const string EmbeddedSolutionHeader = "Embedded Solution";
+        public const string CalculatedSolutionHeader = "Calculated Solution";
+        public const string SolveTimeHeader = "Solve Time";
+        public const string LastSolvedHeader = "Last solved";
+
+        public const string ProblemSummaryFile = "EulerProblems.xml";
     }
 }
 
