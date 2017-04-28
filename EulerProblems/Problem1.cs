@@ -16,20 +16,45 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Solution("233168")]
     public class Problem1 : ProblemBase
     {
-        /// <summary>
         /// http://projecteuler.net/index.php?section=problems&id=1
         /// 
-        /// ...Problem description here...
+        /// If we list all the natural numbers below 10 that are multiples of 3 or 5, 
+        /// we get 3, 5, 6 and 9. The sum of these multiples is 23.
         /// 
-        /// Answer: Solution here...
+        /// Find the sum of all the multiples of 3 or 5 below 1000.          
+        /// 
+        /// Answer: 233168
         /// </summary>
-
+        /// 
         protected override string InternalSolve()
         {
-            return $"Solve {ProblemNumber}";
-            //throw new NotImplementedException();
+            int m3 = 3;
+            int m5 = 5;
+            int sum = 3 + 5;
+            const int max = 1000;
+
+            while (true)
+            {
+                if (m3 < m5)
+                {
+                    m3 += 3;
+                    if (m3 < max)
+                        if (m3 != m5)
+                            sum += m3;
+                }
+                else
+                {
+                    m5 += 5;
+                    if (m5 < max)
+                        sum += m5;
+                    else if (m3 >= max)
+                            break;
+                }
+            }
+            return sum.ToString();
         }
     }
 }

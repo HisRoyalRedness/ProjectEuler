@@ -41,10 +41,14 @@ namespace HisRoyalRedness.com
 
                 AddSortGlyph(header, _direction);
                 _oldHeader = header;
-                (DataContext as EulerDataContext).Sort(header.Column.Header as string, _direction);
+                (DataContext as EulerDataContext)?.Sort(header.Column.Header as string, _direction);
             }
         }
 
+        private void ItemDoubleClick(object sender, MouseButtonEventArgs e)
+            => (DataContext as EulerDataContext)?.ItemDoubleClickCommand.Execute((sender as ListViewItem)?.Content as ProblemDisplayModel);
+
+        #region Sort glyph
         static void AddSortGlyph(GridViewColumnHeader columnHeader, ListSortDirection direction)
         {
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(columnHeader);
@@ -117,6 +121,7 @@ namespace HisRoyalRedness.com
                 drawingContext.DrawGeometry(Brushes.LightGray, new Pen(Brushes.Gray, 1.0), GetDefaultGlyph());
             }
         }
+        #endregion Sort glyph
 
         GridViewColumnHeader _oldHeader = null;
         ListSortDirection _direction = ListSortDirection.Ascending;

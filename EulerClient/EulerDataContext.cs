@@ -20,8 +20,9 @@ namespace HisRoyalRedness.com
     {
         public EulerDataContext()
         {
-            _refreshProblems = new NotifyBase<object>.RelayCommand(RefreshProblems);
-            _solve = new NotifyBase<object>.RelayCommand(Solve);
+            _refreshProblems = new RelayCommand(RefreshProblems);
+            _solve = new RelayCommand(Solve);
+            _itemDoubleClick = new RelayCommand<ProblemDisplayModel>(ItemDoubleClick);
 
             LoadProblems();
             _refreshProblems.Execute(null);
@@ -47,6 +48,10 @@ namespace HisRoyalRedness.com
         public RelayCommand SolveCommand => _solve;
         RelayCommand _solve;
 
+        public RelayCommand<ProblemDisplayModel> ItemDoubleClickCommand => _itemDoubleClick;
+        RelayCommand<ProblemDisplayModel> _itemDoubleClick;
+
+
         public IProblem CurrentProblem
         {
             get { return _currentProblem; }
@@ -61,7 +66,7 @@ namespace HisRoyalRedness.com
         }
         bool _keepService = false;
 
-        void RefreshProblems(object _)
+        void RefreshProblems()
         {
             var dispatcher = Dispatcher.CurrentDispatcher;
             Task.Run(async () =>
@@ -150,10 +155,11 @@ namespace HisRoyalRedness.com
             }
         }
 
-        void Solve(object _)
+        void Solve() => Solve(CurrentProblem?.ProblemNumber ?? -1);
+
+        void Solve(int problemNumber)
         {
-            var currentProblemNumber = CurrentProblem?.ProblemNumber ?? -1;
-            if (currentProblemNumber == -1)
+            if (problemNumber == -1)
                 return;
 
             var dispatcher = Dispatcher.CurrentDispatcher;
@@ -164,14 +170,14 @@ namespace HisRoyalRedness.com
                     var service = StartService();
                     if (service != null)
                     {
-                        var solution = await service.SolveProblem(currentProblemNumber);
+                        var solution = await service.SolveProblem(problemNumber);
                         if (!KeepService)
                             await service.ShutDownAsync();
-                        _logger.Info($"Solution to problem {currentProblemNumber} is {solution.Solution}. Solved in {solution.SolveTime.TotalMilliseconds} ms.");
+                        _logger.Info($"Solution to problem {problemNumber} is {solution.Solution}. Solved in {solution.SolveTime.TotalMilliseconds} ms.");
                         await dispatcher.InvokeAsync(() =>
                         {
                             Problems
-                                .Where(p => p.ProblemNumber == currentProblemNumber)
+                                .Where(p => p.ProblemNumber == problemNumber)
                                 .FirstOrDefault()
                                 ?.SetSolution(solution);
                             SaveProblems();
@@ -180,10 +186,12 @@ namespace HisRoyalRedness.com
                 }
                 catch (Exception ex)
                 {
-                    _logger.Info(ex, $"Error solving problem {currentProblemNumber}.");
+                    _logger.Info(ex, $"Error solving problem {problemNumber}.");
                 }
             });
         }
+
+        void ItemDoubleClick(ProblemDisplayModel model) => Solve(model?.ProblemNumber ?? -1);
 
         public void Sort(string header, ListSortDirection direction)
         {

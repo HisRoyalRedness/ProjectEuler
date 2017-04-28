@@ -186,22 +186,82 @@ namespace HisRoyalRedness.com
 
         protected readonly TLock _propertyLock = null;
 
-        public class RelayCommand : ICommand
+        //public class RelayCommand : ICommand
+        //{
+        //    #region Fields
+
+        //    readonly Action<object> ExecuteAction;
+        //    readonly Predicate<object> CanExecutePredicate;
+
+        //    #endregion // Fields
+
+        //    #region Constructors
+
+        //    public RelayCommand(Action<object> execute)
+        //        : this(execute, null)
+        //    { }
+
+        //    public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        //    {
+        //        ExecuteAction = execute;
+        //        CanExecutePredicate = canExecute;
+        //    }
+        //    #endregion // Constructors
+
+        //    #region ICommand Members
+
+        //    [DebuggerStepThrough]
+        //    public bool CanExecute(object parameter) => (CanExecutePredicate == null ? true : CanExecutePredicate(parameter));
+
+        //    public event EventHandler CanExecuteChanged
+        //    {
+        //        add { CommandManager.RequerySuggested += value; }
+        //        remove { CommandManager.RequerySuggested -= value; }
+        //    }
+
+        //    public void Execute(object parameter) => ExecuteAction(parameter);
+
+        //    #endregion // ICommand Members
+        //}
+
+        public class RelayCommand : RelayCommand<object>
+        {
+            #region Constructors
+            public RelayCommand(Action execute)
+                : base(_ => execute(), null)
+            { }
+
+            public RelayCommand(Action<object> execute)
+                : base(execute, null)
+            { }
+
+            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+                : base(execute, canExecute)
+            { }
+            #endregion // Constructors
+        }
+
+        public class RelayCommand<TParam> : ICommand
+            where TParam : class
         {
             #region Fields
 
-            readonly Action<object> ExecuteAction;
-            readonly Predicate<object> CanExecutePredicate;
+            readonly Action<TParam> ExecuteAction;
+            readonly Predicate<TParam> CanExecutePredicate;
 
             #endregion // Fields
 
             #region Constructors
 
-            public RelayCommand(Action<object> execute)
+            public RelayCommand(Action execute)
+                : this(_ => execute(), null)
+            { }
+
+            public RelayCommand(Action<TParam> execute)
                 : this(execute, null)
             { }
 
-            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+            public RelayCommand(Action<TParam> execute, Predicate<TParam> canExecute)
             {
                 ExecuteAction = execute;
                 CanExecutePredicate = canExecute;
@@ -209,18 +269,16 @@ namespace HisRoyalRedness.com
             #endregion // Constructors
 
             #region ICommand Members
-
-            [DebuggerStepThrough]
-            public bool CanExecute(object parameter) => (CanExecutePredicate == null ? true : CanExecutePredicate(parameter));
-
-            public event EventHandler CanExecuteChanged
+            event EventHandler ICommand.CanExecuteChanged
             {
                 add { CommandManager.RequerySuggested += value; }
                 remove { CommandManager.RequerySuggested -= value; }
             }
 
-            public void Execute(object parameter) => ExecuteAction(parameter);
+            [DebuggerStepThrough]
+            bool ICommand.CanExecute(object parameter) => (CanExecutePredicate == null ? true : CanExecutePredicate(parameter as TParam));
 
+            public void Execute(object parameter) => ExecuteAction(parameter as TParam);
             #endregion // ICommand Members
         }
     }

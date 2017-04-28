@@ -21,7 +21,6 @@
     </Window.DataContext>
     
     <DockPanel>
-
         <DockPanel.Resources>
             <ResourceDictionary>
                 <Style TargetType="Button">
@@ -67,8 +66,14 @@
                     <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
                     <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
                     <GridViewColumn Header="{x:Static local:Constants.LastSolvedHeader}" Width="150" DisplayMemberBinding="{Binding LastSolved, Converter={StaticResource FormatConverter}, ConverterParameter='yyyy-MM-dd HH:mm:ss'}" />
-                </GridView>
+                </GridView>                
             </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    
+                    <EventSetter Event="MouseDoubleClick" Handler="ItemDoubleClick"/>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
     </DockPanel>
 </Window>

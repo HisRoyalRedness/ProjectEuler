@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NotifyBase.cs" />
-    <Compile Include="ProblemModel.cs" />
+    <Compile Include="ProblemDisplayModel.cs" />
     <Compile Include="ProblemSummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

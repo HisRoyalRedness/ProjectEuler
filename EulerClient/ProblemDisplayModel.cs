@@ -2,16 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace HisRoyalRedness.com
 {
+    [DebuggerDisplay("{DebugString}")]
     public class ProblemDisplayModel : NotifyBase, IProblemDisplay
     {
         public ProblemDisplayModel()
@@ -85,6 +84,8 @@ namespace HisRoyalRedness.com
 
         public int CompareTo(IProblem other)
             => ProblemComparer.Default.Compare(this, other);
+
+        string DebugString => $"No: {ProblemNumber:#}, Sol: {Solution}, Calc: {CalculatedSolution}";
     }
 
     public enum SortField

@@ -14,7 +14,16 @@ namespace HisRoyalRedness.com
     {
         static void Main(string[] args)
         {
-            Hoster.Host();
+            //Hoster.Host();
+
+            const int problemNumber = 1;
+
+            var loader = new ProblemLoader();
+            var problem = loader.Problems.ContainsKey(problemNumber)
+                ? loader.Problems[problemNumber]
+                : null;
+
+            problem?.Solve();
         }
     }
 }
