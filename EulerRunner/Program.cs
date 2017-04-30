@@ -14,9 +14,11 @@ namespace HisRoyalRedness.com
     {
         static void Main(string[] args)
         {
-            //Hoster.Host();
-
-            const int problemNumber = 1;
+            int problemNumber = 1;
+            
+            foreach(var a in args)
+                if (int.TryParse(a, out problemNumber))
+                    break;            
 
             var loader = new ProblemLoader();
             var problem = loader.Problems.ContainsKey(problemNumber)

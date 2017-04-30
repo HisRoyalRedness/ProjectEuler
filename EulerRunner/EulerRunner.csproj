@@ -52,7 +52,6 @@
     <Compile Include="..\EulerProblemServer\ProblemLoader.cs">
       <Link>ProblemLoader.cs</Link>
     </Compile>
-    <Compile Include="Hoster.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
