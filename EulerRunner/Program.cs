@@ -14,11 +14,11 @@ namespace HisRoyalRedness.com
     {
         static void Main(string[] args)
         {
-            int problemNumber = 2;
-            
-            foreach(var a in args)
+            int problemNumber = 4;
+
+            foreach (var a in args)
                 if (int.TryParse(a, out problemNumber))
-                    break;            
+                    break;
 
             var loader = new ProblemLoader();
             var problem = loader.Problems.ContainsKey(problemNumber)

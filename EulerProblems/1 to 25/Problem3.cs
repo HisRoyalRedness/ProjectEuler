@@ -16,21 +16,37 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("sdsdsd")]
+    [Solution("6857")]
     public class Problem3 : ProblemBase
     {
         /// <summary>
         /// http://projecteuler.net/index.php?section=problems&id=3
         /// 
-        /// ...Problem description here...
+        /// The prime factors of 13195 are 5, 7, 13 and 29.
         /// 
-        /// Answer: Solution here...
+        /// What is the largest prime factor of the number 600851475143 ?
+        /// 
+        /// Answer: 6857
         /// </summary>
 
         protected override string InternalSolve()
         {
-            return $"Solve {ProblemNumber}";
-            //throw new NotImplementedException();
+            long limit = 600851475143;
+            long max = 0;
+            var stop = limit;
+
+            foreach (var prime in Primes.Sequence(1, (UInt64)limit).Select(p => (long)p))
+            {
+                long result;
+                stop = Math.DivRem(limit, prime, out result);
+                if (result == 0)
+                    max = prime;
+
+                if (prime > stop)
+                    break;
+            }
+            
+            return max.ToString();
         }
     }
 }
