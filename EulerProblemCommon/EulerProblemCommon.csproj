@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculators\Calculators.cs" />
+    <Compile Include="EulerNative.cs" />
     <Compile Include="Generators\Primes.cs" />
     <Compile Include="Generators\Sequences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
