@@ -38,13 +38,10 @@ namespace HisRoyalRedness.com
                 CompositionContainer container = null;
 
                 var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                using (catalog = new AggregateCatalog())
+                using (catalog = new AggregateCatalog(new DirectoryCatalog(dirName)))
                 {
-                    catalog.Catalogs.Add(new DirectoryCatalog(dirName));
                     using (container = new CompositionContainer(catalog))
-                    {
                         container.ComposeParts(this);
-                    }
                     container = null;
                 }
                 catalog = null;

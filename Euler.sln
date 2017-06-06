@@ -26,12 +26,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EulerProblemCommon", "Euler
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprimesieve", "libprimesieve\libprimesieve.vcxproj", "{AA7DD618-A20C-4B22-B1A9-C05076815111}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EulerProblemCommon.Test", "EulerProblemCommon.Test\EulerProblemCommon.Test.csproj", "{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		EulerShared\EulerShared.projitems*{525440c2-de49-4d68-a3fa-d683be33a32a}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{5362f10c-1cb3-4414-b104-0d484a4e070e}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{66fc4edd-5ff2-46ce-bbec-5ac485f2001f}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{7e1ea19b-b180-4679-b835-4f7d32a60fc4}*SharedItemsImports = 4
+		EulerShared\EulerShared.projitems*{8d18c016-b8a5-43ac-a67c-fb88e3ee9889}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{92d5f1cf-f71e-4e83-8c4d-7254e7325bc6}*SharedItemsImports = 13
 		EulerShared\EulerShared.projitems*{c12d94ab-43c6-4972-a877-99a139350498}*SharedItemsImports = 4
 		EulerShared\EulerShared.projitems*{cb0eb0cd-a516-4282-8fd4-f26a0797c8f1}*SharedItemsImports = 4
@@ -127,6 +130,16 @@ Global
 		{AA7DD618-A20C-4B22-B1A9-C05076815111}.Release|x64.Build.0 = Release|x64
 		{AA7DD618-A20C-4B22-B1A9-C05076815111}.Release|x86.ActiveCfg = Release|Win32
 		{AA7DD618-A20C-4B22-B1A9-C05076815111}.Release|x86.Build.0 = Release|Win32
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Debug|x64.ActiveCfg = Debug|x64
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Debug|x86.Build.0 = Debug|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Release|x64.ActiveCfg = Release|x64
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Release|x86.ActiveCfg = Release|Any CPU
+		{8D18C016-B8A5-43AC-A67C-FB88E3EE9889}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

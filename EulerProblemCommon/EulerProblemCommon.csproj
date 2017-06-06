@@ -48,10 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculators\Aggregators.cs" />
     <Compile Include="Calculators\Calculators.cs" />
     <Compile Include="Generators\Primes.cs" />
     <Compile Include="Generators\Sequences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformers\CSV.cs" />
   </ItemGroup>
   <Import Project="..\EulerShared\EulerShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

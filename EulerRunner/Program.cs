@@ -14,7 +14,7 @@ namespace HisRoyalRedness.com
     {
         static void Main(string[] args)
         {
-            int problemNumber = 4;
+            int problemNumber = 5;
 
             foreach (var a in args)
                 if (int.TryParse(a, out problemNumber))

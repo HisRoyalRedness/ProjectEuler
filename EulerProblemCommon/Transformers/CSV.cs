@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 /*
-    Euler Problem 4
+    Common formatters for handling CSV
 
     Keith Fletcher
     May 2017
@@ -17,27 +16,40 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
-    public class Problem5 : ProblemBase
+    public static class CSVExtensions
     {
-        /// <summary>
-        /// http://projecteuler.net/index.php?section=problems&id=5
-        /// 
-        /// 2520 is the smallest number that can be divided by each of 
-        /// the numbers from 1 to 10 without any remainder.
-        /// 
-        /// What is the smallest positive number that is evenly divisible 
-        /// by all of the numbers from 1 to 20?
-        /// 
-        /// Answer: 232792560
-        /// </summary>
-
-        // 2 3 5 7 = 210
-
-        protected override string InternalSolve()
+        public static string ToCSV(this IEnumerable<ulong> sequence)
         {
-            var range = Enumerable.Range(1, 10).Select(i => (ulong)i).ToArray();
-            return Calculators.LCM(range).ToString();
+            if (sequence == null)
+                throw new ArgumentNullException(nameof(sequence));
+            var sb = new StringBuilder();
+            var first = true;
+            foreach (var item in sequence)
+            {
+                if (first)
+                    first = false;
+                else
+                    sb.Append(", ");
+                sb.Append(item);
+            }
+            return sb.ToString();
+        }
+
+        public static string ToCSV<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+                throw new ArgumentNullException(nameof(sequence));
+            var sb = new StringBuilder();
+            var first = true;
+            foreach (var item in sequence)
+            {
+                if (first)
+                    first = false;
+                else
+                    sb.Append(", ");
+                sb.Append(item);
+            }
+            return sb.ToString();
         }
     }
 }
