@@ -16,9 +16,9 @@ namespace HisRoyalRedness.com
         {
             int problemNumber = 5;
 
-            foreach (var a in args)
-                if (int.TryParse(a, out problemNumber))
-                    break;
+            //foreach (var a in args)
+            //    if (int.TryParse(a, out problemNumber))
+            //        break;
 
             var loader = new ProblemLoader();
             var problem = loader.Problems.ContainsKey(problemNumber)

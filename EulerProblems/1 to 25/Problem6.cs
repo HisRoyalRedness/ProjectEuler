@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 /*
-    Euler Problem 5
+    Euler Problem 6
 
     Keith Fletcher
-    May 2017
+    Jun 2017
 
     This file is Unlicensed.
     See the foot of the file, or refer to <http://unlicense.org>
@@ -17,23 +17,43 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("232792560")]
-    public class Problem5 : ProblemBase
+    [Solution("25164150")]
+    public class Problem6 : ProblemBase
     {
         /// <summary>
-        /// http://projecteuler.net/index.php?section=problems&id=5
+        /// http://projecteuler.net/index.php?section=problems&id=6
         /// 
-        /// 2520 is the smallest number that can be divided by each of 
-        /// the numbers from 1 to 10 without any remainder.
+        /// The sum of the squares of the first ten natural numbers is,
         /// 
-        /// What is the smallest positive number that is evenly divisible 
-        /// by all of the numbers from 1 to 20?
+        /// 1^(2) + 2^(2) + ... + 10^(2) = 385
         /// 
-        /// Answer: 232792560
+        /// The square of the sum of the first ten natural numbers is,
+        /// 
+        /// (1 + 2 + ... + 10)^(2) = 55^(2) = 3025
+        /// 
+        /// Hence the difference between the sum of the squares of the 
+        /// first ten natural numbers and the square of the sum is 
+        /// 3025 − 385 = 2640.
+        /// 
+        /// Find the difference between the sum of the squares of the 
+        /// first one hundred natural numbers and the square of the sum.
+        /// 
+        /// Answer: 25164150
         /// </summary>
 
         protected override string InternalSolve()
-            => Enumerable.Range(1, 20).Select(i => (ulong)i).LCM().ToString();
+        {
+            // http://en.wikipedia.org/wiki/Square_pyramidal_number
+
+            var start = 1;
+            var end = 100;
+
+            var range = Enumerable.Range(start, end).Select(i => (ulong)i);
+            var sum = range.Sum();
+            var sqOfSums = sum * sum;
+            var sumOfSqs = range.Aggregate((acc, num) => acc + (num * num));
+            return (sqOfSums - sumOfSqs).ToString();
+        }
     }
 }
 

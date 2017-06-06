@@ -27,7 +27,9 @@ extern "C" {
 
 
 template EULERNATIVE_API uint64_t gcd(uint64_t u, uint64_t v);
+template EULERNATIVE_API uint64_t gcd_multi(uint64_t *u, int size);
 template EULERNATIVE_API uint64_t lcm(uint64_t u, uint64_t v);
+template EULERNATIVE_API uint64_t lcm_multi(uint64_t *u, int size);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -15,27 +15,27 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>    
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-  	<PlatformTarget>AnyCPU</PlatformTarget>
-  	<OutputPath>..\bin\$(Configuration)\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>..\bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == 'x64'">
-  	<PlatformTarget>x64</PlatformTarget>
-  	<OutputPath>..\bin\x64\$(Configuration)\</OutputPath>
-  	<Prefer32Bit>true</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>..\bin\x64\$(Configuration)\</OutputPath>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-  	<Optimize>false</Optimize>
-  	<DebugType>full</DebugType>
-  	<DefineConstants>DEBUG;TRACE</DefineConstants>
-  	<DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-  	<Optimize>true</Optimize>
-  	<DebugType>pdbonly</DebugType>
-  	<DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -68,6 +68,10 @@
     <ProjectReference Include="..\EulerCommon\EulerCommon.csproj">
       <Project>{7e1ea19b-b180-4679-b835-4f7d32a60fc4}</Project>
       <Name>EulerCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EulerProblems\EulerProblems.csproj">
+      <Project>{5362f10c-1cb3-4414-b104-0d484a4e070e}</Project>
+      <Name>EulerProblems</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\EulerShared\EulerShared.projitems" Label="Shared" />

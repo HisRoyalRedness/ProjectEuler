@@ -55,9 +55,27 @@ T gcd(T u, T v)
 }
 
 template<typename T>
+T gcd_multi(T *v, int size)
+{
+	T acc = v[0];
+	for (int i = 1; i < size; ++i)
+		acc = gcd(acc, v[i]);
+	return acc;
+}
+
+template<typename T>
 T lcm(T u, T v)
 {
     // https://en.wikipedia.org/wiki/Least_common_multiple
 
     return u / gcd<T>(u, v) * v;
+}
+
+template<typename T>
+T lcm_multi(T *v, int size)
+{
+	T acc = v[0];
+	for (int i = 1; i < size; ++i)
+		acc = lcm(acc, v[i]);
+	return acc;
 }
