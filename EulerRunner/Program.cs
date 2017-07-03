@@ -14,7 +14,7 @@ namespace HisRoyalRedness.com
     {
         static void Main(string[] args)
         {
-            int problemNumber = 5;
+            int problemNumber = 55;
 
             //foreach (var a in args)
             //    if (int.TryParse(a, out problemNumber))
@@ -25,7 +25,7 @@ namespace HisRoyalRedness.com
                 ? loader.Problems[problemNumber]
                 : null;
 
-            problem?.Solve();
+            Console.WriteLine($"Solution: {problem?.Solve()}");
         }
     }
 }

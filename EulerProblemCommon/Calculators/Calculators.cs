@@ -18,10 +18,21 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    public static class Calculators
+    public static partial class Calculators
     {
-        public static bool IsOdd(this ulong number) => (number & 1) == 1;
-        public static bool IsEven(this ulong number) => (number & 1) == 0;
+        static string Reverse(this string number) => new string(Enumerable.Reverse(number.ToString()).ToArray());
+
+        static bool IsPalindrome(this string number)
+        {
+            var left = 0;
+            var right = number.Length - 1;
+            while (left < right)
+            {
+                if (number[left++] != number[right--])
+                    return false;
+            }
+            return true;
+        }
 
         #region GCD and LCM
         [DllImport("EulerNative.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "lcm")]
