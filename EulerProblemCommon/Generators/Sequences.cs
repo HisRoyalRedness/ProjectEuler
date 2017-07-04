@@ -78,6 +78,22 @@ namespace HisRoyalRedness.com
         }
     }
     #endregion Fibonacci
+
+    #region Triangle numbers
+    public static class TriangleNumber
+    {
+        public static IEnumerable<ulong> Sequence()
+        {
+            ulong index = 1;
+            ulong sum = 1;
+            while(true)
+            {
+                yield return sum;
+                sum += ++index;
+            }
+        }
+    }
+    #endregion Triangle numbers
 }
 
 /*

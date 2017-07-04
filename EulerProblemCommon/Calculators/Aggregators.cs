@@ -41,6 +41,19 @@ namespace HisRoyalRedness.com
         /// <summary>
         /// Calculate the sum of all the elements in the sequence
         /// </summary>
+        public static int Product(this IEnumerable<int> sequence)
+        {
+            if (sequence == null)
+                throw new ArgumentNullException(nameof(sequence));
+            int product = 1;
+            foreach (var num in sequence)
+                product *= num;
+            return product;
+        }
+
+        /// <summary>
+        /// Calculate the sum of all the elements in the sequence
+        /// </summary>
         public static ulong Product(this IEnumerable<ulong> sequence)
         {
             if (sequence == null)

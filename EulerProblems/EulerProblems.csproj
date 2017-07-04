@@ -54,13 +54,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1 to 25\Problem1.cs" />
-    <Compile Include="1 to 25\Problem2.cs" />
-    <Compile Include="1 to 25\Problem6.cs" />
+    <Compile Include="1 to 25\Problem001.cs" />
+    <Compile Include="1 to 25\Problem010.cs" />
+    <Compile Include="1 to 25\Problem011.cs" />
+    <Compile Include="1 to 25\Problem002.cs" />
+    <Compile Include="1 to 25\Problem006.cs" />
+    <Compile Include="1 to 25\Problem007.cs" />
+    <Compile Include="1 to 25\Problem008.cs" />
+    <Compile Include="1 to 25\Problem009.cs" />
+    <Compile Include="1 to 25\Problem012.cs" />
     <Compile Include="Problem23.cs" />
-    <Compile Include="1 to 25\Problem3.cs" />
-    <Compile Include="1 to 25\Problem4.cs" />
-    <Compile Include="1 to 25\Problem5.cs" />
+    <Compile Include="1 to 25\Problem003.cs" />
+    <Compile Include="1 to 25\Problem004.cs" />
+    <Compile Include="1 to 25\Problem005.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

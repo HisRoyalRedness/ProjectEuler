@@ -78,6 +78,8 @@ namespace HisRoyalRedness.com
         private static extern UInt64 primesieve_next_prime(ref PrimesieveIterator iterator);
         [DllImport("libprimesieve.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void primesieve_skipto(ref PrimesieveIterator iterator, UInt64 start, UInt64 stop_hint);
+        [DllImport("libprimesieve.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "primesieve_nth_prime")]
+        public static extern UInt64 NthPrime(UInt64 n, UInt64 start = 0);
 
         public static IEnumerable<UInt64> Sequence(UInt64 start = 0) => new InternalPrimeEnumerable(start, _maxStop);
         public static IEnumerable<UInt64> Sequence(UInt64 start, UInt64 stopHint) => new InternalPrimeEnumerable(start, stopHint);
