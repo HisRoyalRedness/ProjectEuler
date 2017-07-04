@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculators\Aggregators.cs" />
+    <Compile Include="Calculators\Aggregator_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Aggregator_Template.tt</DependentUpon>
+    </Compile>
     <Compile Include="Calculators\Calculators.cs" />
     <Compile Include="Calculators\Calculator_Template.cs">
       <AutoGen>True</AutoGen>
@@ -63,6 +68,10 @@
     <Compile Include="Transformers\Sequence.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Calculators\Aggregator_Template.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Aggregator_Template.cs</LastGenOutput>
+    </Content>
     <Content Include="Calculators\Calculator_Template.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Calculator_Template.cs</LastGenOutput>

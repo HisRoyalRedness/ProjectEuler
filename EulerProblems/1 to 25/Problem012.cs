@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("70600674")]
+    [Solution("")]
     public class Problem12 : ProblemBase
     {
         /// <summary>
