@@ -67,6 +67,7 @@
     <Compile Include="1 to 25\Problem003.cs" />
     <Compile Include="1 to 25\Problem004.cs" />
     <Compile Include="1 to 25\Problem005.cs" />
+	<Compile Include="51 to 100\Problem55.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="26 to 50\" />
   </ItemGroup>
   <Import Project="..\EulerShared\EulerShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

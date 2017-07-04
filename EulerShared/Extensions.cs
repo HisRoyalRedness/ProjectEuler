@@ -28,6 +28,12 @@ namespace HisRoyalRedness.com
 
     internal static class MiscExtensions
     {
+        internal static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (var item in items)
+                action(item);
+        }
+
         internal static T Tap<T>(this T item, Action<T> action)
         {
             if (action == null)
