@@ -60,6 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Calculator_Template.tt</DependentUpon>
     </Compile>
+    <Compile Include="Calculators\Conversions.cs" />
     <Compile Include="EulerNative.cs" />
     <Compile Include="Generators\Primes.cs" />
     <Compile Include="Generators\Sequences.cs" />

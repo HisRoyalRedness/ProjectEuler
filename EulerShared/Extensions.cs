@@ -34,6 +34,24 @@ namespace HisRoyalRedness.com
                 action(item);
         }
 
+        internal static IEnumerable<T> Do<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+            return items.Select(i =>
+            {
+                action(i);
+                return i;
+            });
+        }
+
+        internal static IEnumerable<TOut> Do<TIn, TOut>(this IEnumerable<TIn> items, Func<TIn, TOut> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));            
+            return items.Select(i => action(i));
+        }
+
         internal static T Tap<T>(this T item, Action<T> action)
         {
             if (action == null)

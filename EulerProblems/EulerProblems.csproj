@@ -81,6 +81,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Coords.xlsx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
