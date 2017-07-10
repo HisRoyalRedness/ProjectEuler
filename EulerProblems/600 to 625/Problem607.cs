@@ -34,54 +34,95 @@ namespace HisRoyalRedness.com
             using (var writer = File.CreateText("coords.csv"))
             {
                 writer.WriteLine(
-                    "\"a1\",\"a2\",\"a3\",\"a4\",\"a5\"," + 
+                    "\"a1\",\"a2\",\"a3\",\"a4\",\"a5\"," +
+                    "\"at\",\"ax\",\"ay\",\"ah\", " + 
                     "\"m1t\",\"m1x\",\"m1y\",\"m1h\"," + 
                     "\"m2t\",\"m2x\",\"m2y\",\"m2h\"," +
                     "\"m3t\",\"m3x\",\"m3y\",\"m3h\"," +
                     "\"m4t\",\"m4x\",\"m4y\",\"m4h\"," +
                     "\"m5t\",\"m5x\",\"m5y\",\"m5h\"," +
-                    "\"ot\",\"ox\",\"oy\",\"oh\"," + 
-                    "\"at\",\"ax\",\"ay\",\"ah\"");
+                    "\"ot\",\"ox\",\"oy\",\"oh\"");
+
+                
+                var step = 5;
+
+                var f1 = -60.0; var t1 = 60.0;
+                var f2 = -60.0; var t2 = 60.0;
+                var f3 = -60.0; var t3 = 60.0;
+                var f4 = -60.0; var t4 = 60.0;
+                var f5 = -60.0; var t5 = 60.0;
 
                 var origin = new TravelStats();
-                var step = 0.5;
-
-                var f1 = 0.0; var t1 = 10.0;
-                var f2 = 40.0; var t2 = 50.0;
-                var f3 = 40.0; var t3 = 50.0;
-                var f4 = 40.0; var t4 = 50.0;
-                var f5 = 40.0; var t5 = 50.0;
-
-
                 AngleSteps(f1, t1, step)
-                    .Select(a => new Context() { a1Deg = a })
                     .AsParallel()
-                    .Select(ctx => ctx.Tap(c => c.m1 = CalcMarshTravel(origin, ctx.a1Rad, M1l, M1s)))
-                    .SelectMany(ctx1 => AngleSteps(f2, t2, step)
-                            .Select(a => new Context(ctx1) { a2Deg = a })
-                            .Select(ctx2 => ctx2.Tap(c => c.m2 = CalcMarshTravel(ctx2.m1, ctx2.a2Rad, M2l, M2s)))
-                            .SelectMany(ctx2 => AngleSteps(f3, t3, step)
-                                    .Select(a => new Context(ctx2) { a3Deg = a })
-                                    .Select(ctx3 => ctx3.Tap(c => c.m3 = CalcMarshTravel(ctx3.m2, ctx3.a3Rad, M3l, M3s)))
-                                    .SelectMany(ctx3 => AngleSteps(f4, t4, step)
-                                            .Select(a => new Context(ctx3) { a4Deg = a })
-                                            .Select(ctx4 => ctx4.Tap(c => c.m4 = CalcMarshTravel(ctx4.m3, ctx4.a4Rad, M4l, M4s)))
-                                            .SelectMany(ctx4 => AngleSteps(f5, t5, step)
-                                                    .Select(a => new Context(ctx4) { a5Deg = a })
-                                                    .Select(ctx5 => ctx5.Tap(c => c.m5 = CalcMarshTravel(ctx5.m4, ctx5.a5Rad, M5l, M5s)))
-                                            )
-                                    )
-                            )
-                    )
-                    .Select(ctx => ctx.Tap(c => c.o = CalcOpenTravel(c.m1, Ol, Os)))
-                    .OrderBy(ctx => ctx.Total.st)
-                    .ForEach(ctx =>
-                    {
-                        writer.WriteLine(
-                            $"{ctx.a1Deg},{ctx.a2Deg},{ctx.a3Deg},{ctx.a4Deg},{ctx.a5Deg}," + 
-                            $"{ctx.m1.ToCSV()},{ctx.m2.ToCSV()},{ctx.m3.ToCSV()},{ctx.m4.ToCSV()},{ctx.m5.ToCSV()}," + 
-                            $"{ctx.o.ToCSV()},{ctx.Total.ToCSV()}");
-                    });
+                        .SelectMany(a1 =>
+                        {
+                            Console.WriteLine(a1);
+                            var m1 = CalcMarshTravel(origin, a1, M1l, M1s);
+                            return AngleSteps(f2, t2, step).SelectMany(a2 =>
+                            {
+                                var m2 = CalcMarshTravel(m1, a2, M2l, M2s);
+                                var m12 = m1 + m2;
+                                return AngleSteps(f3, t3, step).SelectMany(a3 =>
+                                {
+                                    var m3 = CalcMarshTravel(m2, a3, M3l, M3s);
+                                    var m123 = m12 + m3;
+                                    return AngleSteps(f4, t4, step).SelectMany(a4 =>
+                                    {
+                                        var m4 = CalcMarshTravel(m3, a4, M4l, M4s);
+                                        var m1234 = m123 + m4;
+                                        return AngleSteps(f5, t5, step).Select(a5 =>
+                                        {
+                                            var m5 = CalcMarshTravel(m4, a5, M5l, M5s);
+                                            var m12345 = m1234 + m5;
+                                            var o = CalcOpenTravel(m5, Ol, Os);
+
+                                            var total = m12345 + o;
+                                            var line =
+                                                $"{a1},{a2},{a3},{a4},{a5}," +
+                                                $"{total.ToCSV()}," +
+                                                $"{m1.ToCSV()},{m2.ToCSV()},{m3.ToCSV()},{m4.ToCSV()},{m5.ToCSV()}," +
+                                                $"{o.ToCSV()}";
+
+                                            return new { Total = total, Line = line };
+                                        });
+                                    });
+                                });
+                            });
+                        })
+                        .OrderBy(t => t.Total.st)
+                        .ForEach(t => writer.WriteLine(t.Line));
+
+
+                //AngleSteps(f1, t1, step)
+                //    .Select(a => new Context() { a1Deg = a })
+                //    .AsParallel()
+                //    .Select(ctx => ctx.Tap(c => c.m1 = CalcMarshTravel(origin, ctx.a1Rad, M1l, M1s)))
+                //    .SelectMany(ctx1 => AngleSteps(f2, t2, step)
+                //            .Select(a => new Context(ctx1) { a2Deg = a })
+                //            .Select(ctx2 => ctx2.Tap(c => c.m2 = CalcMarshTravel(ctx2.m1, ctx2.a2Rad, M2l, M2s)))
+                //            .SelectMany(ctx2 => AngleSteps(f3, t3, step)
+                //                    .Select(a => new Context(ctx2) { a3Deg = a })
+                //                    .Select(ctx3 => ctx3.Tap(c => c.m3 = CalcMarshTravel(ctx3.m2, ctx3.a3Rad, M3l, M3s)))
+                //                    .SelectMany(ctx3 => AngleSteps(f4, t4, step)
+                //                            .Select(a => new Context(ctx3) { a4Deg = a })
+                //                            .Select(ctx4 => ctx4.Tap(c => c.m4 = CalcMarshTravel(ctx4.m3, ctx4.a4Rad, M4l, M4s)))
+                //                            .SelectMany(ctx4 => AngleSteps(f5, t5, step)
+                //                                    .Select(a => new Context(ctx4) { a5Deg = a })
+                //                                    .Select(ctx5 => ctx5.Tap(c => c.m5 = CalcMarshTravel(ctx5.m4, ctx5.a5Rad, M5l, M5s)))
+                //                            )
+                //                    )
+                //            )
+                //    )
+                //    .Select(ctx => ctx.Tap(c => c.o = CalcOpenTravel(c.m1, Ol, Os)))
+                //    .OrderBy(ctx => ctx.Total.st)
+                //    .ForEach(ctx =>
+                //    {
+                //        writer.WriteLine(
+                //            $"{ctx.a1Deg},{ctx.a2Deg},{ctx.a3Deg},{ctx.a4Deg},{ctx.a5Deg}," + 
+                //            $"{ctx.m1.ToCSV()},{ctx.m2.ToCSV()},{ctx.m3.ToCSV()},{ctx.m4.ToCSV()},{ctx.m5.ToCSV()}," + 
+                //            $"{ctx.o.ToCSV()},{ctx.Total.ToCSV()}");
+                //    });
             }
 
             return "";
@@ -91,7 +132,7 @@ namespace HisRoyalRedness.com
         {
             var ox = totalWidth - origin.sx;
             var oh = Math.Sqrt((ox * ox) + (origin.sy * origin.sy));
-            var ot = oh / Os;
+            var ot = Math.Abs(oh / Os);
             var stats = new TravelStats()
             {
                 st = ot,
@@ -110,7 +151,7 @@ namespace HisRoyalRedness.com
             var cosalpha = Math.Cos(entryAngleRad);
             var sinalpha = Math.Sin(entryAngleRad);
             var mh = marshWidth / cos45alpha;
-            var mt = mh / marshSpeed;
+            var mt = Math.Abs(mh / marshSpeed);
             var mx = mh * cosalpha;
             var my = mh * sinalpha;
             var stats = new TravelStats()
