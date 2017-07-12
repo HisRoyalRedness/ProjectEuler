@@ -29,60 +29,93 @@ namespace HisRoyalRedness.com
         /// Answer: 
         /// </summary>
 
+        /*
+
+        Straight across (0 degree)
+
+	    M1	    M2	    M3	    M4	    M5	    O	    Total
+Speed   9	    8	    7	    6	    5	    10	
+Dist.   14.142	14.142	14.142	14.142	14.142	29.289	100.000
+Time    1.571	1.768	2.020	2.357	2.828	2.929	13.474
+
+
+        At 22.5 degree angle
+
+	    M1	    M2	    M3	    M4	    M5	    O	    Total
+Speed   9	    8	    7	    6	    5	    10	
+Dist.   10.824	10.824	10.824	10.824	10.824	57.107	111.227
+Time    1.203	1.353	1.546	1.804	2.165	5.711	13.781
+
+
+        At 45 degree angle
+
+	    M1	    M2	    M3	    M4	    M5	    O	    Total
+Speed   9	    8	    7	    6	    5	    10	
+Dist.   10	    10	    10	    10	    10	    73.681  123.681
+Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
+
+
+        */
+
         protected override string InternalSolve()
         {
-            using (var writer = File.CreateText("coords.csv"))
+            StreamWriter writer = null;
+            //using (var writer = File.CreateText("coords.csv"))
             {
-                writer.WriteLine(
-                    "\"a1\",\"a2\",\"a3\",\"a4\",\"a5\"," +
-                    "\"at\",\"ax\",\"ay\",\"ah\", " + 
-                    "\"m1t\",\"m1x\",\"m1y\",\"m1h\"," + 
-                    "\"m2t\",\"m2x\",\"m2y\",\"m2h\"," +
-                    "\"m3t\",\"m3x\",\"m3y\",\"m3h\"," +
-                    "\"m4t\",\"m4x\",\"m4y\",\"m4h\"," +
-                    "\"m5t\",\"m5x\",\"m5y\",\"m5h\"," +
-                    "\"ot\",\"ox\",\"oy\",\"oh\"");
+                if (writer != null)
+                    writer.WriteLine(
+                        "\"a1\",\"a2\",\"a3\",\"a4\",\"a5\"," +
+                        "\"at\",\"ax\",\"ay\",\"ah\", " + 
+                        "\"m1t\",\"m1x\",\"m1y\",\"m1h\"," + 
+                        "\"m2t\",\"m2x\",\"m2y\",\"m2h\"," +
+                        "\"m3t\",\"m3x\",\"m3y\",\"m3h\"," +
+                        "\"m4t\",\"m4x\",\"m4y\",\"m4h\"," +
+                        "\"m5t\",\"m5x\",\"m5y\",\"m5h\"," +
+                        "\"ot\",\"ox\",\"oy\",\"oh\"");
 
                 
-                var step = 5;
+                var step = 1;
 
-                var f1 = -60.0; var t1 = 60.0;
-                var f2 = -60.0; var t2 = 60.0;
-                var f3 = -60.0; var t3 = 60.0;
-                var f4 = -60.0; var t4 = 60.0;
-                var f5 = -60.0; var t5 = 60.0;
+                var f1 = -5.0; var t1 = 45.0;
+                var f2 = -5.0; var t2 = 45.0;
+                var f3 = -5.0; var t3 = 45.0;
+                var f4 = -5.0; var t4 = 45.0;
+                var f5 = -5.0; var t5 = 45.0;
+
+                var m1List = AngleSteps(f1, t1, step).AsParallel().ToStruct(M1l, M1s).OrderBy(m => m.EntryAngleDeg).ToList();
+                var m2List = AngleSteps(f2, t2, step).AsParallel().ToStruct(M2l, M2s).OrderBy(m => m.EntryAngleDeg).ToList();
+                var m3List = AngleSteps(f3, t3, step).AsParallel().ToStruct(M3l, M3s).OrderBy(m => m.EntryAngleDeg).ToList();
+                var m4List = AngleSteps(f4, t4, step).AsParallel().ToStruct(M4l, M4s).OrderBy(m => m.EntryAngleDeg).ToList();
+                var m5List = AngleSteps(f5, t5, step).AsParallel().ToStruct(M5l, M5s).OrderBy(m => m.EntryAngleDeg).ToList();
 
                 var origin = new TravelStats();
-                AngleSteps(f1, t1, step)
+                m1List
                     .AsParallel()
-                        .SelectMany(a1 =>
+                        .SelectMany(m1 =>
                         {
-                            Console.WriteLine(a1);
-                            var m1 = CalcMarshTravel(origin, a1, M1l, M1s);
-                            return AngleSteps(f2, t2, step).SelectMany(a2 =>
+                            Console.WriteLine(m1.EntryAngleDeg);
+                            var p1 = origin + m1.Stats;
+                            return m2List.SelectMany(m2 =>
                             {
-                                var m2 = CalcMarshTravel(m1, a2, M2l, M2s);
-                                var m12 = m1 + m2;
-                                return AngleSteps(f3, t3, step).SelectMany(a3 =>
+                                var p2 = p1 + m2.Stats;
+                                return m3List.SelectMany(m3 =>
                                 {
-                                    var m3 = CalcMarshTravel(m2, a3, M3l, M3s);
-                                    var m123 = m12 + m3;
-                                    return AngleSteps(f4, t4, step).SelectMany(a4 =>
+                                    var p3 = p2 + m3.Stats;
+                                    return m4List.SelectMany(m4 =>
                                     {
-                                        var m4 = CalcMarshTravel(m3, a4, M4l, M4s);
-                                        var m1234 = m123 + m4;
-                                        return AngleSteps(f5, t5, step).Select(a5 =>
+                                        var p4 = p3 + m4.Stats;
+                                        return m5List.Select(m5 =>
                                         {
-                                            var m5 = CalcMarshTravel(m4, a5, M5l, M5s);
-                                            var m12345 = m1234 + m5;
-                                            var o = CalcOpenTravel(m5, Ol, Os);
+                                            var p5 = p4 + m5.Stats;
+                                            var o = CalcOpenTravel(p5, Ol, Os);
 
-                                            var total = m12345 + o;
-                                            var line =
-                                                $"{a1},{a2},{a3},{a4},{a5}," +
-                                                $"{total.ToCSV()}," +
-                                                $"{m1.ToCSV()},{m2.ToCSV()},{m3.ToCSV()},{m4.ToCSV()},{m5.ToCSV()}," +
-                                                $"{o.ToCSV()}";
+                                            var total = p5 + o;
+                                            //var line =
+                                            //    $"{m1.EntryAngleDeg},{m2.EntryAngleDeg},{m3.EntryAngleDeg},{m4.EntryAngleDeg},{m5.EntryAngleDeg}," +
+                                            //    $"{total.ToCSV()}," +
+                                            //    $"{m1.Stats.ToCSV()},{m2.Stats.ToCSV()},{m3.Stats.ToCSV()},{m4.Stats.ToCSV()},{m5.Stats.ToCSV()}," +
+                                            //    $"{o.ToCSV()}";
+                                            var line = "";
 
                                             return new { Total = total, Line = line };
                                         });
@@ -91,38 +124,12 @@ namespace HisRoyalRedness.com
                             });
                         })
                         .OrderBy(t => t.Total.st)
-                        .ForEach(t => writer.WriteLine(t.Line));
-
-
-                //AngleSteps(f1, t1, step)
-                //    .Select(a => new Context() { a1Deg = a })
-                //    .AsParallel()
-                //    .Select(ctx => ctx.Tap(c => c.m1 = CalcMarshTravel(origin, ctx.a1Rad, M1l, M1s)))
-                //    .SelectMany(ctx1 => AngleSteps(f2, t2, step)
-                //            .Select(a => new Context(ctx1) { a2Deg = a })
-                //            .Select(ctx2 => ctx2.Tap(c => c.m2 = CalcMarshTravel(ctx2.m1, ctx2.a2Rad, M2l, M2s)))
-                //            .SelectMany(ctx2 => AngleSteps(f3, t3, step)
-                //                    .Select(a => new Context(ctx2) { a3Deg = a })
-                //                    .Select(ctx3 => ctx3.Tap(c => c.m3 = CalcMarshTravel(ctx3.m2, ctx3.a3Rad, M3l, M3s)))
-                //                    .SelectMany(ctx3 => AngleSteps(f4, t4, step)
-                //                            .Select(a => new Context(ctx3) { a4Deg = a })
-                //                            .Select(ctx4 => ctx4.Tap(c => c.m4 = CalcMarshTravel(ctx4.m3, ctx4.a4Rad, M4l, M4s)))
-                //                            .SelectMany(ctx4 => AngleSteps(f5, t5, step)
-                //                                    .Select(a => new Context(ctx4) { a5Deg = a })
-                //                                    .Select(ctx5 => ctx5.Tap(c => c.m5 = CalcMarshTravel(ctx5.m4, ctx5.a5Rad, M5l, M5s)))
-                //                            )
-                //                    )
-                //            )
-                //    )
-                //    .Select(ctx => ctx.Tap(c => c.o = CalcOpenTravel(c.m1, Ol, Os)))
-                //    .OrderBy(ctx => ctx.Total.st)
-                //    .ForEach(ctx =>
-                //    {
-                //        writer.WriteLine(
-                //            $"{ctx.a1Deg},{ctx.a2Deg},{ctx.a3Deg},{ctx.a4Deg},{ctx.a5Deg}," + 
-                //            $"{ctx.m1.ToCSV()},{ctx.m2.ToCSV()},{ctx.m3.ToCSV()},{ctx.m4.ToCSV()},{ctx.m5.ToCSV()}," + 
-                //            $"{ctx.o.ToCSV()},{ctx.Total.ToCSV()}");
-                //    });
+                        .ForEach(t =>
+                        {
+                            if (writer != null)
+                                writer.WriteLine(t.Line);
+                        }
+                        );
             }
 
             return "";
@@ -136,7 +143,7 @@ namespace HisRoyalRedness.com
             var stats = new TravelStats()
             {
                 st = ot,
-                sx = -origin.sx,
+                sx = ox,
                 sy = -origin.sy,
                 sh = oh
             };
@@ -145,96 +152,28 @@ namespace HisRoyalRedness.com
             return stats;
         }
 
-        static TravelStats CalcMarshTravel(TravelStats origin, double entryAngleRad, double marshWidth, double marshSpeed, StreamWriter writer = null)
+        static TravelStats CalcMarshTravel(double entryAngleDeg, double marshWidth, double marshSpeed, StreamWriter writer = null)
         {
-            var cos45alpha = Math.Cos(DEG_45 - entryAngleRad);
+            var entryAngleRad = entryAngleDeg.DegreesToRadians();
+            var cos45alpha = Math.Cos((45.0 - entryAngleDeg).DegreesToRadians());
             var cosalpha = Math.Cos(entryAngleRad);
             var sinalpha = Math.Sin(entryAngleRad);
+
             var mh = marshWidth / cos45alpha;
             var mt = Math.Abs(mh / marshSpeed);
             var mx = mh * cosalpha;
             var my = mh * sinalpha;
+            //var my = Math.Sqrt((mh * mh) - (mx * mx));
             var stats = new TravelStats()
             {
                 st = mt,
                 sx = mx,
                 sy = my,
-                sh = mh
+                sh = Math.Abs(mh)
             };
             if (writer != null)
                 writer.Write(stats.ToCSV());
             return stats;
-        }
-
-        class Context
-        {
-            public Context()
-            { }
-
-            public Context(Context other)
-            {
-                m1 = other.m1;
-                m2 = other.m2;
-                m3 = other.m3;
-                m4 = other.m4;
-                m5 = other.m5;
-                a1Deg = other.a1Deg;
-                a2Deg = other.a2Deg;
-                a3Deg = other.a3Deg;
-                a4Deg = other.a4Deg;
-                a5Deg = other.a5Deg;
-            }
-
-            public double a1Deg { get { return _a1Deg; } set { _a1Deg = value; _a1Rad = value.DegreesToRadians(); } }
-            public double a1Rad => _a1Rad;
-            public double a2Deg { get { return _a2Deg; } set { _a2Deg = value; _a2Rad = value.DegreesToRadians(); } }
-            public double a2Rad => _a2Rad;
-            public double a3Deg { get { return _a3Deg; } set { _a3Deg = value; _a3Rad = value.DegreesToRadians(); } }
-            public double a3Rad => _a3Rad;
-            public double a4Deg { get { return _a4Deg; } set { _a4Deg = value; _a4Rad = value.DegreesToRadians(); } }
-            public double a4Rad => _a4Rad;
-            public double a5Deg { get { return _a5Deg; } set { _a5Deg = value; _a5Rad = value.DegreesToRadians(); } }
-            public double a5Rad => _a5Rad;
-            double _a1Deg = 0;
-            double _a1Rad = 0;
-            double _a2Deg = 0;
-            double _a2Rad = 0;
-            double _a3Deg = 0;
-            double _a3Rad = 0;
-            double _a4Deg = 0;
-            double _a4Rad = 0;
-            double _a5Deg = 0;
-            double _a5Rad = 0;
-
-            public TravelStats m1;
-            public TravelStats m2;
-            public TravelStats m3;
-            public TravelStats m4;
-            public TravelStats m5;
-            public TravelStats o;
-
-            public TravelStats Total => m1 + m2 + m3 + m4 + m5 +o;
-        }
-
-        [DebuggerDisplay("st={st}, sx={sx}, sy={sy}, sh={sh}")]
-        struct TravelStats
-        {
-            public double sh; // Distance travelled
-            public double st; // Time taken to travel the distance
-            public double sx; // Horizontal distance travelled
-            public double sy; // Vertical distance travelled
-
-            public string ToCSV() => $"{st:#0.000},{sx:#0.000},{sy:#0.000},{sh:#0.000}";
-            //public string ToCSV() => $"{st},{sx},{sy},{sh}";
-
-            public static TravelStats operator+(TravelStats t1, TravelStats t2)
-                => new TravelStats()
-                {
-                    st = t1.st + t2.st,
-                    sx = t1.sx + t2.sx,
-                    sy = t1.sy + t2.sy,
-                    sh = t1.sh + t2.sh,
-                };
         }
 
         const double M1l = 10.0;             // Width of marsh
@@ -253,9 +192,117 @@ namespace HisRoyalRedness.com
         const double DEG_45 = 45.0 * AngleConversions.DEG_TO_RAD;
 
         static IEnumerable<double> AngleSteps(double start, double end, double step) => Enumerable.Range(0, (int)(((end - start) / step) + 1.0)).Select(a => (double)a * step + start);
+
+
+
     }
 
+    [DebuggerDisplay("{EntryAngleDeg}")]
+    internal struct AngleStruct
+    {
+        public AngleStruct(double entryAngle)
+        {
+            EntryAngleDeg = entryAngle;
+            EntryAngleRad = EntryAngleDeg.DegreesToRadians();
+            AlphaAngleRad = (45.0 - entryAngle).DegreesToRadians();
+            SinEntryAngle = Math.Sin(EntryAngleRad);
+            CosEntryAngle = Math.Cos(EntryAngleRad);
+            CosAlpha = Math.Cos(AlphaAngleRad);
+            Stats = new TravelStats();
+        }
 
+        public AngleStruct(double entryAngle, double width, double speed)
+        {
+            EntryAngleDeg = entryAngle;
+            EntryAngleRad = EntryAngleDeg.DegreesToRadians();
+            AlphaAngleRad = (45.0 - entryAngle).DegreesToRadians();
+            SinEntryAngle = Math.Sin(EntryAngleRad);
+            CosEntryAngle = Math.Cos(EntryAngleRad);
+            CosAlpha = Math.Cos(AlphaAngleRad);
+
+            var h = width / CosAlpha;
+            var x = h * CosEntryAngle;
+            var y = h * SinEntryAngle;
+            var t = Math.Abs(h / speed);
+
+            Stats = new TravelStats()
+            {
+                sh = h,
+                st = t,
+                sx = x,
+                sy = y
+            };
+        }
+
+        public double EntryAngleDeg;
+        public double EntryAngleRad;
+        public double AlphaAngleRad;
+        public double SinEntryAngle;
+        public double CosEntryAngle;
+        public double CosAlpha;
+
+        public double H => Stats.sh;
+        public double X => Stats.sx;
+        public double Y => Stats.sy;
+        public double T => Stats.st;
+
+        public TravelStats Stats;
+    }
+
+    [DebuggerDisplay("st={st}, sx={sx}, sy={sy}, sh={sh}")]
+    internal struct TravelStats
+    {
+        public double sh; // Distance travelled
+        public double st; // Time taken to travel the distance
+        public double sx; // Horizontal distance travelled
+        public double sy; // Vertical distance travelled
+
+        public string ToCSV() => $"{st:#0.000},{sx:#0.000},{sy:#0.000},{sh:#0.000}";
+        //public string ToCSV() => $"{st},{sx},{sy},{sh}";
+
+        public static TravelStats operator +(TravelStats t1, TravelStats t2)
+            => new TravelStats()
+            {
+                st = t1.st + t2.st,
+                sx = t1.sx + t2.sx,
+                sy = t1.sy + t2.sy,
+                sh = t1.sh + t2.sh,
+            };
+    }
+
+    internal static class Ext
+    {
+        public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg) => angleDeg.Select(a => new AngleStruct(a));
+        public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg, double width, double speed) => angleDeg.Select(a => new AngleStruct(a, width, speed));
+
+        public static ParallelQuery<AngleStruct> ToStruct(this ParallelQuery<double> angleDeg) => angleDeg.Select(a => new AngleStruct(a));
+        public static ParallelQuery<AngleStruct> ToStruct(this ParallelQuery<double> angleDeg, double width, double speed) => angleDeg.Select(a => new AngleStruct(a, width, speed));
+
+
+        public static TravelStats ToTravelStats(this AngleStruct angS, double marshWidth, double marshSpeed, StreamWriter writer = null)
+        {
+            //var entryAngleRad = entryAngleDeg.DegreesToRadians();
+            //var cos45alpha = Math.Cos((45.0 - entryAngleDeg).DegreesToRadians());
+            //var cosalpha = Math.Cos(entryAngleRad);
+            //var sinalpha = Math.Sin(entryAngleRad);
+
+            var mh = marshWidth / angS.CosAlpha;
+            var mt = Math.Abs(mh / marshSpeed);
+            var mx = mh * angS.CosEntryAngle;
+            var my = mh * angS.SinEntryAngle;
+            //var my = Math.Sqrt((mh * mh) - (mx * mx));
+            var stats = new TravelStats()
+            {
+                st = mt,
+                sx = mx,
+                sy = my,
+                sh = Math.Abs(mh)
+            };
+            if (writer != null)
+                writer.Write(stats.ToCSV());
+            return stats;
+        }
+    }
 }
 
 /*
