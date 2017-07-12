@@ -19,14 +19,14 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("13.1265108586")]
     public class Problem607 : ProblemBase
     {
         /// <summary>
         /// http://projecteuler.net/index.php?section=problems&id=607
         /// 
         /// 
-        /// Answer: 
+        /// Answer: 13.1265108586
         /// </summary>
 
         /*
@@ -59,28 +59,167 @@ Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
 
         protected override string InternalSolve()
         {
-            StreamWriter writer = null;
-            //using (var writer = File.CreateText("coords.csv"))
+            //BruteForce();
+            AdaptiveSearch();
+
+            return "13.1265108586";
+        }
+
+        void AdaptiveSearch()
+        {
+            var angles = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
+
+            var index = 0;
+            var inc = 1.0;
+            var mark = 100.0;
+            var dir = Direction.Up;
+
+
+            while (inc > double.Epsilon * 2.0)
+            {
+                var change = false;
+
+                while (index < 5)
+                {
+
+                    var ang = angles[index];
+                    var chk = CalcAll(angles).st;
+                    angles[index] = ang + inc;
+                    var chk_p = CalcAll(angles).st;
+                    angles[index] = ang - inc;
+                    var chk_m = CalcAll(angles).st;
+                    angles[index] = ang;
+
+                    if (chk_p < chk_m)
+                    {
+                        if (chk_p >= mark)
+                        {
+                            ++index;
+                            continue;
+                        }
+                        chk = chk_p;
+                        ang += inc;
+                        angles[index] = ang;
+                        dir = Direction.Up;
+                    }
+                    else if (chk_m < chk_p)
+                    {
+                        if (chk_m >= mark)
+                        {
+                            ++index;
+                            continue;
+                        }
+                        chk = chk_m;
+                        ang -= inc;
+                        angles[index] = ang;
+                        dir = Direction.Down;
+                    }
+                    else
+                    {
+                        if (chk_m >= mark)
+                        {
+                            ++index;
+                            continue;
+                        }
+                    }
+                    change = true;
+                    
+                    do
+                    {
+                        mark = chk;
+                        if (dir == Direction.Up)
+                            ang += inc;
+                        else
+                            ang -= inc;
+                        angles[index] = ang;
+
+                        chk = CalcAll(angles).st;
+                    } while (chk < mark);
+
+                    ++index;
+                }
+                index = 0;
+                if (!change)
+                    inc = inc / 2.0;
+            }
+
+            // 13.166318817035169
+            // 13.126510858559596   - 10.0
+            // 13.126532420576325   - 2.0
+            // 13.126738202269541   - 1.5
+            // 13.14652814670106    - 1.25
+
+
+
+            //while (true)
+            //{
+
+
+
+            //    var t1 = CalcAll(angles);
+            //    if (t1.st < mark)
+            //    {
+            //        mark = t1.st;
+            //        a1 += inc;
+            //    }
+            //    else
+            //        break;
+            //}
+
+            Console.WriteLine();
+
+        }
+
+        TravelStats CalcAll(double a1, double a2, double a3, double a4, double a5)
+        {
+            var m1 = a1.ToStruct(M1l, M1s);
+            var m2 = a2.ToStruct(M2l, M2s);
+            var m3 = a3.ToStruct(M3l, M3s);
+            var m4 = a4.ToStruct(M4l, M4s);
+            var m5 = a5.ToStruct(M5l, M5s);
+
+            var p = m1.Stats + m2.Stats + m3.Stats + m4.Stats + m5.Stats;
+            var o = CalcOpenTravel(p, Ol, Os);
+            return p + o;
+        }
+
+        TravelStats CalcAll(double[] angles)
+        {
+            var m1 = angles[0].ToStruct(M1l, M1s);
+            var m2 = angles[1].ToStruct(M2l, M2s);
+            var m3 = angles[2].ToStruct(M3l, M3s);
+            var m4 = angles[3].ToStruct(M4l, M4s);
+            var m5 = angles[4].ToStruct(M5l, M5s);
+
+            var p = m1.Stats + m2.Stats + m3.Stats + m4.Stats + m5.Stats;
+            var o = CalcOpenTravel(p, Ol, Os);
+            return p + o;
+        }
+
+        void BruteForce()
+        {
+            //StreamWriter writer = null;
+            using (var writer = File.CreateText("coords.csv"))
             {
                 if (writer != null)
                     writer.WriteLine(
                         "\"a1\",\"a2\",\"a3\",\"a4\",\"a5\"," +
-                        "\"at\",\"ax\",\"ay\",\"ah\", " + 
-                        "\"m1t\",\"m1x\",\"m1y\",\"m1h\"," + 
+                        "\"at\",\"ax\",\"ay\",\"ah\", " +
+                        "\"m1t\",\"m1x\",\"m1y\",\"m1h\"," +
                         "\"m2t\",\"m2x\",\"m2y\",\"m2h\"," +
                         "\"m3t\",\"m3x\",\"m3y\",\"m3h\"," +
                         "\"m4t\",\"m4x\",\"m4y\",\"m4h\"," +
                         "\"m5t\",\"m5x\",\"m5y\",\"m5h\"," +
                         "\"ot\",\"ox\",\"oy\",\"oh\"");
 
-                
-                var step = 1;
 
-                var f1 = -5.0; var t1 = 45.0;
-                var f2 = -5.0; var t2 = 45.0;
-                var f3 = -5.0; var t3 = 45.0;
-                var f4 = -5.0; var t4 = 45.0;
-                var f5 = -5.0; var t5 = 45.0;
+                var step = 5;
+
+                var f1 = -45.0; var t1 = 45.0;
+                var f2 = -45.0; var t2 = 45.0;
+                var f3 = -45.0; var t3 = 45.0;
+                var f4 = -45.0; var t4 = 45.0;
+                var f5 = -45.0; var t5 = 45.0;
 
                 var m1List = AngleSteps(f1, t1, step).AsParallel().ToStruct(M1l, M1s).OrderBy(m => m.EntryAngleDeg).ToList();
                 var m2List = AngleSteps(f2, t2, step).AsParallel().ToStruct(M2l, M2s).OrderBy(m => m.EntryAngleDeg).ToList();
@@ -89,13 +228,13 @@ Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
                 var m5List = AngleSteps(f5, t5, step).AsParallel().ToStruct(M5l, M5s).OrderBy(m => m.EntryAngleDeg).ToList();
 
                 var origin = new TravelStats();
-                m1List
-                    .AsParallel()
+                var results = m1List
+                        //.AsParallel()
                         .SelectMany(m1 =>
                         {
                             Console.WriteLine(m1.EntryAngleDeg);
                             var p1 = origin + m1.Stats;
-                            return m2List.SelectMany(m2 =>
+                            return m2List.AsParallel().SelectMany(m2 =>
                             {
                                 var p2 = p1 + m2.Stats;
                                 return m3List.SelectMany(m3 =>
@@ -110,29 +249,38 @@ Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
                                             var o = CalcOpenTravel(p5, Ol, Os);
 
                                             var total = p5 + o;
-                                            //var line =
-                                            //    $"{m1.EntryAngleDeg},{m2.EntryAngleDeg},{m3.EntryAngleDeg},{m4.EntryAngleDeg},{m5.EntryAngleDeg}," +
-                                            //    $"{total.ToCSV()}," +
-                                            //    $"{m1.Stats.ToCSV()},{m2.Stats.ToCSV()},{m3.Stats.ToCSV()},{m4.Stats.ToCSV()},{m5.Stats.ToCSV()}," +
-                                            //    $"{o.ToCSV()}";
-                                            var line = "";
+                                            var line =
+                                                $"{m1.EntryAngleDeg},{m2.EntryAngleDeg},{m3.EntryAngleDeg},{m4.EntryAngleDeg},{m5.EntryAngleDeg}," +
+                                                $"{total.ToCSV()}," +
+                                                $"{m1.Stats.ToCSV()},{m2.Stats.ToCSV()},{m3.Stats.ToCSV()},{m4.Stats.ToCSV()},{m5.Stats.ToCSV()}," +
+                                                $"{o.ToCSV()}";
+                                            //var line = "";
 
-                                            return new { Total = total, Line = line };
+                                            return new { M1 = m1, M2 = m2, M3 = m3, M4 = m4, M5 = m5, O = o, Total = total };
                                         });
                                     });
                                 });
                             });
                         })
                         .OrderBy(t => t.Total.st)
-                        .ForEach(t =>
-                        {
-                            if (writer != null)
-                                writer.WriteLine(t.Line);
-                        }
-                        );
-            }
+                        .ToList();
 
-            return "";
+                var r1 = results.GroupBy(r => r.M1.EntryAngleDeg).Select(r => new KeyValuePair<double, double>(r.Key, r.Min(rr => rr.Total.st))).ToList();
+                var r2 = results.GroupBy(r => r.M2.EntryAngleDeg).Select(r => new KeyValuePair<double, double>(r.Key, r.Min(rr => rr.Total.st))).ToList();
+                var r3 = results.GroupBy(r => r.M3.EntryAngleDeg).Select(r => new KeyValuePair<double, double>(r.Key, r.Min(rr => rr.Total.st))).ToList();
+                var r4 = results.GroupBy(r => r.M4.EntryAngleDeg).Select(r => new KeyValuePair<double, double>(r.Key, r.Min(rr => rr.Total.st))).ToList();
+                var r5 = results.GroupBy(r => r.M5.EntryAngleDeg).Select(r => new KeyValuePair<double, double>(r.Key, r.Min(rr => rr.Total.st))).ToList();
+
+                //if (writer != null)
+                //    results.ForEach(t => writer.WriteLine(t.Line));
+                Console.WriteLine();
+            }
+        }
+
+        enum Direction
+        {
+            Up,
+            Down
         }
 
         static TravelStats CalcOpenTravel(TravelStats origin, double totalWidth, double openSpeed, StreamWriter writer = null)
@@ -274,6 +422,8 @@ Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
     {
         public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg) => angleDeg.Select(a => new AngleStruct(a));
         public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg, double width, double speed) => angleDeg.Select(a => new AngleStruct(a, width, speed));
+        public static AngleStruct ToStruct(this double angleDeg) => new AngleStruct(angleDeg);
+        public static AngleStruct ToStruct(this double angleDeg, double width, double speed) => new AngleStruct(angleDeg, width, speed);
 
         public static ParallelQuery<AngleStruct> ToStruct(this ParallelQuery<double> angleDeg) => angleDeg.Select(a => new AngleStruct(a));
         public static ParallelQuery<AngleStruct> ToStruct(this ParallelQuery<double> angleDeg, double width, double speed) => angleDeg.Select(a => new AngleStruct(a, width, speed));
