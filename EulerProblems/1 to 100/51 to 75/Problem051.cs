@@ -43,10 +43,47 @@ namespace HisRoyalRedness.com
 
         protected override string InternalSolve()
         {
-            var primes = Primes.Sequence(11).TakeWhile(p => p < 100).ToList();
+            var sixDigitPrimes = Primes
+                .Sequence(100000)
+                .TakeWhile(p => p < 1000000)
+                .Select(p => p.ToString())
+                .ToList();
+
+            var min = 1000000;
+            IGrouping<string, string> minG;
+            
+            Console.WriteLine();
+            for(var i = 0; i < 6; ++i)
+            {
+                for(var j = i; j < 6; ++j)
+                {
+                    var primes = sixDigitPrimes
+                        .GroupBy(p => Blank(p, i, j))
+                        .Where(g => g.Count() == 8)
+                        .Select(g => new { G = g, F = int.Parse(g.First()) });
+
+                    foreach (var p in primes)
+                    {
+                        Console.WriteLine(p);
+                        if (p.F < min)
+                        {
+                            min = p.F;
+                            minG = p.G;
+                        }
+                    }
+                }
+            }
 
             return "";
         } 
+
+        static string Blank(string input, int i, int j)
+        {
+            var q = input.ToArray();
+            q[i] = '_';
+            q[j] = '_';
+            return new string(q);
+        }
     }
 }
 
