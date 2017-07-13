@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("121313")]
     public class Problem51 : ProblemBase
     {
         /// <summary>
@@ -38,7 +38,7 @@ namespace HisRoyalRedness.com
         /// number (not necessarily adjacent digits) with the same digit, 
         /// is part of an eight prime value family.
         /// 
-        /// Answer: 
+        /// Answer: 121313
         /// </summary>
 
         protected override string InternalSolve()
@@ -49,41 +49,41 @@ namespace HisRoyalRedness.com
                 .Select(p => p.ToString())
                 .ToList();
 
-            var min = 1000000;
-            IGrouping<string, string> minG;
+            var min = int.Parse(sixDigitPrimes.Last());
             
-            Console.WriteLine();
             for(var i = 0; i < 6; ++i)
             {
                 for(var j = i; j < 6; ++j)
                 {
-                    var primes = sixDigitPrimes
-                        .GroupBy(p => Blank(p, i, j))
-                        .Where(g => g.Count() == 8)
-                        .Select(g => new { G = g, F = int.Parse(g.First()) });
-
-                    foreach (var p in primes)
+                    for (var k = i; k < 6; ++k)
                     {
-                        Console.WriteLine(p);
-                        if (p.F < min)
-                        {
-                            min = p.F;
-                            minG = p.G;
-                        }
+                        var primes = sixDigitPrimes
+                            .Where(p => IsValid(p, i, j, k))
+                            .GroupBy(p => Blank(p, i, j, k))
+                            .Where(g => g.Count() == 8)
+                            .Select(g => int.Parse(g.First()));
+
+                        foreach (var p in primes)
+                            if (p < min)
+                                min = p;
                     }
                 }
             }
 
-            return "";
+            return min.ToString(); ;
         } 
 
-        static string Blank(string input, int i, int j)
+        static string Blank(string input, int i, int j, int k)
         {
             var q = input.ToArray();
             q[i] = '_';
             q[j] = '_';
+            q[k] = '_';
             return new string(q);
         }
+
+        static bool IsValid(string input, int i, int j, int k)
+            => input[i] == input[j] && input[j] == input[k];
     }
 }
 
