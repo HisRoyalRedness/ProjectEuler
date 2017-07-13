@@ -64,6 +64,11 @@
     <Compile Include="EulerNative.cs" />
     <Compile Include="Generators\Primes.cs" />
     <Compile Include="Generators\Sequences.cs" />
+    <Compile Include="Generators\Sequence_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sequence_Template.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transformers\CSV.cs" />
     <Compile Include="Transformers\Sequence.cs" />
@@ -76,6 +81,10 @@
     <Content Include="Calculators\Calculator_Template.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Calculator_Template.cs</LastGenOutput>
+    </Content>
+    <Content Include="Generators\Sequence_Template.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Sequence_Template.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

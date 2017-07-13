@@ -250,5 +250,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-/EulerProblemCommon/Calculators/Aggregator_Template.cs
-/EulerProblemCommon/Calculators/Calculator_Template.cs
+*_Template.cs

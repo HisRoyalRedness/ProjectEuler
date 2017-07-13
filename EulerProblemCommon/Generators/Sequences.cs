@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -94,6 +95,38 @@ namespace HisRoyalRedness.com
         }
     }
     #endregion Triangle numbers
+
+    #region Fraction
+    [DebuggerDisplay("{_numerator}/{_denominator}")]
+    public struct Fraction<T>
+    {
+        public Fraction(T num, T denom)
+        {
+            _numerator = num;
+            _denominator = denom;
+        }
+
+        public T Numerator => _numerator;
+        public T Denominator => _denominator;
+
+        readonly T _numerator;
+        readonly T _denominator;
+    }
+    #endregion Fraction
+
+    #region Continued fractions
+    public static partial class ContinuedFraction
+    {
+        // Expression as an infinite continued fraction
+        // https://en.wikipedia.org/wiki/Square_root_of_2#Continued_fraction_representation
+
+        // Coefficient notation as [1, 2, 2, 2, ... ]
+        //https://en.wikipedia.org/wiki/Continued_fraction#Notations_for_continued_fractions
+
+        // Algorithm
+        // https://en.wikipedia.org/wiki/Continued_fraction#Infinite_continued_fractions_and_convergents
+    }
+    #endregion Continued fractions
 }
 
 /*
