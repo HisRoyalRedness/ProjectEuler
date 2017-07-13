@@ -54,23 +54,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1 to 25\Problem001.cs" />
-    <Compile Include="1 to 25\Problem010.cs" />
-    <Compile Include="1 to 25\Problem011.cs" />
-    <Compile Include="1 to 25\Problem002.cs" />
-    <Compile Include="1 to 25\Problem006.cs" />
-    <Compile Include="1 to 25\Problem007.cs" />
-    <Compile Include="1 to 25\Problem008.cs" />
-    <Compile Include="1 to 25\Problem009.cs" />
-    <Compile Include="1 to 25\Problem012.cs" />
-    <Compile Include="1 to 25\Problem003.cs" />
-    <Compile Include="1 to 25\Problem004.cs" />
-    <Compile Include="1 to 25\Problem005.cs" />
-    <Compile Include="51 to 75\Problem051.cs" />
-    <Compile Include="51 to 75\Problem055.cs" />
-    <Compile Include="51 to 75\Problem057.cs" />
-    <Compile Include="51 to 75\Problem060.cs" />
-    <Compile Include="600 to 625\Problem607.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem001.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem010.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem011.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem002.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem006.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem007.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem008.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem009.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem012.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem003.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem004.cs" />
+    <Compile Include="1 to 100\1 to 25\Problem005.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem051.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem055.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem057.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem060.cs" />
+    <Compile Include="1 to 100\76 to 100\Problem090.cs" />
+    <Compile Include="601 to 700\600 to 625\Problem607.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +89,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="26 to 50\" />
+    <Folder Include="1 to 100\26 to 50\" />
+    <Folder Include="101 to 200\" />
+    <Folder Include="201 to 300\" />
+    <Folder Include="301 to 400\" />
+    <Folder Include="401 to 500\" />
+    <Folder Include="501 to 600\" />
   </ItemGroup>
   <Import Project="..\EulerShared\EulerShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

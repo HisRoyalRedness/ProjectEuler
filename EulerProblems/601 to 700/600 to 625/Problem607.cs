@@ -418,7 +418,7 @@ Time    1.111	1.250	1.429	1.667	2.000	7.368	14.824
             };
     }
 
-    internal static class Ext
+    internal static class Problem607Extensions
     {
         public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg) => angleDeg.Select(a => new AngleStruct(a));
         public static IEnumerable<AngleStruct> ToStruct(this IEnumerable<double> angleDeg, double width, double speed) => angleDeg.Select(a => new AngleStruct(a, width, speed));
