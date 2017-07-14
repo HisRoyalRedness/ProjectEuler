@@ -80,26 +80,13 @@ namespace HisRoyalRedness.com
     }
     #endregion Fibonacci
 
-    #region Triangle numbers
-    public static class TriangleNumber
-    {
-        public static IEnumerable<ulong> Sequence()
-        {
-            ulong index = 1;
-            ulong sum = 1;
-            while(true)
-            {
-                yield return sum;
-                sum += ++index;
-            }
-        }
-    }
-    #endregion Triangle numbers
 
     #region Fraction
     [DebuggerDisplay("{_numerator}/{_denominator}")]
     public struct Fraction<T>
     {
+        // http://www.vcskicks.com/code-snippet/fraction.php
+
         public Fraction(T num, T denom)
         {
             _numerator = num;

@@ -70,6 +70,7 @@
     <Compile Include="1 to 100\51 to 75\Problem055.cs" />
     <Compile Include="1 to 100\51 to 75\Problem057.cs" />
     <Compile Include="1 to 100\51 to 75\Problem060.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem061.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
     <Compile Include="601 to 700\600 to 625\Problem607.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

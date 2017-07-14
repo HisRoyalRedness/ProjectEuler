@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("26033")]
     public class Problem60 : ProblemBase
     {
         /// <summary>
@@ -32,13 +32,81 @@ namespace HisRoyalRedness.com
         /// Find the lowest sum for a set of five primes for which any two 
         /// primes concatenate to produce another prime.
         /// 
-        /// Answer: 
+        /// Answer: 26033
         /// </summary>
 
         protected override string InternalSolve()
         {
-            return "";
-        } 
+            GetPrimeAt(0);
+
+            var index = 1;
+            while(true)
+            {
+                var pIndex = GetPrimeAt(index);
+                var pIndexStr = pIndex.ToString();
+                var primePairs = new HashSet<string>();
+
+                for (var i = 0; i < index; ++i)
+                {
+                    var pI = GetPrimeAt(i);
+                    var pIStr = pI.ToString();
+
+                    if (IsPrimePair(pIndexStr, pIStr) && primePairs.All(p => IsPrimePair(p, pIStr)))
+                    {
+                        primePairs.Add(pIStr);
+                        if (primePairs.Count == 4)
+                        {
+                            primePairs.Add(pIndexStr);
+                            return primePairs.Select(p => ulong.Parse(p)).Sum().ToString();
+                        }
+                    }
+
+                }
+                ++index;
+            }
+        }
+
+        ulong GetPrimeAt(int index)
+        {
+            while (_cacheIndex < index)
+                CacheNextPrime();
+            return _primesList[index];
+        }
+
+
+        ulong GetNextPrime()
+        {
+            while (_cacheIndex < _readIndex)
+                CacheNextPrime();
+            return _primesList[_readIndex++];
+        }
+
+        bool IsPrime(ulong number)
+        {
+            while (number > _max)
+                CacheNextPrime();
+            return _primes.Contains(number);
+        }
+
+        bool IsPrimePair(string num1S, string num2S) => IsPrime(ulong.Parse(num1S + num2S)) && IsPrime(ulong.Parse(num2S + num1S));
+
+        void CacheNextPrime()
+        {
+            if (_primeEnum.MoveNext())
+            {
+                _max = _primeEnum.Current;
+                _primes.Add(_max);
+                _primesList.Add(_max);
+                ++_cacheIndex;
+            }
+        }
+
+        int _readIndex = 0;
+        int _cacheIndex = -1;
+        IEnumerator<ulong> _primeEnum = Primes.Sequence().GetEnumerator();
+        ulong _max = 0;
+        readonly HashSet<ulong> _primes = new HashSet<ulong>();
+        readonly List<ulong> _primesList = new List<ulong>();
     }
 }
 

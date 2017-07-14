@@ -50,7 +50,7 @@ namespace HisRoyalRedness.com
 
         protected override string InternalSolve()
         {
-            var t = TriangleNumber.Sequence().Take(10).ToList();
+            var t = TriangleNumber.Sequence(1).Take(10).ToList();
             return "";
         }
     }
