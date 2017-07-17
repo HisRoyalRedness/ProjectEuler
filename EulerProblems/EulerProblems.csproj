@@ -72,7 +72,9 @@
     <Compile Include="1 to 100\51 to 75\Problem060.cs" />
     <Compile Include="1 to 100\51 to 75\Problem061.cs" />
     <Compile Include="1 to 100\51 to 75\Problem063.cs" />
+    <Compile Include="1 to 100\76 to 100\Problem089.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
+    <Compile Include="1 to 100\76 to 100\Problem092.cs" />
     <Compile Include="601 to 700\600 to 625\Problem607.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +113,10 @@
     <Folder Include="301 to 400\" />
     <Folder Include="401 to 500\" />
     <Folder Include="501 to 600\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\About Roman Numerals.txt" />
+    <Content Include="Resources\p089_roman.txt" />
   </ItemGroup>
   <Import Project="..\EulerShared\EulerShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
