@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("28684")]
     public class Problem61 : ProblemBase
     {
         /// <summary>
@@ -48,17 +48,118 @@ namespace HisRoyalRedness.com
         /// polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and octagonal, 
         /// is represented by a different number in the set.
         /// 
-        /// Answer: 
+        /// Answer: 28684
         /// </summary>
 
         protected override string InternalSolve()
         {
-            // 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120, 136, 153, 171, 190, 210, 231, 253, 276, 300, 325, 351, 378, 406, 435, 465, 496, 528, 561, 595, 630, 666...
-            var t = TriangleNumber.Sequence(10).Take(10).ToList();
+            var figuratives = new[]
+            {
+                new FigurativeGrouping(TriangleNumber.Sequence()),
+                new FigurativeGrouping(SquareNumber.Sequence()),
+                new FigurativeGrouping(PentagonalNumber.Sequence()),
+                new FigurativeGrouping(HexagonalNumber.Sequence()),
+                new FigurativeGrouping(HeptagonalNumber.Sequence()),
+                new FigurativeGrouping(OctagonalNumber.Sequence()),
+            };
 
-            return "";
+
+            return GetFigurativeIndices
+                .SelectMany(index => figuratives[index[0]]
+                    .SequenceSplit
+                    .SelectMany(s1 => GetChain(s1, figuratives[index[1]])
+                        .SelectMany(s2 => GetChain(s2, figuratives[index[2]])
+                            .SelectMany(s3 => GetChain(s3, figuratives[index[3]])
+                                .SelectMany(s4 => GetChain(s4, figuratives[index[4]])
+                                    .SelectMany(s5 => GetChain(s5, figuratives[index[5]])
+                                        .Where(s6 => s6[1] == s1[0])
+                                        .Select(s6 => (new [] { s1, s2, s3, s4, s5, s6 }) // Chain of sequences
+                                        .Select(s => ulong.Parse(s[0] + s[1]))))))))) // Convert each sequence back into a ulong
+                .Select(fl => fl.Sum()) // Get the sum of the chain
+                .Min()
+                .ToString();
+        }
+
+        IEnumerable<string[]> GetChain(string[] item, FigurativeGrouping nextGrouping) => nextGrouping.LookStart[item[1]];
+
+        IEnumerable<int[]> GetFigurativeIndices
+        {
+            get
+            {
+                var i1 = 0;
+                for (var i2 = 0; i2 < 6; ++i2)
+                {
+                    if (i2 == i1)
+                        continue;
+                    for (var i3 = 0; i3 < 6; ++i3)
+                    {
+                        if (i3 == i1 || i3 == i2)
+                            continue;
+                        for (var i4 = 0; i4 < 6; ++i4)
+                        {
+                            if (i4 == i1 || i4 == i2 || i4 == i3)
+                                continue;
+                            for (var i5 = 0; i5 < 6; ++i5)
+                            {
+                                if (i5 == i1 || i5 == i2 || i5 == i3 || i5 == i4)
+                                    continue;
+                                for (var i6 = 0; i6 < 6; ++i6)
+                                {
+                                    if (i6 == i1 || i6 == i2 || i6 == i3 || i6 == i4 || i6 == i5)
+                                        continue;
+                                    yield return new[] { i1, i2, i3, i4, i5, i6 };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        internal class FigurativeLoop
+        {
+            public FigurativeLoop(params string[][] items)
+            {
+                _sequence = items.Select(i => ulong.Parse(i[0] + i[1])).ToArray();
+            }
+
+            public ulong[] Sequence => _sequence;
+
+            readonly ulong[] _sequence;
+        }
+
+        internal class FigurativeGrouping
+        {
+            public FigurativeGrouping(IEnumerable<ulong> sequence)
+            {
+                _sequence = sequence
+                    .SkipWhile(n => n < 1000)
+                    .TakeWhile(n => n < 10000)
+                    .ToArray();
+
+                _sequenceSplit = _sequence
+                    .Select(n => n.ToString("0000"))
+                    .Select(n => new string[] { n.Substring(0, 2), n.Substring(2, 2) })
+                    .ToArray();
+
+
+                _lookS = _sequenceSplit.ToLookup(s => s[0], s => s);
+                _lookE = _sequenceSplit.ToLookup(s => s[1], s => s);
+            }
+
+            public ulong[] Sequence => _sequence;
+            public string[][] SequenceSplit => _sequenceSplit;
+            public ILookup<string, string[]> LookStart => _lookS;
+            public ILookup<string, string[]> LookEnd => _lookE;
+
+            readonly ulong[] _sequence;
+            readonly string[][] _sequenceSplit;
+            readonly ILookup<string, string[]> _lookS;
+            readonly ILookup<string, string[]> _lookE;
         }
     }
+
+
 }
 
 /*

@@ -71,6 +71,7 @@
     <Compile Include="1 to 100\51 to 75\Problem057.cs" />
     <Compile Include="1 to 100\51 to 75\Problem060.cs" />
     <Compile Include="1 to 100\51 to 75\Problem061.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem063.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
     <Compile Include="601 to 700\600 to 625\Problem607.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +87,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Overview\001_overview.pdf" />
+    <None Include="Overview\002_overview.pdf" />
+    <None Include="Overview\003_overview.pdf" />
+    <None Include="Overview\004_overview.pdf" />
+    <None Include="Overview\005_overview.pdf" />
+    <None Include="Overview\006_overview.pdf" />
+    <None Include="Overview\007_overview.pdf" />
+    <None Include="Overview\009_overview.pdf" />
+    <None Include="Overview\010_overview.pdf" />
+    <None Include="Overview\012_overview.pdf" />
+    <None Include="Overview\015_overview.pdf" />
+    <None Include="Overview\021_overview.pdf" />
+    <None Include="Overview\031_overview.pdf" />
+    <None Include="Overview\036_overview.pdf" />
+    <None Include="Overview\053_overview.pdf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
