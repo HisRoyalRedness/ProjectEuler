@@ -20,8 +20,10 @@ namespace HisRoyalRedness.com
 {
     public static partial class Calculators
     {
+        // Public methods in Calculator_Template
         static string Reverse(this string number) => new string(Enumerable.Reverse(number.ToString()).ToArray());
 
+        // Public methods in Calculator_Template
         static bool IsPalindrome(this string number)
         {
             var left = 0;
@@ -64,6 +66,59 @@ namespace HisRoyalRedness.com
             return GCD(arr);
         }
         #endregion GCD and LCM
+
+        #region Root finding
+        /// <summary>
+        /// Estimate a root of a number using Newton-Raphson
+        /// </summary>
+        /// <param name="number">The number to find a root of</param>
+        /// <param name="n">The order of the root</param>
+        /// <param name="initialEstimate">The initial estimate</param>
+        /// <param name="iterations">The number of iterations. Defaults to 10. A value of -1 will iterate 
+        /// until the error reaches epsilon.</param>
+        /// <returns>The estimated root</returns>
+        public static double NthRoot(this double number, int n, double initialEstimate, int iterations = 5)
+        {
+            // https://en.wikipedia.org/wiki/Newton%27s_method
+
+            var func = new Func<double, double>(x => Math.Pow(x, n) - number);
+            var deriv = new Func<double, double>(x => n * Math.Pow(x, n - 1));
+            var guess = (double)(n + 1);
+            for(var i = 0; i < iterations; ++i)
+                guess = guess - (func(guess) / deriv(guess));
+            return guess;
+        }
+
+        /// <summary>
+        /// Estimate a root of a number using Newton-Raphson
+        /// </summary>
+        /// <param name="number">The number to find a root of</param>
+        /// <param name="n">The order of the root</param>
+        /// <param name="initialEstimate">The initial estimate</param>
+        /// <param name="error">The algorithm will iterate until the difference between two 
+        /// successive estimates is equal to or less than <paramref name="error"/></param>
+        /// <returns>The estimated root</returns>
+        public static double NthRoot(this double number, int n, double initialEstimate, double error)
+        {
+            // https://en.wikipedia.org/wiki/Newton%27s_method
+
+            var func = new Func<double, double>(x => Math.Pow(x, n) - number);
+            var deriv = new Func<double, double>(x => n * Math.Pow(x, n - 1));
+            var guess = (double)(n + 1);
+
+            var thisError = 0.0;
+            do
+            {
+                var newGuess = guess - (func(guess) / deriv(guess));
+                thisError = Math.Abs(newGuess - guess);
+                guess = newGuess;
+            } while (thisError > error);
+
+            return guess;
+        }
+
+
+        #endregion Root finding
     }
 }
 

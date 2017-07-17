@@ -45,29 +45,14 @@ namespace HisRoyalRedness.com
                 else
                     sum += n;
             }
-        }        
-
+        }
 
         int NumbersPerDigitCount(int digitCount)
         {
             var num = double.Parse("1" + new string('0', digitCount - 1));
-            var root = NthRoot(num, digitCount, 100);
-
+            var root = num.NthRoot(digitCount, digitCount + 1, 1e-6);
             return 10 - (int)Math.Ceiling(root);
         }
-
-
-        double NthRoot(double number, int n, int iterations = 5)
-        {
-            var func = new Func<double, double>(x => Math.Pow(x, n) - number);
-            var deriv = new Func<double, double>(x => n * Math.Pow(x, n - 1));
-            var guess = (double)(n + 1);
-            for(var i = 0; i < iterations; ++i)
-                guess = guess - (func(guess) / deriv(guess));
-            return guess;
-        }
-
-
     }
 }
 
