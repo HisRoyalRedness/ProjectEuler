@@ -90,53 +90,97 @@ namespace HisRoyalRedness.com
         }
         IFraction<<#=t#>> IFraction<<#=t#>>.Reduce() => this.Reduce();
 
-        public static IFraction<<#=t#>> operator +(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        #region operator +
+        static Fraction_<#=t#> Add(IFraction<<#=t#>> fraction1, IFraction<<#=t#>> fraction2)
         {
-            var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator;
-            var denomenator = fraction1.Denominator * fraction2.Denominator;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+            if (fraction1.Denominator == fraction2.Denominator)
+                return new Fraction_<#=t#>(fraction1.Numerator + fraction2.Numerator, fraction1.Denominator);
+            else if (fraction1.Denominator == 1)
+            {
+                var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator;
+                var denominator = fraction2.Denominator;
+                return new Fraction_<#=t#>(numerator, denominator);
+            }
+            else if (fraction2.Denominator == 1)
+            {
+                var numerator = fraction1.Numerator + fraction2.Numerator * fraction1.Denominator;
+                var denominator = fraction1.Denominator;
+                return new Fraction_<#=t#>(numerator, denominator);
+            }
+            else
+            {
+                var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator;
+                var denominator = fraction1.Denominator * fraction2.Denominator;
+                var gcd = Calculators.GCD(numerator, denominator);
+                return new Fraction_<#=t#>(numerator / gcd, denominator / gcd);
+            }
         }
 
-        public static IFraction<<#=t#>> operator +(Fraction_<#=t#> fraction1, <#=t#> number)
+        public static Fraction_<#=t#> operator +(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Add(fraction1, fraction2);
+        //public static Fraction_<#=t#> operator +(IFraction<<#=t#>> fraction1, Fraction_<#=t#> fraction2) => Add(fraction1, fraction2);
+        public static Fraction_<#=t#> operator +(Fraction_<#=t#> fraction, <#=t#> number) => Add(fraction, new Fraction_<#=t#>(number, (<#=t#>)1));
+        public static Fraction_<#=t#> operator +(<#=t#> number, Fraction_<#=t#> fraction) => Add(new Fraction_<#=t#>(number, (<#=t#>)1), fraction);
+        #endregion operator +
+
+        #region operator -
+        static Fraction_<#=t#> Subtract(IFraction<<#=t#>> fraction1, IFraction<<#=t#>> fraction2)
         {
-            var numerator = fraction1.Numerator * number + number * fraction1.Denominator;
-            var denomenator = fraction1.Denominator * number;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+            if (fraction1.Denominator == fraction2.Denominator)
+                return new Fraction_<#=t#>(fraction1.Numerator - fraction2.Numerator, fraction1.Denominator);
+            else if (fraction1.Denominator == 1)
+            {
+                var numerator = fraction1.Numerator * fraction2.Denominator - fraction2.Numerator;
+                var denominator = fraction2.Denominator;
+                return new Fraction_<#=t#>(numerator, denominator);
+            }
+            else if (fraction2.Denominator == 1)
+            {
+                var numerator = fraction1.Numerator - fraction2.Numerator * fraction1.Denominator;
+                var denominator = fraction1.Denominator;
+                return new Fraction_<#=t#>(numerator, denominator);
+            }
+            else
+            {
+                var numerator = fraction1.Numerator * fraction2.Denominator - fraction2.Numerator * fraction1.Denominator;
+                var denominator = fraction1.Denominator * fraction2.Denominator;
+                var gcd = Calculators.GCD(numerator, denominator);
+                return new Fraction_<#=t#>(numerator / gcd, denominator / gcd);
+            }
         }
 
-        public static IFraction<<#=t#>> operator -(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
-        {
-            var numerator = fraction1.Numerator * fraction2.Denominator - fraction2.Numerator * fraction1.Denominator;
-            var denomenator = fraction1.Denominator * fraction2.Denominator;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
-        }
+        public static Fraction_<#=t#> operator -(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Subtract(fraction1, fraction2);
+        //public static Fraction_<#=t#> operator -(IFraction<<#=t#>> fraction1, Fraction_<#=t#> fraction2) => Subtract(fraction1, fraction2);
+        public static Fraction_<#=t#> operator -(Fraction_<#=t#> fraction, <#=t#> number) => Subtract(fraction, new Fraction_<#=t#>(number, (<#=t#>)1));
+        public static Fraction_<#=t#> operator -(<#=t#> number, Fraction_<#=t#> fraction) => Subtract(new Fraction_<#=t#>(number, (<#=t#>)1), fraction);
+        #endregion operator -
 
-        public static IFraction<<#=t#>> operator -(Fraction_<#=t#> fraction1, <#=t#> number)
-        {
-            var numerator = fraction1.Numerator * number - number * fraction1.Denominator;
-            var denomenator = fraction1.Denominator * number;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
-        }
-
-        public static IFraction<<#=t#>> operator *(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        #region operator *
+        static Fraction_<#=t#> Multiply(IFraction<<#=t#>> fraction1, IFraction<<#=t#>> fraction2)
         {
             var numerator = fraction1.Numerator * fraction2.Numerator;
             var denomenator = fraction1.Denominator * fraction2.Denominator;
             return new Fraction_<#=t#>(numerator, denomenator).Reduce();
         }
 
-        public static IFraction<<#=t#>> operator *(Fraction_<#=t#> fraction1, <#=t#> number)
-            => new Fraction_<#=t#>(fraction1.Numerator * number, fraction1.Denominator).Reduce();
+        public static Fraction_<#=t#> operator *(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Multiply(fraction1, fraction2);
+        //public static Fraction_<#=t#> operator *(IFraction<<#=t#>> fraction1, Fraction_<#=t#> fraction2) => Multiply(fraction1, fraction2);
+        public static Fraction_<#=t#> operator *(Fraction_<#=t#> fraction, <#=t#> number) => Multiply(fraction, new Fraction_<#=t#>(number, (<#=t#>)1));
+        public static Fraction_<#=t#> operator *(<#=t#> number, Fraction_<#=t#> fraction) => Multiply(new Fraction_<#=t#>(number, (<#=t#>)1), fraction);
+        #endregion operator *
 
-        public static IFraction<<#=t#>> operator /(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        #region operator /
+        static Fraction_<#=t#> Divide(IFraction<<#=t#>> fraction1, IFraction<<#=t#>> fraction2)
         {
             var numerator = fraction1.Numerator * fraction2.Denominator;
             var denomenator = fraction1.Denominator * fraction2.Numerator;
             return new Fraction_<#=t#>(numerator, denomenator).Reduce();
         }
 
-        public static IFraction<<#=t#>> operator /(Fraction_<#=t#> fraction1, <#=t#> number)
-            => new Fraction_<#=t#>(fraction1.Numerator, fraction1.Denominator * number).Reduce();
+        public static Fraction_<#=t#> operator /(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Divide(fraction1, fraction2);
+        //public static Fraction_<#=t#> operator /(IFraction<<#=t#>> fraction1, Fraction_<#=t#> fraction2) => Divide(fraction1, fraction2);
+        public static Fraction_<#=t#> operator /(Fraction_<#=t#> fraction, <#=t#> number) => Divide(fraction, new Fraction_<#=t#>(number, (<#=t#>)1));
+        public static Fraction_<#=t#> operator /(<#=t#> number, Fraction_<#=t#> fraction) => Divide(new Fraction_<#=t#>(number, (<#=t#>)1), fraction);
+        #endregion operator /
 
         public double Evaluate() => (double)_numerator / (double)_denominator;
         public override string ToString() => $"{_numerator}/{_denominator}";        
