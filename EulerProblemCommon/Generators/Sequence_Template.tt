@@ -30,23 +30,127 @@ using System.Threading.Tasks;
 namespace HisRoyalRedness.com
 {
     #region Fraction
-<# foreach(var t in types) { #>
-
-    [DebuggerDisplay("{_numerator}/{_denominator}")]
-    public struct Fraction_<#=t#>
+    public interface IFraction<T>
     {
-        public Fraction_<#=t#>(<#=t#> num, <#=t#> denom)
+        T Numerator { get; }
+        T Denominator { get; }
+        double Evaluate();
+        IFraction<T> Reciprocal { get; }
+        IFraction<T> Reduce();
+    }
+
+    public static class Fraction
+    {
+<# foreach(var t in types) { #>
+        public static Fraction_<#=t#> Create(<#=t#> numerator, <#=t#> denominator) => new Fraction_<#=t#>(numerator, denominator);
+<# } #>
+    }
+
+
+<# foreach(var t in types) { #>
+    #region Fraction_<#=t#>
+    [DebuggerDisplay("{_numerator}/{_denominator}")]
+    public struct Fraction_<#=t#> : IFraction<<#=t#>>
+    {
+        internal Fraction_<#=t#>(<#=t#> num, <#=t#> denom)
         {
+            if (denom == 0)
+                throw new DivideByZeroException();
+<# if(t=="ulong" || t=="uint") {#>
             _numerator = num;
-            _denominator = denom;
+            _denominator = denom;<# } else {#>
+            if (denom < 0)
+            {
+                _numerator = -num;
+                _denominator = -denom;
+            }
+            else
+            {
+                _numerator = num;
+                _denominator = denom;
+            }<# } #> 
+        }
+        
+        static Fraction_<#=t#>()
+        {
+            _zero = new Fraction_<#=t#>(0, 1);
+            _one = new Fraction_<#=t#>(1, 1);
         }
 
         public <#=t#> Numerator => _numerator;
         public <#=t#> Denominator => _denominator;
 
+        public Fraction_<#=t#> Reciprocal => new Fraction_<#=t#>(_denominator, _numerator);
+        IFraction<<#=t#>> IFraction<<#=t#>>.Reciprocal => Reciprocal;
+
+        public Fraction_<#=t#> Reduce()
+        {
+            var gcd = Calculators.GCD(_numerator, _denominator);
+            return new Fraction_<#=t#>(_numerator / gcd, _denominator / gcd);
+        }
+        IFraction<<#=t#>> IFraction<<#=t#>>.Reduce() => this.Reduce();
+
+        public static IFraction<<#=t#>> operator +(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        {
+            var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator;
+            var denomenator = fraction1.Denominator * fraction2.Denominator;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator +(Fraction_<#=t#> fraction1, <#=t#> number)
+        {
+            var numerator = fraction1.Numerator * number + number * fraction1.Denominator;
+            var denomenator = fraction1.Denominator * number;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator -(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        {
+            var numerator = fraction1.Numerator * fraction2.Denominator - fraction2.Numerator * fraction1.Denominator;
+            var denomenator = fraction1.Denominator * fraction2.Denominator;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator -(Fraction_<#=t#> fraction1, <#=t#> number)
+        {
+            var numerator = fraction1.Numerator * number - number * fraction1.Denominator;
+            var denomenator = fraction1.Denominator * number;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator *(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        {
+            var numerator = fraction1.Numerator * fraction2.Numerator;
+            var denomenator = fraction1.Denominator * fraction2.Denominator;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator *(Fraction_<#=t#> fraction1, <#=t#> number)
+            => new Fraction_<#=t#>(fraction1.Numerator * number, fraction1.Denominator).Reduce();
+
+        public static IFraction<<#=t#>> operator /(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2)
+        {
+            var numerator = fraction1.Numerator * fraction2.Denominator;
+            var denomenator = fraction1.Denominator * fraction2.Numerator;
+            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+        }
+
+        public static IFraction<<#=t#>> operator /(Fraction_<#=t#> fraction1, <#=t#> number)
+            => new Fraction_<#=t#>(fraction1.Numerator, fraction1.Denominator * number).Reduce();
+
+        public double Evaluate() => (double)_numerator / (double)_denominator;
+        public override string ToString() => $"{_numerator}/{_denominator}";        
+
+        public static Fraction_<#=t#> Zero => _zero;
+        public static Fraction_<#=t#> One => _one;
+
         readonly <#=t#> _numerator;
         readonly <#=t#> _denominator;
+        static readonly Fraction_<#=t#> _zero;
+        static readonly Fraction_<#=t#> _one;
     }
+    #endregion Fraction_<#=t#>
+
 <# } #>    
     #endregion Fraction
 
@@ -63,7 +167,7 @@ namespace HisRoyalRedness.com
     public static partial class ContinuedFraction
     {
 <# foreach(var t in types) { #>
-        public static IEnumerable<Fraction_<#=t#>> Sequence(IEnumerable<<#=t#>> coefficients)
+        public static IEnumerable<IFraction<<#=t#>>> Sequence(IEnumerable<<#=t#>> coefficients)
         {
             <#=t#> h_1 = 1;
             <#=t#> h_2 = 0;
@@ -81,7 +185,7 @@ namespace HisRoyalRedness.com
                 k_2 = k_1;
                 k_1 = k;
 
-                return new Fraction_<#=t#>(h, k);
+                return (IFraction<<#=t#>>)Fraction.Create(h, k);
             });
         }
 
