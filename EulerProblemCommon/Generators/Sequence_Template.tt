@@ -42,7 +42,7 @@ namespace HisRoyalRedness.com
     public static class Fraction
     {
 <# foreach(var t in types) { #>
-        public static Fraction_<#=t#> Create(<#=t#> numerator, <#=t#> denominator) => new Fraction_<#=t#>(numerator, denominator);
+        public static Fraction_<#=t#> Create(<#=t#> numerator, <#=t#> denominator, bool reduce = true) => new Fraction_<#=t#>(numerator, denominator, reduce);
 <# } #>
     }
 
@@ -52,23 +52,38 @@ namespace HisRoyalRedness.com
     [DebuggerDisplay("{_numerator}/{_denominator}")]
     public struct Fraction_<#=t#> : IFraction<<#=t#>>
     {
-        internal Fraction_<#=t#>(<#=t#> num, <#=t#> denom)
+        internal Fraction_<#=t#>(<#=t#> num, <#=t#> denom, bool reduce = true)
         {
             if (denom == 0)
                 throw new DivideByZeroException();
-<# if(t=="ulong" || t=="uint") {#>
-            _numerator = num;
-            _denominator = denom;<# } else {#>
+
+<# if(t!="ulong" && t!="uint") {#>
             if (denom < 0)
             {
-                _numerator = -num;
-                _denominator = -denom;
+                num = -num;
+                denom = -denom;
+            }
+
+<# } #>
+            if (reduce)
+            {
+                if (num == denom)
+                {
+                    _numerator = 1;
+                    _denominator = 1;
+                }
+                else
+                {
+                    var gcd = Calculators.GCD(num, denom);
+                    _numerator = num / gcd;
+                    _denominator = denom / gcd;
+                }
             }
             else
             {
                 _numerator = num;
                 _denominator = denom;
-            }<# } #> 
+            }
         }
         
         static Fraction_<#=t#>()
@@ -111,8 +126,7 @@ namespace HisRoyalRedness.com
             {
                 var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator;
                 var denominator = fraction1.Denominator * fraction2.Denominator;
-                var gcd = Calculators.GCD(numerator, denominator);
-                return new Fraction_<#=t#>(numerator / gcd, denominator / gcd);
+                return new Fraction_<#=t#>(numerator, denominator);
             }
         }
 
@@ -159,7 +173,7 @@ namespace HisRoyalRedness.com
         {
             var numerator = fraction1.Numerator * fraction2.Numerator;
             var denomenator = fraction1.Denominator * fraction2.Denominator;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+            return new Fraction_<#=t#>(numerator, denomenator);
         }
 
         public static Fraction_<#=t#> operator *(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Multiply(fraction1, fraction2);
@@ -173,7 +187,7 @@ namespace HisRoyalRedness.com
         {
             var numerator = fraction1.Numerator * fraction2.Denominator;
             var denomenator = fraction1.Denominator * fraction2.Numerator;
-            return new Fraction_<#=t#>(numerator, denomenator).Reduce();
+            return new Fraction_<#=t#>(numerator, denomenator);
         }
 
         public static Fraction_<#=t#> operator /(Fraction_<#=t#> fraction1, IFraction<<#=t#>> fraction2) => Divide(fraction1, fraction2);

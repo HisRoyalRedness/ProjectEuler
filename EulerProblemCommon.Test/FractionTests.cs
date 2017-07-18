@@ -21,22 +21,95 @@ namespace HisRoyalRedness.com.Test
             var f_bigint = Fraction.Create((BigInteger)9, (BigInteger)10);
 
             f_int.Numerator.Should().BeOfType(typeof(int));
-            f_uint.Numerator.Should().BeOfType(typeof(uint));
-            f_long.Numerator.Should().BeOfType(typeof(long));
-            f_ulong.Numerator.Should().BeOfType(typeof(ulong));
-            f_bigint.Numerator.Should().BeOfType(typeof(BigInteger));
-
+            f_int.Denominator.Should().BeOfType(typeof(int));
             f_int.Numerator.Should().Be(1);
-            f_uint.Numerator.Should().Be(3);
-            f_long.Numerator.Should().Be(5);
-            f_ulong.Numerator.Should().Be(7);
-            f_bigint.Numerator.Should().Be(9);
-
             f_int.Denominator.Should().Be(2);
+
+            f_uint.Numerator.Should().BeOfType(typeof(uint));
+            f_uint.Denominator.Should().BeOfType(typeof(uint));
+            f_uint.Numerator.Should().Be(3);
             f_uint.Denominator.Should().Be(4);
+
+            f_long.Numerator.Should().BeOfType(typeof(long));
+            f_long.Denominator.Should().BeOfType(typeof(long));
+            f_long.Numerator.Should().Be(5);
             f_long.Denominator.Should().Be(6);
+
+            f_ulong.Numerator.Should().BeOfType(typeof(ulong));
+            f_ulong.Denominator.Should().BeOfType(typeof(ulong));
+            f_ulong.Numerator.Should().Be(7);
             f_ulong.Denominator.Should().Be(8);
+
+            f_bigint.Numerator.Should().BeOfType(typeof(BigInteger));
+            f_bigint.Denominator.Should().BeOfType(typeof(BigInteger));
+            f_bigint.Numerator.Should().Be(9);
             f_bigint.Denominator.Should().Be(10);
+        }
+
+        [TestMethod]
+        public void TestFractionCreationWithReduction()
+        {
+            var f1 = Fraction.Create(1, 2);
+            var f2 = Fraction.Create(12, 3);
+            var f3 = Fraction.Create(3, 12);
+            var f4 = Fraction.Create(12, 3, false);
+            var f5 = Fraction.Create(3, 12, false);
+            var f6 = Fraction.Create(13, 13);
+            var f7 = Fraction.Create(13, 13, false);
+
+            f1.Evaluate().Should().Be(1.0 / 2.0);
+            f1.Numerator.Should().Be(1);
+            f1.Denominator.Should().Be(2);
+
+            f2.Evaluate().Should().Be(4.0);
+            f2.Numerator.Should().Be(4);
+            f2.Denominator.Should().Be(1);
+
+            f3.Evaluate().Should().Be(1.0 / 4.0);
+            f3.Numerator.Should().Be(1);
+            f3.Denominator.Should().Be(4);
+
+            f4.Evaluate().Should().Be(4.0);
+            f4.Numerator.Should().Be(12);
+            f4.Denominator.Should().Be(3);
+
+            f5.Evaluate().Should().Be(1.0 / 4.0);
+            f5.Numerator.Should().Be(3);
+            f5.Denominator.Should().Be(12);
+
+            f6.Evaluate().Should().Be(1.0);
+            f6.Numerator.Should().Be(1);
+            f6.Denominator.Should().Be(1);
+
+            f7.Evaluate().Should().Be(1.0);
+            f7.Numerator.Should().Be(13);
+            f7.Denominator.Should().Be(13);
+
+        }
+
+        [TestMethod]
+        public void TestFractionCreationWithNegatives()
+        {
+            var f1 = Fraction.Create(1, 2);
+            var f2 = Fraction.Create(-1, 2);
+            var f3 = Fraction.Create(1, -2);
+            var f4 = Fraction.Create(-4, -8);
+
+            f1.Evaluate().Should().Be(1.0 / 2.0);
+            f1.Numerator.Should().Be(1);
+            f1.Denominator.Should().Be(2);
+
+            f2.Evaluate().Should().Be(-1.0 / 2.0);
+            f2.Numerator.Should().Be(-1);
+            f2.Denominator.Should().Be(2);
+
+            f3.Evaluate().Should().Be(1.0 / -2.0);
+            f3.Numerator.Should().Be(-1);
+            f3.Denominator.Should().Be(2);
+
+            f4.Evaluate().Should().Be(1.0 / 2.0);
+            f4.Numerator.Should().Be(1);
+            f4.Denominator.Should().Be(2);
         }
 
         [TestMethod]
