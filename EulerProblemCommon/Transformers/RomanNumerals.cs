@@ -18,14 +18,9 @@ namespace HisRoyalRedness.com
 {
     public static partial class RomanNumerals
     {
-        public static ulong FromRomanNumerals(this string number)
-        {
-            return 0;
-        }
+        // https://projecteuler.net/about=roman_numerals
 
-        public static string ToRomanNumerals(this ulong number, bool subtractive = true)
-        {
-            /*
+        /*        
             I = 1
             V = 5
             X = 10
@@ -34,19 +29,40 @@ namespace HisRoyalRedness.com
             D = 500
             M = 1000
 
+            Basic rules:
+
             i.    Numerals must be arranged in descending order of size.
             ii.   M, C, and X cannot be equalled or exceeded by smaller denominations.
             iii.  D, L, and V can each only appear once.
 
-            */
+            Subtractive rules:
+            
+            i.    Only one I, X, and C can be used as the leading numeral in part of a subtractive pair.
+            ii.   I can only be placed before V and X.
+            iii.  X can only be placed before L and C.
+            iv.   C can only be placed before D and M.
+        */
 
+        public static ulong FromRomanNumerals(this string number)
+        {
+            return 0;
+        }
+
+        public static string ToRomanNumerals(this ulong number, bool subtractive = true)
+        {
             var sb = new StringBuilder();
-            foreach(var denom in _romanDenominations)
+            foreach (var denom in _romanDenominations)
             {
                 while (number >= denom.Item2)
                 {
                     sb.Append(denom.Item1);
                     number -= denom.Item2;
+                }
+                if (subtractive && denom.Item4 != 0 && denom.Item2 - denom.Item4 == number)
+                {
+                    sb.Append(denom.Item3);
+                    sb.Append(denom.Item1);
+                    number -= denom.Item4;
                 }
                 if (number == 0)
                     break;
@@ -54,15 +70,15 @@ namespace HisRoyalRedness.com
             return sb.ToString();
         }
 
-        static Tuple<char, ulong>[] _romanDenominations = new[]
+        static Tuple<char, ulong, char, ulong>[] _romanDenominations = new[]
         {
-            new Tuple<char, ulong>('M', 1000),
-            new Tuple<char, ulong>('D', 500),
-            new Tuple<char, ulong>('C', 100),
-            new Tuple<char, ulong>('L', 50),
-            new Tuple<char, ulong>('X', 10),
-            new Tuple<char, ulong>('V', 5),
-            new Tuple<char, ulong>('I', 1),
+            new Tuple<char, ulong, char, ulong>('M', 1000, 'C', 100),
+            new Tuple<char, ulong, char, ulong>('D', 500, 'C', 100),
+            new Tuple<char, ulong, char, ulong>('C', 100, 'X', 10),
+            new Tuple<char, ulong, char, ulong>('L', 50, 'X', 10),
+            new Tuple<char, ulong, char, ulong>('X', 10, 'I', 1),
+            new Tuple<char, ulong, char, ulong>('V', 5, 'I', 1),
+            new Tuple<char, ulong, char, ulong>('I', 1, '\0', 0),
         };
     }
 }

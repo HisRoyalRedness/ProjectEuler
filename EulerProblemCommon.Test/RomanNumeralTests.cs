@@ -14,12 +14,18 @@ namespace HisRoyalRedness.com.Test
         [TestMethod]
         public void RomanNumeralCreationNonSubtractive()
         {
+            // Basics
             1.ToRomanNumerals(false).Should().Be("I");
+            2.ToRomanNumerals(false).Should().Be("II");
+            3.ToRomanNumerals(false).Should().Be("III");
             4.ToRomanNumerals(false).Should().Be("IIII");
             5.ToRomanNumerals(false).Should().Be("V");
             6.ToRomanNumerals(false).Should().Be("VI");
+            7.ToRomanNumerals(false).Should().Be("VII");
+            8.ToRomanNumerals(false).Should().Be("VIII");
             9.ToRomanNumerals(false).Should().Be("VIIII");
             10.ToRomanNumerals(false).Should().Be("X");
+
             11.ToRomanNumerals(false).Should().Be("XI");
             14.ToRomanNumerals(false).Should().Be("XIIII");
             15.ToRomanNumerals(false).Should().Be("XV");
@@ -102,6 +108,22 @@ namespace HisRoyalRedness.com.Test
             1656.ToRomanNumerals(false).Should().Be("MDCLVI");
             1661.ToRomanNumerals(false).Should().Be("MDCLXI");
             1666.ToRomanNumerals(false).Should().Be("MDCLXVI");
+        }
+
+        [TestMethod]
+        public void RomanNumeralCreationSubtractive()
+        {
+            // Basics
+            //1.ToRomanNumerals(false).Should().Be("I");
+            //2.ToRomanNumerals(false).Should().Be("II");
+            //3.ToRomanNumerals(false).Should().Be("III");
+            4.ToRomanNumerals().Should().Be("IIII");
+            //5.ToRomanNumerals(false).Should().Be("V");
+            //6.ToRomanNumerals(false).Should().Be("VI");
+            //7.ToRomanNumerals(false).Should().Be("VII");
+            //8.ToRomanNumerals(false).Should().Be("VIII");
+            //9.ToRomanNumerals(false).Should().Be("VIIII");
+            //10.ToRomanNumerals(false).Should().Be("X");
         }
     }
 }
