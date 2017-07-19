@@ -14,9 +14,9 @@ M = 1000
 
 In order for a number written in Roman numerals to be considered valid there are three basic rules which must be followed.
 
-Numerals must be arranged in descending order of size.
-M, C, and X cannot be equalled or exceeded by smaller denominations.
-D, L, and V can each only appear once.
+    i.    Numerals must be arranged in descending order of size.
+    ii.   M, C, and X cannot be equalled or exceeded by smaller denominations.
+    iii.  D, L, and V can each only appear once.
 
 For example, the number sixteen could be written as XVI or XIIIIII, with the first being the preferred form as it uses the least number of numerals. We could not write IIIIIIIIIIIIIIII because we are making X (ten) from smaller denominations, nor could we write VVVI because the second and third rule are being broken.
 

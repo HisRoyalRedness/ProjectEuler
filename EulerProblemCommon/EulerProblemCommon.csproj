@@ -70,8 +70,12 @@
       <DependentUpon>Sequence_Template.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transformers\CSV.cs" />
     <Compile Include="Transformers\Sequence.cs" />
+    <Compile Include="Transformers\Transformer_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Transformer_Template.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Calculators\Aggregator_Template.tt">
@@ -85,6 +89,10 @@
     <Content Include="Generators\Sequence_Template.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Sequence_Template.cs</LastGenOutput>
+    </Content>
+    <Content Include="Transformers\Transformer_Template.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Transformer_Template.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
