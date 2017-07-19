@@ -67,6 +67,7 @@
     <Compile Include="FigurateNumberTests.cs" />
     <Compile Include="FractionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RomanNumeralTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

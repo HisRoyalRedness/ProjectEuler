@@ -70,7 +70,9 @@
       <DependentUpon>Sequence_Template.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformers\RomanNumerals.cs" />
     <Compile Include="Transformers\Sequence.cs" />
+    <Compile Include="Transformers\TransformerCommon.cs" />
     <Compile Include="Transformers\Transformer_Template.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

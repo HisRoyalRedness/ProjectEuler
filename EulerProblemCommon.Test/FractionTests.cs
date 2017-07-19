@@ -172,32 +172,32 @@ namespace HisRoyalRedness.com.Test
             var f1 = Fraction.Create(1, 3);
             var f2 = Fraction.Create(2, 3);
 
-            (f1 - f2).Evaluate().Should().Be(-1.0 / 3.0);
-            (f2 - f1).Evaluate().Should().Be(1.0 / 3.0);
+            (f1 - f2).Evaluate().Should().Be(-1.0 / 3.0, "same denominator (f1-f2)");
+            (f2 - f1).Evaluate().Should().Be(1.0 / 3.0, "same denominator (f2-f1)");
 
             // Denominator of 1
             f1 = Fraction.Create(1, 3);
             f2 = Fraction.Create(1, 1);
 
-            (f1 - f2).Evaluate().Should().Be(-2.0 / 3.0);
-            (f2 - f1).Evaluate().Should().Be(2.0 / 3.0);
+            (f1 - f2).Evaluate().Should().Be(-2.0 / 3.0, "denominator of 1 (f1-f2)");
+            (f2 - f1).Evaluate().Should().Be(2.0 / 3.0, "denominator of 1 (f2-f1)");
 
             // Different denominators
             f1 = Fraction.Create(1, 3);
             f2 = Fraction.Create(1, 2);
 
-            (f1 - f2).Evaluate().Should().Be(-1.0 / 6.0);
-            (f2 - f1).Evaluate().Should().Be(1.0 / 6.0);
+            (f1 - f2).Evaluate().Should().Be(-1.0 / 6.0, "different denominators (f1-f2)");
+            (f2 - f1).Evaluate().Should().Be(1.0 / 6.0, "different denominators (f2-f1)");
 
             // Constants
             f1 = Fraction.Create(1, 3);
             var c1 = 1;
             var c2 = 0;
 
-            (f1 - c1).Evaluate().Should().Be(-2.0 / 3.0);
-            (c1 - f1).Evaluate().Should().Be(2.0 / 3.0);
-            (f1 - c2).Evaluate().Should().Be(1.0 / 3.0);
-            (c2 - f1).Evaluate().Should().Be(-1.0 / 3.0);
+            (f1 - c1).Evaluate().Should().Be(-2.0 / 3.0, "constants (f1-c1)");
+            (c1 - f1).Evaluate().Should().Be(2.0 / 3.0, "constants (c1-f1)");
+            (f1 - c2).Evaluate().Should().Be(1.0 / 3.0, "constants (f1-c2)");
+            (c2 - f1).Evaluate().Should().Be(-1.0 / 3.0, "constants (c2-f1)");
         }
 
         [TestMethod]

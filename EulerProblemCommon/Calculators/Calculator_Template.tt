@@ -71,7 +71,7 @@ namespace HisRoyalRedness.com
 
         #region GCD and LCM
 <# foreach(var t in types.Where(tt => tt != "ulong")) { #>
-        static ulong[] ToUlongArray(IEnumerable<<#=t#>> arr) => arr.Select(u => (ulong)u).ToArray();
+        static ulong[] ToUlongArray(IEnumerable<<#=t#>> arr) => arr.Select(u => (ulong)<# if (t=="int" || t=="long") {#>(u<0?-u:u)<#} else { #>u<# }#>).ToArray();
 <# } #>
 
 <# foreach(var t in types.Where(tt => tt != "ulong")) { #>
