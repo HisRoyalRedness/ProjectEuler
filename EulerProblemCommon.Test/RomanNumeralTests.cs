@@ -12,6 +12,47 @@ namespace HisRoyalRedness.com.Test
     public class RomanNumeralTests
     {
         [TestMethod]
+        public void RomanNumeralParsing()
+        {
+            /*        
+                I = 1
+                V = 5
+                X = 10
+                L = 50
+                C = 100
+                D = 500
+                M = 1000
+
+                Basic rules:
+
+                i.    Numerals must be arranged in descending order of size.
+                ii.   M, C, and X cannot be equalled or exceeded by smaller denominations.
+                iii.  D, L, and V can each only appear once.
+
+                Subtractive rules:
+
+                i.    Only one I, X, and C can be used as the leading numeral in part of a subtractive pair.
+                ii.   I can only be placed before V and X.
+                iii.  X can only be placed before L and C.
+                iv.   C can only be placed before D and M.
+            */
+
+            "MCMXLIV".FromRomanNumerals().Should().Be(1944);
+        }
+
+        [TestMethod]
+        public void RomanNumeralParsing_InvalidNumber()
+        {
+            "".FromRomanNumerals().Should().Be(0, "an empty string equates to 0");
+            ((string)null).FromRomanNumerals().Should().Be(0, "an null string equates to 0");
+
+            "W".FromRomanNumerals(false).Should().Be(0, "an invalid string equates to 0 if not throwing");
+            var act = new Action(() => "W".FromRomanNumerals());
+            act.ShouldThrow<InvalidOperationException>("an invalid string yields an InvalidOperationException when throwing");
+        }
+
+
+        [TestMethod]
         public void RomanNumeralCreationNonSubtractive()
         {
             // Basics
@@ -114,16 +155,23 @@ namespace HisRoyalRedness.com.Test
         public void RomanNumeralCreationSubtractive()
         {
             // Basics
-            //1.ToRomanNumerals(false).Should().Be("I");
-            //2.ToRomanNumerals(false).Should().Be("II");
-            //3.ToRomanNumerals(false).Should().Be("III");
-            4.ToRomanNumerals().Should().Be("IIII");
-            //5.ToRomanNumerals(false).Should().Be("V");
-            //6.ToRomanNumerals(false).Should().Be("VI");
-            //7.ToRomanNumerals(false).Should().Be("VII");
-            //8.ToRomanNumerals(false).Should().Be("VIII");
-            //9.ToRomanNumerals(false).Should().Be("VIIII");
-            //10.ToRomanNumerals(false).Should().Be("X");
+            1.ToRomanNumerals().Should().Be("I");
+            2.ToRomanNumerals().Should().Be("II");
+            3.ToRomanNumerals().Should().Be("III");
+            4.ToRomanNumerals().Should().Be("IV");
+            5.ToRomanNumerals().Should().Be("V");
+            6.ToRomanNumerals().Should().Be("VI");
+            7.ToRomanNumerals().Should().Be("VII");
+            8.ToRomanNumerals().Should().Be("VIII");
+            9.ToRomanNumerals().Should().Be("IX");
+            10.ToRomanNumerals().Should().Be("X");
+
+            14.ToRomanNumerals().Should().Be("XIV");
+            49.ToRomanNumerals().Should().Be("XLIX");
+            54.ToRomanNumerals().Should().Be("LIV");
+            59.ToRomanNumerals().Should().Be("LIX");
+            64.ToRomanNumerals().Should().Be("LXIV");
+            99.ToRomanNumerals().Should().Be("XCIX");
         }
     }
 }

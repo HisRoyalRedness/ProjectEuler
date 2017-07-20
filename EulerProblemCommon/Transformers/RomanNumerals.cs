@@ -43,11 +43,115 @@ namespace HisRoyalRedness.com
             iv.   C can only be placed before D and M.
         */
 
-        public static ulong FromRomanNumerals(this string number)
+        public static ulong FromRomanNumerals(this string number, bool throwIfInvalid = true)
         {
+            // M CM D CD C XC L XL X IX IV V I
+            var tokens1 = "MCMDCDCXCLXLXIXIVVI".RomanScanner().ToList();
+            var tokens2 = "M CM D CD C XC L XL X IX IV V I".RomanScanner(true).ToList();
+
+
             return 0;
         }
 
+
+        static IEnumerable<RomanToken> RomanScanner(this string number, bool ignoreSpace = false)
+        {
+            if ((number?.Length ?? 0) == 0)
+            {
+                yield return RomanToken.EOS;
+                yield break;
+            }
+
+            char currentChar = '\0';
+            char nextChar = char.ToUpper(number[0]);
+            var i = 1;
+            var fetchNext = false;
+
+            while(true)
+            {
+                while(true)
+                {
+                    currentChar = nextChar;
+                    nextChar = (i >= number.Length) ? '\0' : char.ToUpper(number[i++]);
+                    if (fetchNext)
+                        fetchNext = false;
+                    else
+                        break;
+                } 
+
+                switch(currentChar)
+                {
+                    case 'M': yield return RomanToken.M; break;
+                    case 'D': yield return RomanToken.D; break;
+                    case 'C':
+                        if (nextChar == 'M')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.CM;
+                        }
+                        else if (nextChar == 'D')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.CD;
+                        }
+                        else
+                            yield return RomanToken.C;
+                        break;
+                    case 'L': yield return RomanToken.L; break;
+                    case 'X':
+                        if (nextChar == 'L')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.XL;
+                        }
+                        else if (nextChar == 'C')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.XC;
+                        }
+                        else
+                            yield return RomanToken.X;
+                        break;
+                    case 'V': yield return RomanToken.V; break;
+                    case 'I':
+                        if (nextChar == 'V')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.IV;
+                        }
+                        else if (nextChar == 'X')
+                        {
+                            fetchNext = true;
+                            yield return RomanToken.IX;
+                        }
+                        else
+                            yield return RomanToken.I;
+                        break;
+                    case '\0':
+                        yield return RomanToken.EOS;
+                        yield break;
+                    default:
+                        if (!ignoreSpace || currentChar != ' ')
+                        {
+                            yield return RomanToken.Invalid;
+                            yield break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        enum RomanToken { M, D, C, L, X, V, I, CD, CM, XL, XC, IV, IX, Invalid, EOS };
+
+
+        static void ParseError(string number, int index)
+        {
+            throw new InvalidOperationException($"{number} is not a valid Roman numberal. The digit '{number[index - 1]}' at position {index} is unexpected.");
+        }
+
+        
+
+        #region ToRomanNumerals
         public static string ToRomanNumerals(this ulong number, bool subtractive = true)
         {
             var sb = new StringBuilder();
@@ -58,27 +162,37 @@ namespace HisRoyalRedness.com
                     sb.Append(denom.Item1);
                     number -= denom.Item2;
                 }
-                if (subtractive && denom.Item4 != 0 && denom.Item2 - denom.Item4 == number)
+                if (subtractive && number + denom.Item4 >= denom.Item2)
                 {
                     sb.Append(denom.Item3);
                     sb.Append(denom.Item1);
-                    number -= denom.Item4;
+                    number -= (denom.Item2 - denom.Item4);
                 }
                 if (number == 0)
                     break;
             }
             return sb.ToString();
         }
+        #endregion ToRomanNumerals
+
+        const int ROMAN_M = 1000;
+        const int ROMAN_D = 500;
+        const int ROMAN_C = 100;
+        const int ROMAN_L = 50;
+        const int ROMAN_X = 10;
+        const int ROMAN_V = 5;
+        const int ROMAN_I = 1;
+        const int ROMAN__ = 0;
 
         static Tuple<char, ulong, char, ulong>[] _romanDenominations = new[]
         {
-            new Tuple<char, ulong, char, ulong>('M', 1000, 'C', 100),
-            new Tuple<char, ulong, char, ulong>('D', 500, 'C', 100),
-            new Tuple<char, ulong, char, ulong>('C', 100, 'X', 10),
-            new Tuple<char, ulong, char, ulong>('L', 50, 'X', 10),
-            new Tuple<char, ulong, char, ulong>('X', 10, 'I', 1),
-            new Tuple<char, ulong, char, ulong>('V', 5, 'I', 1),
-            new Tuple<char, ulong, char, ulong>('I', 1, '\0', 0),
+            new Tuple<char, ulong, char, ulong>('M', ROMAN_M, 'C', ROMAN_C),
+            new Tuple<char, ulong, char, ulong>('D', ROMAN_D, 'C', ROMAN_C),
+            new Tuple<char, ulong, char, ulong>('C', ROMAN_C, 'X', ROMAN_X),
+            new Tuple<char, ulong, char, ulong>('L', ROMAN_L, 'X', ROMAN_X),
+            new Tuple<char, ulong, char, ulong>('X', ROMAN_X, 'I', ROMAN_I),
+            new Tuple<char, ulong, char, ulong>('V', ROMAN_V, 'I', ROMAN_I),
+            new Tuple<char, ulong, char, ulong>('I', ROMAN_I, '\0', ROMAN__),
         };
     }
 }
