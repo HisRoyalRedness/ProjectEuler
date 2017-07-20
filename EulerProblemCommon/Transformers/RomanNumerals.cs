@@ -46,20 +46,13 @@ namespace HisRoyalRedness.com
 
         public static ulong FromRomanNumerals(this string number, bool throwIfInvalid = true, bool ignoreSpace = false)
         {
-            // M CM D CD C XC L XL X IX IV V I
-            var tokens1 = "MCMDCDCXCLXLXIXIVVI".RomanScanner().ToList();
-            var tokens2 = "M CM D CD C XC L XL X IX IV V I".RomanScanner(true).ToList();
-
             var state = RomanTokenType.None;
             var sum = (ulong)0;
             foreach (var token in RomanScanner(number, ignoreSpace))
             {
-                if (token.TokenType == RomanTokenType.EOS)
-                    break;
-
                 switch(token.TokenType)
                 {
-                    #region M
+                    #region M                   1000
                     case RomanTokenType.M:
                         if (state <= RomanTokenType.M)
                             state = token.TokenType;
@@ -67,7 +60,7 @@ namespace HisRoyalRedness.com
                             ParseError(number, token.Index);
                         break;
                     #endregion M
-                    #region CM
+                    #region CM                  900
                     case RomanTokenType.CM:
                         if (state <= RomanTokenType.M)
                             state = token.TokenType;
@@ -75,7 +68,7 @@ namespace HisRoyalRedness.com
                             ParseError(number, token.Index);
                         break;
                     #endregion CM
-                    #region D
+                    #region D                   500
                     case RomanTokenType.D:
                         if (state <= RomanTokenType.D)
                             state = token.TokenType;
@@ -83,7 +76,7 @@ namespace HisRoyalRedness.com
                             ParseError(number, token.Index);
                         break;
                     #endregion D
-                    #region CD
+                    #region CD                  400
                     case RomanTokenType.CD:
                         if (state <= RomanTokenType.D)
                             state = token.TokenType;
@@ -91,6 +84,81 @@ namespace HisRoyalRedness.com
                             ParseError(number, token.Index);
                         break;
                     #endregion CD
+                    #region C                   100
+                    case RomanTokenType.C:
+                        if (state <= RomanTokenType.C)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion C
+                    #region XC                  90
+                    case RomanTokenType.XC:
+                        if (state <= RomanTokenType.C)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion XC
+                    #region L                   50
+                    case RomanTokenType.L:
+                        if (state <= RomanTokenType.L)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion L
+                    #region XL                  40
+                    case RomanTokenType.XL:
+                        if (state <= RomanTokenType.L)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion XL
+                    #region X                   10
+                    case RomanTokenType.X:
+                        if (state <= RomanTokenType.X)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion X
+                    #region IX                  9
+                    case RomanTokenType.IX:
+                        if (state <= RomanTokenType.X)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion IX
+                    #region V                   5
+                    case RomanTokenType.V:
+                        if (state <= RomanTokenType.V)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion V
+                    #region IV                  4
+                    case RomanTokenType.IV:
+                        if (state <= RomanTokenType.V)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion IV
+                    #region I                   1
+                    case RomanTokenType.I:
+                        if (state <= RomanTokenType.I)
+                            state = token.TokenType;
+                        else
+                            ParseError(number, token.Index);
+                        break;
+                    #endregion I
+                    case RomanTokenType.EOS:
+                        return sum;
+                    case RomanTokenType.Invalid:
                     default:
                         ParseError(number, token.Index);
                         return 0;

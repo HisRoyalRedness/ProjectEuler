@@ -36,7 +36,7 @@ namespace HisRoyalRedness.com.Test
                 iii.  X can only be placed before L and C.
                 iv.   C can only be placed before D and M.
             */
-
+            "MCMDCDCXCLXLXIXVIVI".FromRomanNumerals().Should().Be(3109);
             "MCMXLIV".FromRomanNumerals().Should().Be(1944);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("743")]
     public class Problem89 : ProblemBase
     {
         /// <summary>
@@ -53,12 +54,20 @@ namespace HisRoyalRedness.com
         /// Note: You can assume that all the Roman numerals in the file contain 
         /// no more than four consecutive identical units.
         /// 
-        /// Answer: 
+        /// Answer: 743
         /// </summary>
 
         protected override string InternalSolve()
         {
-            return "";
+            return File.ReadAllLines(@"Resources\p089_roman.txt")
+                .Select(rn =>
+                {
+                    var oldLen = rn.Length;
+                    var newLen = rn.FromRomanNumerals().ToRomanNumerals().Length;
+                    return oldLen - newLen;
+                })
+                .Sum()
+                .ToString();
         }
     }
 }
