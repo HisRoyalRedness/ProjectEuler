@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace HisRoyalRedness.com.Test
 {
+    [TestCategory("Figurate Numbers")]
     [TestClass]
     public class FigurateNumberTests
     {

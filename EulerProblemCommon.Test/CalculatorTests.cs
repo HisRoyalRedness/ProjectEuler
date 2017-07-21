@@ -5,6 +5,7 @@ using FluentAssertions;
 
 namespace HisRoyalRedness.com.Test
 {
+    [TestCategory("Calculator General")]
     [TestClass]
     public class CalculatorTests
     {

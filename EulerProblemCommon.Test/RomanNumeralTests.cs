@@ -8,6 +8,7 @@ using System.Numerics;
 
 namespace HisRoyalRedness.com.Test
 {
+    [TestCategory("Roman Numerals")]
     [TestClass]
     public class RomanNumeralTests
     {
