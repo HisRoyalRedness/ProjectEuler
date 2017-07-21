@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    [Solution("73162890")]
     public class Problem79 : ProblemBase
     {
         /// <summary>
@@ -38,12 +38,46 @@ namespace HisRoyalRedness.com
         /// order, analyse the file so as to determine the shortest 
         /// possible secret passcode of unknown length.
         /// 
-        /// Answer: 
+        /// Answer: 73162890
         /// </summary>
 
         protected override string InternalSolve()
         {
-            return "";
+            var numStr = File.ReadAllLines(@"Resources\p079_keylog.txt").ToArray();
+            var digits = numStr.SelectMany(n => n.Select(c => c)).Distinct().ToArray();
+            var nums = numStr.Select(l => int.Parse(l)).Distinct().ToList();
+
+            // digits is a dictionary of all digits present in the file. It's keyed by the digits, with
+            // the value showing the relative order of each digit. We'll keep sorting based on the 
+            // key file until no more order swaps have taken place
+
+            var swapped = false;
+            var pinDigits = digits.Select((digit, index) => new { digit, index }).ToDictionary(n => n.digit, n => n.index);
+
+            do
+            {
+                swapped = false;
+                foreach(var attempt in numStr)
+                {
+                    swapped |= CheckAndSwap(ref pinDigits, attempt[0], attempt[1]);
+                    swapped |= CheckAndSwap(ref pinDigits, attempt[1], attempt[2]);
+                }
+
+            } while (swapped);
+
+            return new string(pinDigits.OrderBy(p => p.Value).Select(p => p.Key).ToArray());
+        }
+
+        static bool CheckAndSwap(ref Dictionary<char, int> pinDigits, char digit1, char digit2)
+        {
+            if (pinDigits[digit1] > pinDigits[digit2])
+            {
+                var t = pinDigits[digit1];
+                pinDigits[digit1] = pinDigits[digit2];
+                pinDigits[digit2] = t;
+                return true;
+            }
+            return false;
         }
     }
 }
