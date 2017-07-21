@@ -1,0 +1,11 @@
+<Playlist Version="1.0">
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralCreation_Basic" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralParsing_InvalidNumber" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralCreation_BasicNonSubtractive" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralCreation_BasicSubtractive" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralCreation_ExtensiveNonSubtractive" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralParsing_Basic" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralParsing_ArrangementRules" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralParsing_RepetitionSumRules" />
+  <Add Test="HisRoyalRedness.com.Test.RomanNumeralTests.RomanNumeralParsing_MCXSum" />  
+</Playlist>

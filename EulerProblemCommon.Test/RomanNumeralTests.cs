@@ -12,8 +12,24 @@ namespace HisRoyalRedness.com.Test
     public class RomanNumeralTests
     {
         [TestMethod]
-        public void RomanNumeralParsing()
+        public void RomanNumeralParsing_Basic()
         {
+            "M".FromRomanNumerals().Should().Be(1000);
+            "D".FromRomanNumerals().Should().Be(500);
+            "C".FromRomanNumerals().Should().Be(100);
+            "L".FromRomanNumerals().Should().Be(50);
+            "X".FromRomanNumerals().Should().Be(10);
+            "V".FromRomanNumerals().Should().Be(5);
+            "I".FromRomanNumerals().Should().Be(1);
+
+            "CM".FromRomanNumerals().Should().Be(900);
+            "CD".FromRomanNumerals().Should().Be(400);
+            "XC".FromRomanNumerals().Should().Be(90);
+            "XL".FromRomanNumerals().Should().Be(40);
+            "IX".FromRomanNumerals().Should().Be(9);
+            "IV".FromRomanNumerals().Should().Be(4);
+
+
             /*        
                 I = 1
                 V = 5
@@ -36,8 +52,102 @@ namespace HisRoyalRedness.com.Test
                 iii.  X can only be placed before L and C.
                 iv.   C can only be placed before D and M.
             */
-            "MCMDCDCXCLXLXIXVIVI".FromRomanNumerals().Should().Be(3109);
-            "MCMXLIV".FromRomanNumerals().Should().Be(1944);
+        }
+
+        [TestMethod]
+        public void RomanNumeralParsing_ArrangementRules()
+        {
+            // i.    Numerals must be arranged in descending order of size.
+
+            TestDigitOrdering("M", 1000, "D", 500);
+            TestDigitOrdering("M", 1000, "C", 100, true); // CM allowed - subtractive
+            TestDigitOrdering("M", 1000, "L", 50);
+            TestDigitOrdering("M", 1000, "X", 10);
+            TestDigitOrdering("M", 1000, "V", 5);
+            TestDigitOrdering("M", 1000, "I", 1);
+
+            TestDigitOrdering("D", 500, "C", 100, true); // CD allowed - subtractive
+            TestDigitOrdering("D", 500, "L", 50);
+            TestDigitOrdering("D", 500, "X", 10);
+            TestDigitOrdering("D", 500, "V", 5);
+            TestDigitOrdering("D", 500, "I", 1);
+
+            TestDigitOrdering("C", 100, "L", 50);
+            TestDigitOrdering("C", 100, "X", 10, true); // XC allowed - subtractive
+            TestDigitOrdering("C", 100, "V", 5);
+            TestDigitOrdering("C", 100, "I", 1);
+
+            TestDigitOrdering("L", 50, "X", 10, true); // XL allowed - subtractive
+            TestDigitOrdering("L", 50, "V", 5);
+            TestDigitOrdering("L", 50, "I", 1);
+
+            TestDigitOrdering("X", 10, "V", 5);
+            TestDigitOrdering("X", 10, "I", 1, true); // IX allowed  - subtractive
+
+            TestDigitOrdering("V", 5, "I", 1, true); // IV allowed - subtractive
+        }
+
+        void TestDigitOrdering(string digit1, ulong digit1Value, string digit2, ulong digit2Value, bool subtractive = false)
+        {
+            $"{digit1}{digit2}".FromRomanNumerals().Should().Be(digit1Value + digit2Value, $"{digit1}{digit2} should equate to {digit1Value + digit2Value}");
+            if (subtractive)
+                $"{digit2}{digit1}".FromRomanNumerals().Should().Be(digit1Value - digit2Value, $"{digit2}{digit1} should equate to {digit2Value - digit1Value}");
+            else
+            {
+                $"{digit2}{digit1}".FromRomanNumerals(false).Should().Be(0, $"{digit2} should not appear before {digit1}");
+                new Action(() => $"{digit2}{digit1}".FromRomanNumerals()).ShouldThrow<InvalidOperationException>($"{digit2} should not appear before {digit1}");
+            }
+        }
+
+        [TestMethod]
+        public void RomanNumeralParsing_MCXSum()
+        {
+            // ii.   M, C, and X cannot be equalled or exceeded by smaller denominations.
+
+            "VV".FromRomanNumerals(false).Should().Be(0, "X cannot be exceeded by smaller denominations");
+            "VIIIII".FromRomanNumerals(false).Should().Be(0, "X cannot be exceeded by smaller denominations");
+            new string('I', 10).FromRomanNumerals(false).Should().Be(0, "X cannot be exceeded by smaller denominations");
+            "IX".FromRomanNumerals().Should().Be(9);
+
+            "LL".FromRomanNumerals(false).Should().Be(0, "C cannot be exceeded by smaller denominations");
+            "LXXXXX".FromRomanNumerals(false).Should().Be(0, "C cannot be exceeded by smaller denominations");
+            new string('X', 10).FromRomanNumerals(false).Should().Be(0, "C cannot be exceeded by smaller denominations");
+            "XCIX".FromRomanNumerals().Should().Be(99);
+
+            "DD".FromRomanNumerals(false).Should().Be(0, "M cannot be exceeded by smaller denominations");
+            "DCCCCC".FromRomanNumerals(false).Should().Be(0, "M cannot be exceeded by smaller denominations");
+            new string('C', 10).FromRomanNumerals(false).Should().Be(0, "M cannot be exceeded by smaller denominations");
+            "CMXCIX".FromRomanNumerals().Should().Be(999);
+        }
+
+        [TestMethod]
+        public void RomanNumeralParsing_RepetitionRules()
+        {
+            // iii.  D, L, and V can each only appear once.
+            TestDigitRepetition("D", 500, false);
+            TestDigitRepetition("L", 50, false);
+            TestDigitRepetition("V", 5, false);
+
+            TestDigitRepetition("M", 1000, true);
+            TestDigitRepetition("C", 100, true);
+            TestDigitRepetition("X", 10, true);
+            TestDigitRepetition("I", 1, true);
+
+        }
+
+        void TestDigitRepetition(string digit, ulong value, bool canRepeat)
+        {
+            $"{digit}".FromRomanNumerals().Should().Be(value, $"{digit} should equal {value}");
+            if (canRepeat)
+            {
+                $"{digit}{digit}".FromRomanNumerals().Should().Be(value * 2, $"{digit}{digit} should equal {value * 2}");
+                $"{digit}{digit}{digit}".FromRomanNumerals().Should().Be(value * 3, $"{digit}{digit}{digit} should equal {value * 3}");
+            }
+            else
+            {
+                $"{digit}{digit}".FromRomanNumerals(false).Should().Be(0, $"{digit} should not appear more than once.");
+                new Action(() => $"{digit}{digit}".FromRomanNumerals()).ShouldThrow<InvalidOperationException>($"{digit} should not appear more than once.");
+            }
         }
 
         [TestMethod]
@@ -53,7 +163,47 @@ namespace HisRoyalRedness.com.Test
 
 
         [TestMethod]
-        public void RomanNumeralCreationNonSubtractive()
+        public void RomanNumeralCreation_BasicNonSubtractive()
+        {
+            1000.ToRomanNumerals(false).Should().Be("M");
+            500.ToRomanNumerals(false).Should().Be("D");
+            100.ToRomanNumerals(false).Should().Be("C");
+            50.ToRomanNumerals(false).Should().Be("L");
+            10.ToRomanNumerals(false).Should().Be("X");
+            5.ToRomanNumerals(false).Should().Be("V");
+            1.ToRomanNumerals(false).Should().Be("I");
+
+            900.ToRomanNumerals(false).Should().Be("DCCCC");
+            400.ToRomanNumerals(false).Should().Be("CCCC");
+            90.ToRomanNumerals(false).Should().Be("LXXXX");
+            40.ToRomanNumerals(false).Should().Be("XXXX");
+            9.ToRomanNumerals(false).Should().Be("VIIII");
+            4.ToRomanNumerals(false).Should().Be("IIII");
+        }
+
+        [TestMethod]
+        public void RomanNumeralCreation_BasicSubtractive()
+        {
+            1000.ToRomanNumerals().Should().Be("M");
+            500.ToRomanNumerals().Should().Be("D");
+            100.ToRomanNumerals().Should().Be("C");
+            50.ToRomanNumerals().Should().Be("L");
+            10.ToRomanNumerals().Should().Be("X");
+            5.ToRomanNumerals().Should().Be("V");
+            1.ToRomanNumerals().Should().Be("I");
+
+
+            900.ToRomanNumerals().Should().Be("CM");
+            400.ToRomanNumerals().Should().Be("CD");
+            90.ToRomanNumerals().Should().Be("XC");
+            40.ToRomanNumerals().Should().Be("XL");
+            9.ToRomanNumerals().Should().Be("IX");
+            4.ToRomanNumerals().Should().Be("IV");
+        }
+
+
+        [TestMethod]
+        public void RomanNumeralCreation_ExtensiveNonSubtractive()
         {
             // Basics
             1.ToRomanNumerals(false).Should().Be("I");
@@ -149,29 +299,6 @@ namespace HisRoyalRedness.com.Test
             1656.ToRomanNumerals(false).Should().Be("MDCLVI");
             1661.ToRomanNumerals(false).Should().Be("MDCLXI");
             1666.ToRomanNumerals(false).Should().Be("MDCLXVI");
-        }
-
-        [TestMethod]
-        public void RomanNumeralCreationSubtractive()
-        {
-            // Basics
-            1.ToRomanNumerals().Should().Be("I");
-            2.ToRomanNumerals().Should().Be("II");
-            3.ToRomanNumerals().Should().Be("III");
-            4.ToRomanNumerals().Should().Be("IV");
-            5.ToRomanNumerals().Should().Be("V");
-            6.ToRomanNumerals().Should().Be("VI");
-            7.ToRomanNumerals().Should().Be("VII");
-            8.ToRomanNumerals().Should().Be("VIII");
-            9.ToRomanNumerals().Should().Be("IX");
-            10.ToRomanNumerals().Should().Be("X");
-
-            14.ToRomanNumerals().Should().Be("XIV");
-            49.ToRomanNumerals().Should().Be("XLIX");
-            54.ToRomanNumerals().Should().Be("LIV");
-            59.ToRomanNumerals().Should().Be("LIX");
-            64.ToRomanNumerals().Should().Be("LXIV");
-            99.ToRomanNumerals().Should().Be("XCIX");
-        }
+        }        
     }
 }
