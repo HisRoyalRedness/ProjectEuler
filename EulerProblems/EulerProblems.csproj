@@ -74,6 +74,7 @@
     <Compile Include="1 to 100\51 to 75\Problem063.cs" />
     <Compile Include="1 to 100\51 to 75\Problem065.cs" />
     <Compile Include="1 to 100\76 to 100\Problem079.cs" />
+    <Compile Include="1 to 100\76 to 100\Problem081.cs" />
     <Compile Include="1 to 100\76 to 100\Problem089.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
     <Compile Include="1 to 100\76 to 100\Problem092.cs" />
@@ -119,6 +120,9 @@
   <ItemGroup>
     <Content Include="Resources\About Roman Numerals.txt" />
     <Content Include="Resources\p079_keylog.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\p081_matrix.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\p089_roman.txt">
