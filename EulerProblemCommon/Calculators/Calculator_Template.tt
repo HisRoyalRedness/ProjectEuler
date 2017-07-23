@@ -74,19 +74,19 @@ namespace HisRoyalRedness.com
         static ulong[] ToUlongArray(IEnumerable<<#=t#>> arr) => arr.Select(u => (ulong)<# if (t=="int" || t=="long") {#>(u<0?-u:u)<#} else { #>u<# }#>).ToArray();
 <# } #>
 
-<# foreach(var t in types.Where(tt => tt != "ulong")) { #>
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
         public static <#=t#> LCM(params <#=t#>[] series) => (<#=t#>)LCM(ToUlongArray(series));
 <# } #>        
 
-<# foreach(var t in types.Where(tt => tt != "ulong")) { #>
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
         public static <#=t#> LCM(this IEnumerable<<#=t#>> series) => (<#=t#>)LCM(ToUlongArray(series));
 <# } #>      
 
-<# foreach(var t in types.Where(tt => tt != "ulong")) { #>
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
         public static <#=t#> GCD(params <#=t#>[] series) => (<#=t#>)GCD(ToUlongArray(series));
-<# } #>        
+<# } #>
 
-<# foreach(var t in types.Where(tt => tt != "ulong")) { #>
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
         public static <#=t#> GCD(this IEnumerable<<#=t#>> series) => (<#=t#>)GCD(ToUlongArray(series));
 <# } #>
         #endregion GCD and LCM

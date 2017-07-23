@@ -72,6 +72,7 @@
     <Compile Include="1 to 100\51 to 75\Problem060.cs" />
     <Compile Include="1 to 100\51 to 75\Problem061.cs" />
     <Compile Include="1 to 100\51 to 75\Problem063.cs" />
+    <Compile Include="1 to 100\51 to 75\Problem065.cs" />
     <Compile Include="1 to 100\76 to 100\Problem079.cs" />
     <Compile Include="1 to 100\76 to 100\Problem089.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
