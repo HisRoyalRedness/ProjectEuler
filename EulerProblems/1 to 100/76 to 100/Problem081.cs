@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -18,7 +19,9 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    [Solution("")]
+    using Cell = Tuple<int, int>;
+
+    [Solution("427337")]
     public class Problem81 : ProblemBase
     {
         /// <summary>
@@ -39,37 +42,60 @@ namespace HisRoyalRedness.com
         /// 80 by 80 matrix, from the top left to the bottom right by 
         /// only moving right and down.
         /// 
-        /// Answer: 
+        /// Answer: 427337
         /// </summary>
 
         protected override string InternalSolve()
         {
-            var grid = new[]
+            var grid = File
+                .ReadAllLines(@"Resources\p081_matrix.txt")
+                .Select(l => l.Split(',').Select(c => ulong.Parse(c)).ToArray())
+                .ToArray();
+
+            var rowLimit = grid.Length - 1;
+            var colLimit = grid[0].Length - 1;
+
+            foreach (var diag in Diagonals(rowLimit, colLimit).Skip(1))
             {
-                new [] { 131, 673, 234, 103,  18 },
-                new [] { 201,  96, 342, 965, 150 },
-                new [] { 630, 803, 746, 422, 111 },
-                new [] { 537, 699, 497, 121, 956},
-                new [] { 805, 732, 524,  37, 331 },
-            };
-
-            var rows = 4;
-            var cols = 4;
-
-            for(var c = 0; c < cols; ++c)
-            {
-                var l = new List<int>();
-                var c1 = c;
-
-
-
-
-
-
+                foreach(var cell in diag)
+                {
+                    var up = cell.Item1 - 1 >= 0 ? grid[cell.Item1 - 1][cell.Item2] : int.MaxValue;
+                    var left = cell.Item2 - 1 >= 0 ? grid[cell.Item1][cell.Item2 - 1] : int.MaxValue;
+                    grid[cell.Item1][cell.Item2] += up < left ? up : left;
+                }
             }
 
+            return grid[rowLimit][colLimit].ToString();
+        }
 
-            return "";
+        static IEnumerable<Cell[]> Diagonals(int rowLimit, int colLimit)
+        {
+            foreach(var start in Diagonal_start(rowLimit, colLimit))
+            {
+                var r = start.Item1;
+                var c = start.Item2;
+
+                var list = new List<Cell>();
+                while (c >= 0 && r <= rowLimit)
+                    list.Add(new Cell( r++, c--));
+                yield return list.ToArray();
+            }
+        }
+
+        static IEnumerable<Cell> Diagonal_start(int rowLimit, int colLimit)
+        {
+            var row = 0;
+            var col = 0;
+
+            while (row < rowLimit || col < colLimit)
+            {
+                yield return new Cell(row, col);
+                if (col < colLimit)
+                    ++col;
+                else
+                    ++row;
+            }
+            yield return new Cell(row, col);
         }
     }
 }
