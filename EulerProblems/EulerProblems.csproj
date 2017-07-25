@@ -78,6 +78,7 @@
     <Compile Include="1 to 100\76 to 100\Problem089.cs" />
     <Compile Include="1 to 100\76 to 100\Problem090.cs" />
     <Compile Include="1 to 100\76 to 100\Problem092.cs" />
+    <Compile Include="1 to 100\76 to 100\Problem100.cs" />
     <Compile Include="601 to 700\600 to 625\Problem607.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
