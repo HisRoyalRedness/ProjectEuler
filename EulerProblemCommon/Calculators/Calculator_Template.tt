@@ -90,6 +90,16 @@ namespace HisRoyalRedness.com
         public static <#=t#> GCD(this IEnumerable<<#=t#>> series) => (<#=t#>)GCD(ToUlongArray(series));
 <# } #>
         #endregion GCD and LCM
+
+        #region Perfect square and integer square root
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
+        public static bool IsPerfectSquare(this <#=t#> square) => IsPerfectSquare((ulong)square);
+<# } #>
+
+<# foreach(var t in types.Where(tt => tt != "ulong" && tt != "BigInteger")) { #>
+        public static <#=t#> IntSquareRoot(this <#=t#> square) => (<#=t#>)IntSquareRoot((ulong)square);
+<# } #>
+        #endregion Perfect square and integer square root
     }
 }
 

@@ -76,6 +76,7 @@
                     <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
                     <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
                     <GridViewColumn Header="{x:Static local:Constants.LastSolvedHeader}" Width="150" DisplayMemberBinding="{Binding LastSolved, Converter={StaticResource FormatConverter}, ConverterParameter='yyyy-MM-dd HH:mm:ss'}" />
+                    <!--<GridViewColumn Header="{x:Static local:Constants.AnalysisHeader}" Width="200" DisplayMemberBinding="{Binding Analysis}" />-->
                 </GridView>                
             </ListView.View>
             <ListView.ItemContainerStyle>

@@ -21,16 +21,22 @@ namespace HisRoyalRedness.com
     [DataContract]
     public class ProblemSummary : IProblem
     {
-        public ProblemSummary(int problemNumber, string solution)
+        public ProblemSummary(int problemNumber, string solution, string analysis, string summary)
         {
             ProblemNumber = problemNumber;
             Solution = solution;
+            Analysis = analysis;
+            Summary = summary;
         }
 
         [DataMember]
         public int ProblemNumber { get; private set; }
         [DataMember]
         public string Solution { get; private set; }
+        [DataMember]
+        public string Analysis { get; private set; }
+        [DataMember]
+        public string Summary { get; private set; }
 
         public int CompareTo(IProblem other)
             => ProblemComparer.Default.Compare(this, other);

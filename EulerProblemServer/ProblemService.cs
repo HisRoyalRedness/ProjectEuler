@@ -39,7 +39,9 @@ namespace HisRoyalRedness.com
                 .Problems.Select(kv =>
                         new ProblemSummary(
                             kv.Key,
-                            kv.Value.Solution)
+                            kv.Value.Solution,
+                            kv.Value.Analysis,
+                            kv.Value.Summary)
                         .Tap(ps => _logger.Debug($"Problem: {ps.ProblemNumber}, Solution: {ps.Solution}")))
                 .ToList();
 

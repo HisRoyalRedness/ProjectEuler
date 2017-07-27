@@ -28,17 +28,32 @@ namespace HisRoyalRedness.com
                 throw new ArgumentException($"Could not determine the problem number for '{name}'.");
             _problemNumber = int.Parse(match.Value);
             _solution = this.GetAttributes<SolutionAttribute>()?.FirstOrDefault()?.Solution;
+            _analysis = this.GetAttributes<AnalysisAttribute>()?.FirstOrDefault()?.Analysis;
+
+            var summaryLink = $"Problem [{_problemNumber}](https://projecteuler.net/problem={_problemNumber})";
+
+            _summary = $"{MarkdownHeading(summaryLink)}\n" +
+                this.GetAttributes<SummaryAttribute>()?.FirstOrDefault()?.Summary +
+                $"\n{MarkdownHeading("Solution", 2)}{_solution}";
         }
 
         public int ProblemNumber => _problemNumber;
         public string Solution => _solution;
+        public string Analysis => _analysis;
+        public string Summary => _summary;
         public string Solve() => InternalSolve();
         public int CompareTo(IProblem other) => ProblemComparer.Default.Compare(this, other);
 
         protected abstract string InternalSolve();
 
+        static string MarkdownHeading(string text, int level = 1)
+            => $"{text}\n{new string((level == 1 ? '=' : '-'), text.Length)}\n";
+
+
         readonly int _problemNumber = 0;
         readonly string _solution = string.Empty;
+        readonly string _analysis = string.Empty;
+        readonly string _summary = string.Empty;
         readonly Regex _problemNumberRegex = new Regex(@"(?<=^problem)\d+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     }
 }

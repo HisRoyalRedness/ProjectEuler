@@ -25,6 +25,26 @@ namespace HisRoyalRedness.com
 
         public string Solution { get; private set; }
     }
+
+    public class AnalysisAttribute : Attribute
+    {
+        public AnalysisAttribute(string analysis)
+        {
+            Analysis = analysis;
+        }
+
+        public string Analysis { get; private set; }
+    }
+
+    public class SummaryAttribute : Attribute
+    {
+        public SummaryAttribute(string summary)
+        {
+            Summary = summary;
+        }
+
+        public string Summary { get; private set; }
+    }
 }
 
 /*

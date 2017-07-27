@@ -32,6 +32,20 @@ namespace HisRoyalRedness.com
         }
         string _embeddedSolution;
 
+        public string Analysis
+        {
+            get { return _rawAnalysis; }
+            set { SetProperty(ref _rawAnalysis, value); }
+        }
+        string _rawAnalysis;
+
+        public string Summary
+        {
+            get { return _rawSummary; }
+            set { SetProperty(ref _rawSummary, value); }
+        }
+        string _rawSummary;
+
         public string CalculatedSolution
         {
             get { return _calculatedSolution; }

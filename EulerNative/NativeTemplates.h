@@ -79,3 +79,46 @@ T lcm_multi(T *v, int size)
 		acc = lcm(acc, v[i]);
 	return acc;
 }
+
+template<typename T>
+constexpr T int_sqrt(T n)
+{
+    // AREA-EFFICIENT IMPLEMENTATION OF A FAST SQUARE ROOT ALGORITHM
+    // Matti T. Tommiska
+    // http://lib.tkk.fi/Diss/2005/isbn9512275279/article3.pdf
+    T mask = static_cast<T>(1) << ((sizeof(n) * 8) - 2);
+    T root = 0;
+    T remainder = n;
+
+    while (mask != 0)
+    {
+        if ((root + mask) <= remainder)
+        {
+            remainder -= (root + mask);
+            root += (mask << 1);
+        }
+        root >>= 1;
+        mask >>= 2;
+    }
+    return root;
+}
+
+template<typename T>
+constexpr bool is_perfect_square(T n)
+{
+    T mask = static_cast<T>(1) << ((sizeof(n) * 8) - 2);
+    T root = 0;
+    T remainder = n;
+
+    while (mask != 0)
+    {
+        if ((root + mask) <= remainder)
+        {
+            remainder -= (root + mask);
+            root += (mask << 1);
+        }
+        root >>= 1;
+        mask >>= 2;
+    }
+    return remainder == 0;
+}

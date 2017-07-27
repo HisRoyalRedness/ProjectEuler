@@ -27,6 +27,7 @@ namespace HisRoyalRedness.com
         public const string CalculatedSolutionHeader = "Calculated Solution";
         public const string SolveTimeHeader = "Solve Time";
         public const string LastSolvedHeader = "Last solved";
+        public const string AnalysisHeader = "Analysis";
 
         public const string ProblemSummaryFile = "EulerProblems.xml";
     }

@@ -77,55 +77,11 @@ namespace HisRoyalRedness.com
 
         public static BigInteger GCD(this IEnumerable<BigInteger> series) => GCD(series.ToArray());
 
-        static BigInteger GCD_bigint(BigInteger u, BigInteger v)
-        {
-            // https://en.wikipedia.org/wiki/Binary_GCD_algorithm
-
-            int shift;
-
-            /* GCD(0,v) == v; GCD(u,0) == u, GCD(0,0) == 0 */
-            if (u == 0) return v;
-            if (v == 0) return u;
-
-            /* Let shift := lg K, where K is the greatest power of 2
-            dividing both u and v. */
-            for (shift = 0; IsEven(u | v); ++shift)
-            {
-                u >>= 1;
-                v >>= 1;
-            }
-
-            while (IsEven(u))
-                u >>= 1;
-
-            /* From here on, u is always odd. */
-            do
-            {
-                /* remove all factors of 2 in v -- they are not common */
-                /*   note: v is not zero, so while will terminate */
-                while (IsEven(v))  /* Loop X */
-                    v >>= 1;
-
-                /* Now u and v are both odd. Swap if necessary so u <= v,
-                then set v = v - u (which is even). For bignums, the
-                swapping is just pointer movement, and the subtraction
-                can be done in-place. */
-                if (u > v)
-                {
-                    var t = v; v = u; u = t;
-                }  // Swap u and v.
-                v = v - u;                       // Here v >= u.
-            } while (v != 0);
-
-            /* restore common factors of 2 */
-            return u << shift;
-        }
-
         static BigInteger GCD_bigint(BigInteger[] bigints)
         {
             var acc = bigints[0];
             for(var i = 1; i < bigints.Length; ++i)
-                acc = GCD_bigint(acc, i);
+                acc = BigInteger.GreatestCommonDivisor(acc, i);
             return acc;
         }
         #endregion GCD BigInteger
@@ -141,7 +97,7 @@ namespace HisRoyalRedness.com
 
         public static BigInteger LCM(this IEnumerable<BigInteger> series) => LCM(series.ToArray());
 
-        static BigInteger LCM_bigint(BigInteger u, BigInteger v) => u / GCD_bigint(u, v) * v;
+        static BigInteger LCM_bigint(BigInteger u, BigInteger v) => u / BigInteger.GreatestCommonDivisor(u, v) * v;
 
         static BigInteger LCM_bigint(BigInteger[] bigints)
         {
@@ -203,9 +159,36 @@ namespace HisRoyalRedness.com
 
             return guess;
         }
-
-
         #endregion Root finding
+
+        #region Perfect square and integer square root
+        [DllImport("EulerNative.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "is_perfect_square")]
+        public static extern bool IsPerfectSquare(this ulong square);
+
+        [DllImport("EulerNative.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "int_sqrt")]
+        public static extern ulong IntSquareRoot(this ulong square);
+
+        //private static bool IsPerfectSquare(this ulong square, int bitwidth = sizeof(ulong) * 8)
+        //{
+        //    ulong mask = (ulong)(1 << (bitwidth - 2));
+        //    ulong root = 0;
+        //    ulong remainder = square;
+
+        //    while (mask != 0)
+        //    {
+        //        if ((root + mask) <= remainder)
+        //        {
+        //            remainder -= (root + mask);
+        //            root += (mask << 1);
+        //        }
+        //        root >>= 1;
+        //        mask >>= 2;
+        //    }
+
+        //    return remainder == 0;
+        //}
+
+        #endregion Perfect square and integer square root
     }
 }
 

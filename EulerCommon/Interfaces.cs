@@ -27,6 +27,8 @@ namespace HisRoyalRedness.com
     {
         int ProblemNumber { get; }
         string Solution { get; }
+        string Analysis { get; }
+        string Summary { get; }
     }
 
     /// <summary>

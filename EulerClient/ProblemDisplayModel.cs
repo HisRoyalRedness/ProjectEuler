@@ -31,6 +31,8 @@ namespace HisRoyalRedness.com
         {
             ProblemNumber = problem.ProblemNumber;
             Solution = problem.Solution;
+            Analysis = problem.Analysis;
+            Summary = problem.Summary;
             _loadedFromMef = true;
         }
 
@@ -77,6 +79,20 @@ namespace HisRoyalRedness.com
             set { SetProperty(ref _solution, value); }
         }
         string _solution = null;
+
+        public string Analysis
+        {
+            get { return _analysis; }
+            set { SetProperty(ref _analysis, value); }
+        }
+        string _analysis = null;
+
+        public string Summary
+        {
+            get { return _summary; }
+            set { SetProperty(ref _summary, value); }
+        }
+        string _summary = null;
 
         [XmlIgnoreAttribute]
         public bool LoadedFromMEF
