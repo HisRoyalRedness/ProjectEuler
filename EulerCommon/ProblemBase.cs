@@ -28,13 +28,8 @@ namespace HisRoyalRedness.com
                 throw new ArgumentException($"Could not determine the problem number for '{name}'.");
             _problemNumber = int.Parse(match.Value);
             _solution = this.GetAttributes<SolutionAttribute>()?.FirstOrDefault()?.Solution;
-            _analysis = this.GetAttributes<AnalysisAttribute>()?.FirstOrDefault()?.Analysis;
-
-            var summaryLink = $"Problem [{_problemNumber}](https://projecteuler.net/problem={_problemNumber})";
-
-            _summary = $"{MarkdownHeading(summaryLink)}\n" +
-                this.GetAttributes<SummaryAttribute>()?.FirstOrDefault()?.Summary +
-                $"\n{MarkdownHeading("Solution", 2)}{_solution}";
+            _summary = (this.GetAttributes<SummaryAttribute>()?.FirstOrDefault()?.Summary ?? "No summary").GenerateSummaryText(_problemNumber, _solution);
+            _analysis = (this.GetAttributes<AnalysisAttribute>()?.FirstOrDefault()?.Analysis ?? "No analysis").GenerateAnalysisText(_problemNumber);
         }
 
         public int ProblemNumber => _problemNumber;
@@ -45,10 +40,6 @@ namespace HisRoyalRedness.com
         public int CompareTo(IProblem other) => ProblemComparer.Default.Compare(this, other);
 
         protected abstract string InternalSolve();
-
-        static string MarkdownHeading(string text, int level = 1)
-            => $"{text}\n{new string((level == 1 ? '=' : '-'), text.Length)}\n";
-
 
         readonly int _problemNumber = 0;
         readonly string _solution = string.Empty;

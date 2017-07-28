@@ -27,16 +27,18 @@ Hello
 2. some more stuff
 ")]
     #endregion Analysis
-    [Solution("12345")]
+    [Solution("123456")]
     [Summary(@"
 Arranged probability
 --------------------
 
 If a box contains twenty-one coloured discs, composed of 
-fifteen blue discs and six red discs, and two discs were 
+fifteen blue discs and six red discs, and two discs were
 taken at random, it can be seen that the probability of 
-taking two blue discs, $P(BB) = \left(\frac{15}{21}\right)
-\times\left(\frac{14}{20}\right) = \frac{1}{2}$.
+taking two blue discs is 
+
+$$P(BB) = \left(\frac{15}{21}\right)
+\times\left(\frac{14}{20}\right) = \frac{1}{2}$$
    
 The next such arrangement, for which there is exactly 50% 
 chance of taking two blue discs at random, is a box 
@@ -56,7 +58,7 @@ number of blue discs that the box would contain.
 
             // blues = (1 + SQRT(1 + 2 * Total * (Total - 1))) / 2
 
-            ulong limit = 100000000;
+            ulong limit = 100000;
             double limitD = (double)limit;
             ulong test = 0;
             double testD = 0;
