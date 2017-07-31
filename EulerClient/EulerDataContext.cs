@@ -102,7 +102,12 @@ namespace HisRoyalRedness.com
                                     if (oldProblem == null)
                                         Problems.Add(new ProblemDisplayModel(problem));
                                     else
+                                    {
                                         oldProblem.Solution = problem.Solution;
+                                        oldProblem.Title = problem.Title;
+                                        oldProblem.Analysis = problem.Analysis;
+                                        oldProblem.Summary = problem.Summary;
+                                    }
                                 }
 
                                 // Reset the LoadedFromMEF flag
@@ -208,6 +213,7 @@ namespace HisRoyalRedness.com
             switch(header as string)
             {
                 case Constants.ProblemNumberHeader:         _customSort.SortField = SortField.ProblemNumber; break;
+                case Constants.TitleHeader:                 _customSort.SortField = SortField.Title; break;
                 case Constants.EmbeddedSolutionHeader:      _customSort.SortField = SortField.EmbeddedSolution; break;
                 case Constants.CalculatedSolutionHeader:    _customSort.SortField = SortField.CalculatedSolution; break;
                 case Constants.SolveTimeHeader:             _customSort.SortField = SortField.SolveTime; break;

@@ -45,6 +45,16 @@ namespace HisRoyalRedness.com
 
         public string Summary { get; private set; }
     }
+
+    public class TitleAttribute : Attribute
+    {
+        public TitleAttribute(string title)
+        {
+            Title = title;
+        }
+
+        public string Title { get; private set; }
+    }
 }
 
 /*

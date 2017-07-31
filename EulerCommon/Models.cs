@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -18,12 +19,14 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [DebuggerDisplay("{ToString()}")]
     [DataContract]
     public class ProblemSummary : IProblem
     {
-        public ProblemSummary(int problemNumber, string solution, string analysis, string summary)
+        public ProblemSummary(int problemNumber, string title, string solution, string analysis, string summary)
         {
             ProblemNumber = problemNumber;
+            Title = title;
             Solution = solution;
             Analysis = analysis;
             Summary = summary;
@@ -31,6 +34,8 @@ namespace HisRoyalRedness.com
 
         [DataMember]
         public int ProblemNumber { get; private set; }
+        [DataMember]
+        public string Title { get; private set; }
         [DataMember]
         public string Solution { get; private set; }
         [DataMember]
@@ -40,6 +45,8 @@ namespace HisRoyalRedness.com
 
         public int CompareTo(IProblem other)
             => ProblemComparer.Default.Compare(this, other);
+
+        public override string ToString() => $"Problem {ProblemNumber:000}. {Title}. Solution: {Solution}";
     }
 
     [DataContract]

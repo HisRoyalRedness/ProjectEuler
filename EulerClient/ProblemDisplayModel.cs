@@ -30,6 +30,7 @@ namespace HisRoyalRedness.com
         public ProblemDisplayModel(IProblem problem)
         {
             ProblemNumber = problem.ProblemNumber;
+            Title = problem.Title;
             Solution = problem.Solution;
             Analysis = problem.Analysis;
             Summary = problem.Summary;
@@ -72,6 +73,14 @@ namespace HisRoyalRedness.com
             set { SetProperty(ref _problemNumber, value); }
         }
         int _problemNumber;
+
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
+        }
+        string _title;
+
 
         public string Solution
         {
@@ -118,6 +127,7 @@ namespace HisRoyalRedness.com
     public enum SortField
     {
         ProblemNumber,
+        Title,
         EmbeddedSolution,
         CalculatedSolution,
         SolveTime,

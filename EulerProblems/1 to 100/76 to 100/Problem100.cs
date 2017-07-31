@@ -18,20 +18,10 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
-    #region Analysis
-    [Analysis(@"
-Hello
-=====
-
-1. some stuff
-2. some more stuff
-")]
-    #endregion Analysis
+    [Title("Arranged probability")]
     [Solution("123456")]
+    #region Summary and analysis
     [Summary(@"
-Arranged probability
---------------------
-
 If a box contains twenty-one coloured discs, composed of 
 fifteen blue discs and six red discs, and two discs were
 taken at random, it can be seen that the probability of 
@@ -49,6 +39,15 @@ By finding the first arrangement to contain over
 $10^12$ = 1,000,000,000,000 discs in total, determine the 
 number of blue discs that the box would contain.
 ")]
+    [Analysis(@"
+Hello
+=====
+
+1. some stuff
+2. some more stuff
+")]
+    #endregion Summary and analysis
+
     public class Problem100 : ProblemBase
     {
         protected override string InternalSolve()

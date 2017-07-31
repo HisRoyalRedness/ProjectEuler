@@ -22,7 +22,7 @@ namespace HisRoyalRedness.com
 
         static void ProblemSolver(string[] args)
         {
-            int problemNumber = 100;
+            int problemNumber = 65;
 
             foreach (var a in args)
                 if (int.TryParse(a, out problemNumber))

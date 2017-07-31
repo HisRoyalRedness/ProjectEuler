@@ -39,10 +39,11 @@ namespace HisRoyalRedness.com
                 .Problems.Select(kv =>
                         new ProblemSummary(
                             kv.Key,
+                            kv.Value.Title,
                             kv.Value.Solution,
                             kv.Value.Analysis,
                             kv.Value.Summary)
-                        .Tap(ps => _logger.Debug($"Problem: {ps.ProblemNumber}, Solution: {ps.Solution}")))
+                        .Tap(ps => _logger.Debug(ps.ToString())))
                 .ToList();
 
             _logger.Debug($"Found {summaries.Count} problems.");

@@ -12,19 +12,20 @@ namespace HisRoyalRedness.com
         static readonly string PANDOC_EXE = "pandoc.exe";
         static readonly string PANDOC_TEMPLATE = @"pandoc_html.template";
 
-        public static string GenerateSummaryText(this string rawSummary, int problemNumber, string solution)
+        public static string GenerateSummaryText(this string rawSummary, int problemNumber, string title, string solution)
         {
             var header = $"Problem [{problemNumber}](https://projecteuler.net/problem={problemNumber}) Summary";
             return 
                 $"% Problem {problemNumber} Summary\n% Keith Fletcher\n" + 
-                $"{header.MarkdownHeading()}\n" + 
+                $"{header.MarkdownHeading()}\n\n" +
+                (string.IsNullOrEmpty(title) ? "" :  $"{title.MarkdownHeading()}\n\n") +
                 $"{rawSummary}\n\n" + 
                 $"{MarkdownHeading("Solution", 2)}{solution}";
         }
 
         public static string GenerateAnalysisText(this string rawAnalysis, int problemNumber)
-        { 
-            var header = $"Problem {problemNumber} Analysis";
+        {
+            var header = $"Problem [{problemNumber}](https://projecteuler.net/problem={problemNumber}) Analysis";
             return $"% {header}\n% Keith Fletcher\n" +
                 $"{header.MarkdownHeading()}\n" +
                 $"{rawAnalysis}\n";

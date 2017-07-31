@@ -23,6 +23,7 @@ namespace HisRoyalRedness.com
 
         // Grid headers
         public const string ProblemNumberHeader = "No.";
+        public const string TitleHeader = "Title";
         public const string EmbeddedSolutionHeader = "Embedded Solution";
         public const string CalculatedSolutionHeader = "Calculated Solution";
         public const string SolveTimeHeader = "Solve Time";

@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 
 namespace HisRoyalRedness.com
 {
+    [DebuggerDisplay("{_debugDisplay}")]
     public abstract class ProblemBase : IExportedProblem
     {
         protected ProblemBase()
@@ -27,24 +28,30 @@ namespace HisRoyalRedness.com
             if (!match.Success)
                 throw new ArgumentException($"Could not determine the problem number for '{name}'.");
             _problemNumber = int.Parse(match.Value);
+            _title = this.GetAttributes<TitleAttribute>()?.FirstOrDefault()?.Title;
             _solution = this.GetAttributes<SolutionAttribute>()?.FirstOrDefault()?.Solution;
-            _summary = (this.GetAttributes<SummaryAttribute>()?.FirstOrDefault()?.Summary ?? "No summary").GenerateSummaryText(_problemNumber, _solution);
+            _summary = (this.GetAttributes<SummaryAttribute>()?.FirstOrDefault()?.Summary ?? "No summary").GenerateSummaryText(_problemNumber, _title, _solution);
             _analysis = (this.GetAttributes<AnalysisAttribute>()?.FirstOrDefault()?.Analysis ?? "No analysis").GenerateAnalysisText(_problemNumber);
+            _debugDisplay = $"Problem {_problemNumber:000}: {_title}";
         }
 
         public int ProblemNumber => _problemNumber;
+        public string Title => _title;
         public string Solution => _solution;
         public string Analysis => _analysis;
         public string Summary => _summary;
         public string Solve() => InternalSolve();
         public int CompareTo(IProblem other) => ProblemComparer.Default.Compare(this, other);
 
+        public override string ToString() => _debugDisplay;
         protected abstract string InternalSolve();
 
         readonly int _problemNumber = 0;
+        readonly string _title = string.Empty;
         readonly string _solution = string.Empty;
         readonly string _analysis = string.Empty;
         readonly string _summary = string.Empty;
+        readonly string _debugDisplay;
         readonly Regex _problemNumberRegex = new Regex(@"(?<=^problem)\d+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     }
 }

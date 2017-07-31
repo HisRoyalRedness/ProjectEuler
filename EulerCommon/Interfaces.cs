@@ -26,6 +26,7 @@ namespace HisRoyalRedness.com
     public interface IProblem : IComparable<IProblem>
     {
         int ProblemNumber { get; }
+        string Title { get; }
         string Solution { get; }
         string Analysis { get; }
         string Summary { get; }

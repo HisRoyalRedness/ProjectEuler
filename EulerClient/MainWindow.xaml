@@ -72,6 +72,7 @@
             <ListView.View>
                 <GridView >
                     <GridViewColumn Header="{x:Static local:Constants.ProblemNumberHeader}" Width="50" DisplayMemberBinding="{Binding ProblemNumber}" />
+                    <GridViewColumn Header="{x:Static local:Constants.TitleHeader}" Width="200" DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn Header="{x:Static local:Constants.EmbeddedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding Solution}" />
                     <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
                     <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
