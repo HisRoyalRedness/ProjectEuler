@@ -132,7 +132,9 @@ namespace HisRoyalRedness.com
 
         void SaveProblems()
         {
-            var serialProblems = Problems.ToArray();
+            var serialProblems = Problems
+                .OrderBy(p => p.ProblemNumber)
+                .ToArray();
             Task.Run(() =>
             {
                 try

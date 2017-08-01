@@ -74,13 +74,13 @@ namespace HisRoyalRedness.com
         }
         int _problemNumber;
 
+        [XmlIgnoreAttribute]
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
         string _title;
-
 
         public string Solution
         {
@@ -89,6 +89,7 @@ namespace HisRoyalRedness.com
         }
         string _solution = null;
 
+        [XmlIgnoreAttribute]
         public string Analysis
         {
             get { return _analysis; }
@@ -96,6 +97,7 @@ namespace HisRoyalRedness.com
         }
         string _analysis = null;
 
+        [XmlIgnoreAttribute]
         public string Summary
         {
             get { return _summary; }
