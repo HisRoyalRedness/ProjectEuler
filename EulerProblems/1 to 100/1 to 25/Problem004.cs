@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Largest palindrome product")]
     [Solution("906609")]
     public class Problem4 : ProblemBase
     {

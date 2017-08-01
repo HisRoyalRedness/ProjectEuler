@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Smallest multiple")]
     [Solution("232792560")]
     public class Problem5 : ProblemBase
     {

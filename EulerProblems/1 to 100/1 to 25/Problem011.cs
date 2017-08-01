@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Largest product in a grid")]
     [Solution("70600674")]
     public class Problem11 : ProblemBase
     {

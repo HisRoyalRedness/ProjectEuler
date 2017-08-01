@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Largest product in a series")]
     [Solution("23514624000")]
     public class Problem8 : ProblemBase
     {

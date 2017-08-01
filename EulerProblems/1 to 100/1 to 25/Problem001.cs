@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Multiples of 3 and 5")]
     [Solution("233168")]
     public class Problem1 : ProblemBase
     {

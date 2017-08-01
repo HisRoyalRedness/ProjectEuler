@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Sum square difference")]
     [Solution("25164150")]
     public class Problem6 : ProblemBase
     {

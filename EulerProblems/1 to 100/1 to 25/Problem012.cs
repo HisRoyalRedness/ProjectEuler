@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Highly divisible triangular number")]
     [Solution("")]
     public class Problem12 : ProblemBase
     {

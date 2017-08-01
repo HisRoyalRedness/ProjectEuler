@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Special Pythagorean triplet")]
     [Solution("31875000")]
     public class Problem9 : ProblemBase
     {

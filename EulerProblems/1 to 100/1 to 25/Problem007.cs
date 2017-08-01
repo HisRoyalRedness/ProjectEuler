@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("10001st prime")]
     [Solution("104743")]
     public class Problem7 : ProblemBase
     {

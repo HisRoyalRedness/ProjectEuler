@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Summation of primes")]
     [Solution("142913828922")]
     public class Problem10 : ProblemBase
     {

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace HisRoyalRedness.com
 {
+    [Title("Largest prime factor")]
     [Solution("6857")]
     public class Problem3 : ProblemBase
     {
