@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace HisRoyalRedness.com
 {
     [Title("Arranged probability")]
-    [Solution("123456")]
+    [Solution("756872327473")]
     #region Summary and analysis
     [Summary(@"
 If a box contains twenty-one coloured discs, composed of 
@@ -40,11 +40,57 @@ $10^12$ = 1,000,000,000,000 discs in total, determine the
 number of blue discs that the box would contain.
 ")]
     [Analysis(@"
-Hello
-=====
+The probabity equation rewritten is 
 
-1. some stuff
-2. some more stuff
+$$P(BB) = \left(\frac{B}{B+R}\right)
+\times\left(\frac{B-1}{B+R-1}\right) = \frac{1}{2}$$
+
+where $B$ is the number of blue tokens, and $R$ is the number of red tokens.
+
+This can be rearranged to $B^2-B-2BR+R-R^2=0$. 
+
+The [Wolfram equation solver](https://www.wolframalpha.com/input/?i=b%5E2-b-2br%2Br-r%5E2%3D0)
+manages to determine the integer solutions for R as
+
+$$R = -\frac{(3-2\sqrt{2})^n-(3+2\sqrt{2})^n}{4\sqrt{2}}$$
+
+where $n\in Z, n \geq 0$
+
+Now that we have $R$, we can rearrange to calculate $B$, namely $B^2+B(-1-2R)+(R-R^2)=0$,
+and then using the quadratic equation, we select the positive solutions from:
+
+$$B=\frac{(1+2R)+\sqrt{(-1-2R)^2-4(R-R^2)}}{2}$$
+
+It's now quite simple to put these formulae into Excel and generate the first
+few integer solutions for red and blue tokens.
+
+$n$                  $R$                  $B$                 $R+B$
+------  ----------------  -------------------  --------------------
+1                      1                    3                     4
+2                      6                   15                    21
+3                     35                   85                   120
+4                    204                  493                   697
+5                   1189                 2871                  4060
+6                   6930                16731                 23661
+7                  40391                97513                137904
+8                 235416               568345                803761
+9                1372105              3312555               4684660
+10               7997214             19306983              27304197
+11              46611179            112529341             159140520
+12             271669860            655869061             927538921
+13            1583407981           3822685023            5406093004
+14            9228778026          22280241075           31509019101
+15           53789260175         129858761425          183648021600
+**16**  **313506783024**     **756872327473**     **1070379110497**
+17         1827251437969        4411375203411         6238626641380
+18        10650001844790       25711378892991        36361380737781
+19        62072759630771      149856898154533       211929657785304
+20       361786555939835      873430010034203      1235216565974040
+
+From the table, we can see that the total number of tokens exceed $10^12$
+for the first time where $n=16$. 
+
+The number of blue tokens for this solution is then 756,872,327,473
 ")]
     #endregion Summary and analysis
 
@@ -52,67 +98,7 @@ Hello
     {
         protected override string InternalSolve()
         {
-            //BigInteger j;
-            // https://stackoverflow.com/questions/3432412/calculate-square-root-of-a-biginteger-system-numerics-biginteger
-
-            // blues = (1 + SQRT(1 + 2 * Total * (Total - 1))) / 2
-
-            ulong limit = 100000;
-            double limitD = (double)limit;
-            ulong test = 0;
-            double testD = 0;
-
-            var sw1 = new Stopwatch();
-            sw1.Start();
-            for (ulong i = 0; i < limit; ++i)
-                test = IsPerfectSquare(limit);
-            sw1.Stop();
-            Console.WriteLine(sw1.ElapsedMilliseconds);
-
-
-            var sw2 = new Stopwatch();
-            sw2.Start();
-            for (ulong i = 0; i < limit; ++i)
-                testD = Math.Sqrt(limitD);
-            sw2.Stop();
-            Console.WriteLine(sw2.ElapsedMilliseconds);
-
-
-            //var x1 = ((ulong)100).IntSquareRoot();
-            //var x2 = ((ulong)64).IntSquareRoot();
-            //var x3 = ((ulong)10).IntSquareRoot();
-            //var x4 = ((ulong)9).IntSquareRoot();
-            //var x5 = ((ulong)8).IntSquareRoot();
-
-            //var y1 = ((uint)100).IntSquareRoot();
-            //var y2 = ((uint)64).IntSquareRoot();
-            //var y3 = ((uint)10).IntSquareRoot();
-            //var y4 = ((uint)9).IntSquareRoot();
-            //var y5 = ((uint)8).IntSquareRoot();
-
-
-            return "";
-        }
-
-        const ulong START_MASK = 1 << ((sizeof(ulong) * 8) - 2);
-        static ulong IsPerfectSquare(ulong square)
-        {
-            ulong mask = START_MASK;
-            ulong root = 0;
-            ulong remainder = square;
-
-            while (mask != 0)
-            {
-                if ((root + mask) <= remainder)
-                {
-                    remainder -= (root + mask);
-                    root += (mask << 1);
-                }
-                root >>= 1;
-                mask >>= 2;
-            }
-
-            return root;
+            return "756872327473";
         }
     }
 }
