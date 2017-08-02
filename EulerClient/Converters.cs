@@ -57,6 +57,22 @@ namespace HisRoyalRedness.com
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         { throw new NotSupportedException(); }
     }
+
+    public class SummaryConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var prob = value as IProblem;
+            if (prob != null)
+                return PandocExtensions.ConvertToHtml(prob.Summary);
+            else
+                return null;
+            //return (value as IProblem)?.Summary ?? "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        { throw new NotSupportedException(); }
+    }
 }
 
 /*

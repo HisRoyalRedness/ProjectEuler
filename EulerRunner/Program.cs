@@ -28,9 +28,11 @@ namespace HisRoyalRedness.com
                 if (int.TryParse(a, out problemNumber))
                     break;
 
+            var problem = _loader.Problems.ContainsKey(problemNumber) ? _loader.Problems[problemNumber] : null;
+
             Console.WriteLine(
-                _loader.Problems.ContainsKey(problemNumber)
-                    ? $"Solution: {_loader.Problems[problemNumber].Solve()}"
+                problem != null
+                    ? $"Solution: {problem.Solve()}"
                     : $"Problem {problemNumber} not found...");            
         }
 
@@ -66,20 +68,21 @@ namespace HisRoyalRedness.com
                             var sourceFileTime = File.GetLastWriteTimeUtc(sourceFile);
                             createSummary = File.GetLastWriteTimeUtc(summaryFile) <= sourceFileTime;
                             createanalysis = File.GetLastWriteTimeUtc(analysisFile) <= sourceFileTime;
-                        }                        
+                        }
                     }
 
                     if (createSummary)
                     {
-                        File.WriteAllText(summaryFile, PandocExtensions.ConvertToHtmlAsync(prob.Summary));
+                        File.WriteAllText(summaryFile, PandocExtensions.ConvertToHtml(prob.Summary));
                         Console.WriteLine($"Compiled summary for problem {prob.ProblemNumber} to '{summaryFile}'.");
                     }
                     if (createanalysis)
                     {
-                        File.WriteAllText(analysisFile, PandocExtensions.ConvertToHtmlAsync(prob.Analysis));
+                        File.WriteAllText(analysisFile, PandocExtensions.ConvertToHtml(prob.Analysis));
                         Console.WriteLine($"Compiled analysis for problem {prob.ProblemNumber} to '{analysisFile}'.");
                     }
                 });
+                
         }
 
         static DateTime GetLinkerTime(this Assembly assembly, TimeZoneInfo target = null)

@@ -22,6 +22,8 @@ namespace HisRoyalRedness.com
     {
         static readonly string PANDOC_EXE = "pandoc.exe";
         static readonly string PANDOC_TEMPLATE = @"pandoc_html.template";
+        static readonly string PANDOC_ARGS = $"--mathml -s --template={PANDOC_TEMPLATE}";
+        //static readonly string PANDOC_ARGS = $"--mathml -s -t html5";
 
         public static string GenerateSummaryText(this string rawSummary, int problemNumber, string title, string solution)
         {
@@ -42,37 +44,60 @@ namespace HisRoyalRedness.com
                 $"{rawAnalysis}\n";
         }
 
-        public static string ConvertToHtmlAsync(this string rawText)
+        public static string ConvertToHtml(this string rawText)
         {
-            string inFile = null;
-            string outFile = null;
-            string content = null;
             try
             {
-                inFile = Path.GetTempFileName();
-                outFile = Path.GetTempFileName();
-                File.WriteAllText(inFile, rawText);
-
                 var psi = new ProcessStartInfo(PANDOC_EXE)
                 {
-                    Arguments = $"--mathml -s --template={PANDOC_TEMPLATE} -o \"{outFile}\" \"{inFile}\"",
+                    Arguments = PANDOC_ARGS,
                     WorkingDirectory = Directory.GetCurrentDirectory(),
-                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
                 };
 
+                var proc = Process.Start(psi);
 
-                var p = Process.Start(psi);
-                p.WaitForExit(10000);
-                content = File.ReadAllText(outFile);
+                using (proc.StandardInput)
+                    proc.StandardInput.Write(rawText);
+
+                return proc.StandardOutput.ReadToEnd();
             }
-            finally
+            catch (Exception ex)
             {
-                if (inFile != null && File.Exists(inFile))
-                    File.Delete(inFile);
-                if (outFile != null && File.Exists(outFile))
-                    File.Delete(outFile);
+                Console.WriteLine(ex);
             }
-            return content;
+            return null;
+        }
+
+        public static async Task<string> ConvertToHtmlAsync(this string rawText)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo(PANDOC_EXE)
+                {
+                    Arguments = PANDOC_ARGS,
+                    WorkingDirectory = Directory.GetCurrentDirectory(),
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                var proc = Process.Start(psi);
+
+                using (proc.StandardInput)
+                    await proc.StandardInput.WriteAsync(rawText);
+
+                return await proc.StandardOutput.ReadToEndAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return null;
         }
 
         static string MarkdownHeading(this string text, int level = 1)

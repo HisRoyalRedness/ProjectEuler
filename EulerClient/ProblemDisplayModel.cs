@@ -106,6 +106,14 @@ namespace HisRoyalRedness.com
         string _summary = null;
 
         [XmlIgnoreAttribute]
+        public string FormattedSummary
+        {
+            get { return _formattedSummary; }
+            set { SetProperty(ref _formattedSummary, value); }
+        }
+        string _formattedSummary = null;
+
+        [XmlIgnoreAttribute]
         public bool LoadedFromMEF
         {
             get { return _loadedFromMef; }

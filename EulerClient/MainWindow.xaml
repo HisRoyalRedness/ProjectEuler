@@ -16,13 +16,14 @@
         xmlns:local="clr-namespace:HisRoyalRedness.com"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="Project Euler Problem Client" Height="350" Width="850">
+        Title="Project Euler Problem Client" Height="350" Width="1600">
 
     <Window.Resources>
         <ResourceDictionary>
             <local:NullConverter x:Key="NullConverter" />
             <local:TimespanConverter x:Key="TimeSpanConverter" />
             <local:FormatConverter x:Key="FormatConverter" />
+            <local:SummaryConverter x:Key="SummaryConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -63,30 +64,47 @@
                 />
             <Grid />
         </DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListView 
+                Grid.Column="0"
+                GridViewColumnHeader.Click="SortClick"
+                IsSynchronizedWithCurrentItem="True" 
+                ItemsSource="{Binding SortedProblems}"
+                SelectedItem="{Binding CurrentProblem}" >
+                <ListView.View>
+                    <GridView >
+                        <GridViewColumn Header="{x:Static local:Constants.ProblemNumberHeader}" Width="50" DisplayMemberBinding="{Binding ProblemNumber}" />
+                        <GridViewColumn Header="{x:Static local:Constants.TitleHeader}" Width="200" DisplayMemberBinding="{Binding Title}" />
+                        <GridViewColumn Header="{x:Static local:Constants.EmbeddedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding Solution}" />
+                        <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
+                        <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
+                        <GridViewColumn Header="{x:Static local:Constants.LastSolvedHeader}" Width="150" DisplayMemberBinding="{Binding LastSolved, Converter={StaticResource FormatConverter}, ConverterParameter='yyyy-MM-dd HH:mm:ss'}" />
+                        <!--<GridViewColumn Header="{x:Static local:Constants.AnalysisHeader}" Width="200" DisplayMemberBinding="{Binding Analysis}" />-->
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
 
-        <ListView 
-            GridViewColumnHeader.Click="SortClick"
-            IsSynchronizedWithCurrentItem="True" 
-            ItemsSource="{Binding SortedProblems}"
-            SelectedItem="{Binding CurrentProblem}" >            
-            <ListView.View>
-                <GridView >
-                    <GridViewColumn Header="{x:Static local:Constants.ProblemNumberHeader}" Width="50" DisplayMemberBinding="{Binding ProblemNumber}" />
-                    <GridViewColumn Header="{x:Static local:Constants.TitleHeader}" Width="200" DisplayMemberBinding="{Binding Title}" />
-                    <GridViewColumn Header="{x:Static local:Constants.EmbeddedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding Solution}" />
-                    <GridViewColumn Header="{x:Static local:Constants.CalculatedSolutionHeader}" Width="200" DisplayMemberBinding="{Binding CalculatedSolution}" />
-                    <GridViewColumn Header="{x:Static local:Constants.SolveTimeHeader}" Width="200" DisplayMemberBinding="{Binding LastSolveTime, Converter={StaticResource TimeSpanConverter}}" />
-                    <GridViewColumn Header="{x:Static local:Constants.LastSolvedHeader}" Width="150" DisplayMemberBinding="{Binding LastSolved, Converter={StaticResource FormatConverter}, ConverterParameter='yyyy-MM-dd HH:mm:ss'}" />
-                    <!--<GridViewColumn Header="{x:Static local:Constants.AnalysisHeader}" Width="200" DisplayMemberBinding="{Binding Analysis}" />-->
-                </GridView>                
-            </ListView.View>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    
-                    <EventSetter Event="MouseDoubleClick" Handler="ItemDoubleClick"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+                        <EventSetter Event="MouseDoubleClick" Handler="ItemDoubleClick"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <GridSplitter 
+                Grid.Column="1"  
+                ResizeDirection="Columns"
+                HorizontalAlignment="Stretch"
+                />
+
+            <WebBrowser
+                Grid.Column="2"
+                local:BrowserBehavior.Html="{Binding CurrentProblem, Converter={StaticResource SummaryConverter}}"
+                />
+        </Grid>        
     </DockPanel>
 </Window>
 
